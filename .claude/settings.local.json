@@ -6,7 +6,8 @@
       "Bash(npx create-next-app@latest priceit --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --no-git)",
       "Bash(npm install *)",
       "Bash(npx tsc *)",
-      "Bash(npm run *)"
+      "Bash(npm run *)",
+      "Bash(sed -i '' \\\\ *)"
     ]
   }
 }

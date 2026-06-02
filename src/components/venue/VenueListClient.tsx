@@ -47,18 +47,18 @@ export function VenueListClient({ venues }: { venues: VenueWithDetails[] }) {
       {/* Results header */}
       <div className="flex items-center justify-between">
         <p className="text-sm text-gray-500">
-          <span className="font-semibold text-gray-900">{filtered.length}</span> locals trobats
+          <span className="font-semibold text-gray-900">{filtered.length}</span> venues found
         </p>
         <div className="flex gap-1 bg-gray-100 rounded-lg p-1">
           <button
             onClick={() => setView('grid')}
-            className={`p-1.5 rounded-md transition-colors ${view === 'grid' ? 'bg-white shadow-sm text-violet-600' : 'text-gray-500'}`}
+            className={`p-1.5 rounded-md transition-colors ${view === 'grid' ? 'bg-white shadow-sm text-fuchsia-600' : 'text-gray-500'}`}
           >
             <GridIcon className="w-4 h-4" />
           </button>
           <button
             onClick={() => setView('map')}
-            className={`p-1.5 rounded-md transition-colors ${view === 'map' ? 'bg-white shadow-sm text-violet-600' : 'text-gray-500'}`}
+            className={`p-1.5 rounded-md transition-colors ${view === 'map' ? 'bg-white shadow-sm text-fuchsia-600' : 'text-gray-500'}`}
           >
             <MapIcon className="w-4 h-4" />
           </button>
@@ -80,8 +80,8 @@ export function VenueListClient({ venues }: { venues: VenueWithDetails[] }) {
           ))}
           {filtered.length === 0 && (
             <div className="col-span-3 text-center py-16 text-gray-400">
-              <p className="text-lg font-medium">Cap local trobat</p>
-              <p className="text-sm mt-1">Prova altres filtres</p>
+              <p className="text-lg font-medium">No venues found</p>
+              <p className="text-sm mt-1">Try different filters</p>
             </div>
           )}
         </div>

@@ -18,14 +18,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Nav */}
         <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
           <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-2 font-black text-violet-700 text-lg">
+            <Link href="/" className="flex items-center gap-2 font-black text-fuchsia-700 text-lg">
               🎉 PriceIt
             </Link>
             <div className="flex items-center gap-1">
-              <Link href="/" className="px-3 py-1.5 text-sm font-medium text-gray-600 hover:text-violet-700 rounded-lg hover:bg-violet-50 transition-colors">
-                Locals
+              <Link href="/" className="px-3 py-1.5 text-sm font-medium text-gray-600 hover:text-fuchsia-700 rounded-lg hover:bg-fuchsia-50 transition-colors">
+                Venues
               </Link>
-              <Link href="/night-planner" className="px-3 py-1.5 text-sm font-bold text-white bg-violet-600 rounded-lg hover:bg-violet-700 transition-colors">
+              <Link href="/night-planner" className="px-3 py-1.5 text-sm font-bold text-white bg-fuchsia-600 rounded-lg hover:bg-fuchsia-700 transition-colors">
                 🗺️ Night Planner
               </Link>
             </div>
@@ -37,7 +37,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <footer className="border-t border-gray-100 bg-white mt-auto">
           <div className="max-w-6xl mx-auto px-4 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-gray-400">
             <span>© 2026 PriceIt Barcelona</span>
-            <span>Preus actualitzats via Ticketmaster · Fever · Resident Advisor</span>
+            <span>Prices auto-updated via Ticketmaster · Fever · Resident Advisor</span>
           </div>
         </footer>
       </body>

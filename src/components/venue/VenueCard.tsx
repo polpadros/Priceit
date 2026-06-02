@@ -20,9 +20,9 @@ export function VenueCard({ venue }: { venue: VenueWithDetails }) {
 
   return (
     <Link href={`/venues/${venue.id}`} className="group block">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md hover:border-violet-200 transition-all duration-200">
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md hover:border-fuchsia-200 transition-all duration-200">
         {/* Image placeholder */}
-        <div className="h-44 bg-gradient-to-br from-violet-500 via-purple-600 to-indigo-700 relative flex items-end p-4">
+        <div className="h-44 bg-gradient-to-br from-fuchsia-500 via-fuchsia-600 to-pink-800 relative flex items-end p-4">
           <span className="text-xs font-semibold text-white/80 bg-white/20 rounded-full px-3 py-1 backdrop-blur-sm">
             {TYPE_LABELS[venue.type]}
           </span>
@@ -35,7 +35,7 @@ export function VenueCard({ venue }: { venue: VenueWithDetails }) {
 
         <div className="p-4">
           <div className="flex items-start justify-between gap-2 mb-2">
-            <h3 className="font-bold text-gray-900 text-lg leading-tight group-hover:text-violet-700 transition-colors">
+            <h3 className="font-bold text-gray-900 text-lg leading-tight group-hover:text-fuchsia-700 transition-colors">
               {venue.name}
             </h3>
             {venue.rating_count > 0 && (
@@ -62,7 +62,7 @@ export function VenueCard({ venue }: { venue: VenueWithDetails }) {
           <div className="flex items-center justify-between pt-3 border-t border-gray-100">
             {currentPrice ? (
               <div className="flex items-center gap-1.5 font-semibold text-gray-900 flex-wrap">
-                <Euro className="w-4 h-4 text-violet-600 shrink-0" />
+                <Euro className="w-4 h-4 text-fuchsia-600 shrink-0" />
                 <span>
                   {currentPrice.amount === 0 && currentPrice.entrada_tipus === 'free_list'
                     ? 'Free (guest list)'

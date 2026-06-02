@@ -5,10 +5,10 @@ import type { Ambient, VenueType } from '@/types'
 const AMBIENTS = Object.keys(AMBIENT_LABELS) as Ambient[]
 
 const TYPES: { value: VenueType | 'all'; label: string }[] = [
-  { value: 'all', label: 'Tots' },
-  { value: 'discoteca', label: '🪩 Discoteques' },
+  { value: 'all', label: 'All' },
+  { value: 'discoteca', label: '🪩 Clubs' },
   { value: 'bar', label: '🍺 Bars' },
-  { value: 'previa', label: '🥂 Previes' },
+  { value: 'previa', label: '🥂 Pre-party' },
   { value: 'restaurant', label: '🍽️ Restaurants' },
 ]
 
@@ -27,7 +27,7 @@ export function VenueFilters({
     <div className="space-y-4">
       {/* Type filter */}
       <div>
-        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Tipus</p>
+        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Type</p>
         <div className="flex flex-wrap gap-2">
           {TYPES.map((t) => (
             <button
@@ -35,8 +35,8 @@ export function VenueFilters({
               onClick={() => onTypeChange(t.value)}
               className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors border ${
                 selectedType === t.value
-                  ? 'bg-violet-600 text-white border-violet-600'
-                  : 'bg-white text-gray-700 border-gray-200 hover:border-violet-300'
+                  ? 'bg-fuchsia-600 text-white border-fuchsia-600'
+                  : 'bg-white text-gray-700 border-gray-200 hover:border-fuchsia-300'
               }`}
             >
               {t.label}
@@ -47,7 +47,7 @@ export function VenueFilters({
 
       {/* Ambient filter */}
       <div>
-        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Ambient</p>
+        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Vibe</p>
         <div className="flex flex-wrap gap-2">
           {AMBIENTS.map((a) => (
             <button
@@ -55,8 +55,8 @@ export function VenueFilters({
               onClick={() => onAmbientToggle(a)}
               className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors border ${
                 selectedAmbients.includes(a)
-                  ? 'bg-violet-600 text-white border-violet-600'
-                  : 'bg-white text-gray-700 border-gray-200 hover:border-violet-300'
+                  ? 'bg-fuchsia-600 text-white border-fuchsia-600'
+                  : 'bg-white text-gray-700 border-gray-200 hover:border-fuchsia-300'
               }`}
             >
               {AMBIENT_LABELS[a]}
