@@ -1,7 +1,7 @@
 'use client'
 import { useState, useMemo } from 'react'
 import dynamic from 'next/dynamic'
-import type { Ambient, VenueType, VenueWithDetails } from '@/types'
+import type { Ambient, MusicGenre, VenueType, VenueWithDetails } from '@/types'
 import { VenueCard } from './VenueCard'
 import { VenueFilters } from './VenueFilters'
 import { MapIcon, GridIcon } from 'lucide-react'
@@ -14,6 +14,7 @@ const VenueMap = dynamic(() => import('@/components/map/VenueMap').then((m) => m
 export function VenueListClient({ venues }: { venues: VenueWithDetails[] }) {
   const [selectedType, setSelectedType] = useState<VenueType | 'all'>('all')
   const [selectedAmbients, setSelectedAmbients] = useState<Ambient[]>([])
+  const [selectedMusic, setSelectedMusic] = useState<MusicGenre[]>([])
   const [view, setView] = useState<'grid' | 'map'>('grid')
 
   const filtered = useMemo(() => {
@@ -22,15 +23,26 @@ export function VenueListClient({ venues }: { venues: VenueWithDetails[] }) {
       if (selectedAmbients.length > 0) {
         if (!v.ambients.some((a) => selectedAmbients.includes(a as Ambient))) return false
       }
+      if (selectedMusic.length > 0) {
+        if (!v.music.some((m) => selectedMusic.includes(m as MusicGenre))) return false
+      }
       return true
     })
-  }, [venues, selectedType, selectedAmbients])
+  }, [venues, selectedType, selectedAmbients, selectedMusic])
 
   function toggleAmbient(a: Ambient) {
     setSelectedAmbients((prev) =>
       prev.includes(a) ? prev.filter((x) => x !== a) : [...prev, a]
     )
   }
+
+  function toggleMusic(m: MusicGenre) {
+    setSelectedMusic((prev) =>
+      prev.includes(m) ? prev.filter((x) => x !== m) : [...prev, m]
+    )
+  }
+
+  const activeFilters = selectedAmbients.length + selectedMusic.length
 
   return (
     <div className="space-y-6">
@@ -39,8 +51,10 @@ export function VenueListClient({ venues }: { venues: VenueWithDetails[] }) {
         <VenueFilters
           selectedType={selectedType}
           selectedAmbients={selectedAmbients}
+          selectedMusic={selectedMusic}
           onTypeChange={setSelectedType}
           onAmbientToggle={toggleAmbient}
+          onMusicToggle={toggleMusic}
         />
       </div>
 
@@ -48,6 +62,7 @@ export function VenueListClient({ venues }: { venues: VenueWithDetails[] }) {
       <div className="flex items-center justify-between">
         <p className="text-sm text-gray-500">
           <span className="font-semibold text-gray-900">{filtered.length}</span> venues found
+          {activeFilters > 0 && <span className="ml-1 text-fuchsia-600 font-medium">({activeFilters} filter{activeFilters > 1 ? 's' : ''} active)</span>}
         </p>
         <div className="flex gap-1 bg-gray-100 rounded-lg p-1">
           <button

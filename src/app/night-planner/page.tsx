@@ -126,6 +126,7 @@ export default function NightPlannerPage() {
   const [filters, setFilters] = useState<NightPlanFilters>({
     budget: 50,
     ambients: [],
+    music: [],
     day: 'saturday',
     neighborhood: null,
     includeRestaurant: true,
@@ -151,6 +152,7 @@ export default function NightPlannerPage() {
     setFilters({
       budget: 50,
       ambients: [],
+    music: [],
       day: 'saturday',
       neighborhood: null,
       includeRestaurant: true,

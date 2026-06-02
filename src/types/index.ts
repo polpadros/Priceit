@@ -22,6 +22,24 @@ export type Ambient =
 // 'free_list' = free with guest-list, paid at door
 export type EntradaTipus = 'fixed' | 'dynamic' | 'free_list' | 'free'
 
+export type MusicGenre =
+  | 'House'
+  | 'Electronic'
+  | 'Techno'
+  | 'Pop'
+  | 'R&B'
+  | 'Hip-Hop'
+  | 'Reggaeton'
+  | 'Indie'
+  | 'Jazz'
+  | 'Soul'
+  | 'Latin'
+  | 'Deep House'
+  | 'Tech House'
+  | 'Rock'
+  | 'K-Pop'
+  | 'World Music'
+
 export interface Venue {
   id: string
   name: string
@@ -32,6 +50,8 @@ export interface Venue {
   lat: number
   lng: number
   ambients: Ambient[]
+  music: MusicGenre[]
+  google_rating: number | null
   min_age: number
   dress_code: string | null
   image_url: string | null
@@ -39,7 +59,7 @@ export interface Venue {
   instagram: string | null
   phone: string | null
   opening_hours: Record<string, string>
-  price_sync_url: string | null       // URL used for auto-scraping prices
+  price_sync_url: string | null
   price_sync_source: 'manual' | 'fever' | 'fourvenues' | 'scraping' | null
   created_at: string
 }
@@ -99,6 +119,7 @@ export interface VenueWithDetails extends Venue {
 export interface NightPlanFilters {
   budget: number
   ambients: Ambient[]
+  music: MusicGenre[]
   day: string
   neighborhood: string | null
   includeRestaurant: boolean
