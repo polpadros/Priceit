@@ -53,11 +53,11 @@ const PHOTOS = {
 }
 
 function mkPrice(id: string, venueId: string, label: string, amount: number, amountMax: number | null, includes: string | null, tipus: 'fixed'|'dynamic'|'free_list'|'free', source: 'manual'|'fourvenues'|'scraping' = 'manual', ticketUrl: string | null = null) {
-  return { id, venue_id: venueId, label, amount, amount_max: amountMax, currency: 'EUR', includes, entrada_tipus: tipus, ticket_url: ticketUrl, is_current: true, valid_from: '2024-01-01', valid_to: null, last_synced_at: tipus === 'dynamic' ? '2026-06-02T00:00:00Z' : null, source, created_at: '2024-01-01' }
+  return { id, venue_id: venueId, label, amount, amount_max: amountMax, currency: 'EUR', includes, entrada_tipus: tipus, ticket_url: ticketUrl, is_current: true, valid_from: '2024-01-01', valid_to: null, last_synced_at: tipus === 'dynamic' ? '2026-06-02T00:00:00Z' : null, source, peak_days: ['Friday','Saturday'], created_at: '2024-01-01' }
 }
 
 function mkRating(id: string, venueId: string, score: number, comment: string) {
-  return { id, venue_id: venueId, user_id: null, score, comment, ambients: [], created_at: '2024-01-01' }
+  return { id, venue_id: venueId, user_id: null, score, comment, ambients: [], peak_days: ['Friday','Saturday'], created_at: '2024-01-01' }
 }
 
 export const mockVenues: VenueWithDetails[] = [
@@ -73,7 +73,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 3.9, min_age: 18, dress_code: 'Smart casual',
     image_url: PHOTOS.beachClub, website: 'https://www.opiumbarcelona.com', instagram: '@opiumbarcelona', phone: null,
     opening_hours: { 'Thu–Sun': '23:00–06:00' },
-    price_sync_url: null, price_sync_source: 'fourvenues', created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: 'fourvenues', peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('p1a', '1', 'Entry (free with list until 02:00)', 0, null, null, 'free_list'),
       mkPrice('p1b', '1', 'Entry at door', 15, 25, null, 'dynamic', 'fourvenues', 'https://www.opiumbarcelona.com'),
@@ -93,7 +93,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 4.4, min_age: 18, dress_code: null,
     image_url: PHOTOS.indieClub, website: 'https://www.salarazzmatazz.com', instagram: '@salarazzmatazz', phone: null,
     opening_hours: { 'Wed, Fri–Sat': '01:00–06:00' },
-    price_sync_url: null, price_sync_source: 'fourvenues', created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: 'fourvenues', peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('p2a', '2', 'Entry + 1 drink', 13, 20, '1 drink', 'dynamic', 'fourvenues', 'https://www.salarazzmatazz.com'),
       mkPrice('p2b', '2', 'Spirit / cocktail', 12, 15, null, 'fixed'),
@@ -115,7 +115,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 3.8, min_age: 18, dress_code: 'Elegant — strictly enforced',
     image_url: PHOTOS.luxClub, website: 'https://www.thesuttonclub.com', instagram: '@suttonbcn', phone: null,
     opening_hours: { 'Thu–Sat': '23:30–06:00' },
-    price_sync_url: null, price_sync_source: 'fourvenues', created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: 'fourvenues', peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('p3a', '3', 'Entry + 1 drink', 20, 30, '1 drink', 'dynamic', 'fourvenues', 'https://www.thesuttonclub.com'),
       mkPrice('p3b', '3', 'Spirit / cocktail', 15, 20, null, 'fixed'),
@@ -135,7 +135,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 3.8, min_age: 18, dress_code: 'Smart casual',
     image_url: PHOTOS.beachClub, website: null, instagram: '@pachabarcelona', phone: null,
     opening_hours: { 'Thu–Sun': '23:00–06:00' },
-    price_sync_url: null, price_sync_source: 'fourvenues', created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: 'fourvenues', peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('p4a', '4', 'Entry + 1 drink', 20, 25, '1 drink', 'dynamic', 'fourvenues', 'https://www.pacha-barcelona.com'),
       mkPrice('p4b', '4', 'Spirit / cocktail', 15, 18, null, 'fixed'),
@@ -154,7 +154,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 3.9, min_age: 18, dress_code: 'Smart casual',
     image_url: PHOTOS.beachClub, website: null, instagram: '@shokobarcelona', phone: null,
     opening_hours: { 'Wed–Sun': '23:00–06:00' },
-    price_sync_url: null, price_sync_source: 'fourvenues', created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: 'fourvenues', peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('p5a', '5', 'Free entry with list (until 01:30)', 0, null, null, 'free_list'),
       mkPrice('p5b', '5', 'Entry at door', 15, 25, null, 'dynamic', 'fourvenues', 'https://www.shoko.biz/barcelona'),
@@ -173,7 +173,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 3.7, min_age: 18, dress_code: 'Smart casual',
     image_url: PHOTOS.hiphopClub, website: null, instagram: '@ottuzutz_bcn', phone: null,
     opening_hours: { 'Wed–Sat': 'from 23:30' },
-    price_sync_url: null, price_sync_source: 'fourvenues', created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: 'fourvenues', peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('p6a', '6', 'Free entry (guest list)', 0, null, null, 'free_list'),
       mkPrice('p6b', '6', 'Entry at door', 10, 20, null, 'dynamic', 'fourvenues', 'https://www.ottozutz.com'),
@@ -192,7 +192,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 4.4, min_age: 18, dress_code: null,
     image_url: PHOTOS.colorClub, website: 'https://www.sala-apolo.com', instagram: '@salaapolo', phone: null,
     opening_hours: { 'Fri–Sat': '23:55–06:00' },
-    price_sync_url: 'https://www.sala-apolo.com/agenda', price_sync_source: 'scraping', created_at: '2024-01-01',
+    price_sync_url: 'https://www.sala-apolo.com/agenda', price_sync_source: 'scraping', peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('p7a', '7', 'Entry (varies by event)', 12, 20, null, 'dynamic', 'scraping', 'https://www.sala-apolo.com'),
       mkPrice('p7b', '7', 'Spirit / cocktail', 10, 14, null, 'fixed'),
@@ -211,7 +211,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 3.6, min_age: 18, dress_code: 'Elegant — very selective',
     image_url: PHOTOS.luxClub, website: null, instagram: '@blingblingbcn', phone: null,
     opening_hours: { 'Thu–Sat': 'from 23:30' },
-    price_sync_url: null, price_sync_source: 'fourvenues', created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: 'fourvenues', peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('p8a', '8', 'Entry + 1 drink', 25, 40, '1 drink', 'dynamic', 'fourvenues', 'https://www.blingblingbarcelona.com'),
       mkPrice('p8b', '8', 'Spirit / cocktail', 18, 25, null, 'fixed'),
@@ -230,7 +230,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 4.0, min_age: 18, dress_code: null,
     image_url: PHOTOS.colorClub, website: null, instagram: '@lafiravillarroel', phone: null,
     opening_hours: { 'Thu–Sat': 'from 23:00' },
-    price_sync_url: null, price_sync_source: 'fourvenues', created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: 'fourvenues', peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('p9a', '9', 'Entry + 1 drink', 10, 15, '1 drink', 'dynamic', 'fourvenues', 'https://lafirabarcelona.com'),
       mkPrice('p9b', '9', 'Spirit / cocktail', 10, 13, null, 'fixed'),
@@ -249,7 +249,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 4.0, min_age: 18, dress_code: 'Elegant',
     image_url: PHOTOS.rooftop, website: null, instagram: '@noxebarcelona', phone: null,
     opening_hours: { 'Fri–Sat': 'from 23:00' },
-    price_sync_url: null, price_sync_source: 'fourvenues', created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: 'fourvenues', peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('p10a', '10', 'Entry', 20, 30, null, 'dynamic', 'fourvenues', 'https://www.w-barcelona.com'),
       mkPrice('p10b', '10', 'Spirit / cocktail', 18, 22, null, 'fixed'),
@@ -268,7 +268,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 3.9, min_age: 18, dress_code: 'Smart casual',
     image_url: PHOTOS.beachClub, website: null, instagram: '@cdlcbarcelona', phone: null,
     opening_hours: { 'Daily': '23:00–06:00' },
-    price_sync_url: null, price_sync_source: 'fourvenues', created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: 'fourvenues', peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('p11a', '11', 'Free entry (guest list)', 0, null, null, 'free_list'),
       mkPrice('p11b', '11', 'Entry at door', 15, 25, null, 'dynamic', 'fourvenues', 'https://www.cdlcbarcelona.com'),
@@ -287,7 +287,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 4.2, min_age: 18, dress_code: null,
     image_url: PHOTOS.jazzClub, website: null, instagram: '@jamboreejazzclub', phone: null,
     opening_hours: { 'Daily': 'from 20:00' },
-    price_sync_url: null, price_sync_source: 'fourvenues', created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: 'fourvenues', peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('p12a', '12', 'Entry (varies by event)', 10, 15, null, 'dynamic', 'fourvenues', 'https://www.masimas.com/jamboree'),
       mkPrice('p12b', '12', 'Spirit / cocktail', 10, 13, null, 'fixed'),
@@ -306,7 +306,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 4.0, min_age: 18, dress_code: null,
     image_url: PHOTOS.poolParty, website: null, instagram: '@seaseaclub', phone: null,
     opening_hours: { 'Fri–Sun': 'from 22:00' },
-    price_sync_url: null, price_sync_source: 'fourvenues', created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: 'fourvenues', peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('p26a', '26', 'Entry (varies by event)', 20, 35, null, 'dynamic', 'fourvenues', 'https://www.seaseaclub.com'),
       mkPrice('p26b', '26', 'Spirit / cocktail', 14, 18, null, 'fixed'),
@@ -324,7 +324,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: null, min_age: 18, dress_code: null,
     image_url: PHOTOS.technoClub, website: 'https://www.inputbcn.com', instagram: '@inputbcn', phone: null,
     opening_hours: { 'Sat–Sun': '00:00–12:00' },
-    price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: null, peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [mkPrice('p_in', '4_in', 'Entry', 18, null, null, 'fixed')],
     ratings: [mkRating('r_in1', '4_in', 5, 'Best sound system in BCN')],
     events: [], avg_rating: 5, rating_count: 1,
@@ -339,7 +339,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: null, min_age: 18, dress_code: null,
     image_url: PHOTOS.electroClub, website: null, instagram: '@macarenaclub', phone: null,
     opening_hours: { 'Daily': '00:00–05:00' },
-    price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: null, peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [mkPrice('p_mac', '5_mac', 'Free entry', 0, null, null, 'free')],
     ratings: [mkRating('r_mac', '5_mac', 4, 'Very intimate and great Latin vibes')],
     events: [], avg_rating: 4, rating_count: 1,
@@ -356,7 +356,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 4.6, min_age: 18, dress_code: 'Smart casual',
     image_url: PHOTOS.cocktailBar, website: null, instagram: '@sips_bcn', phone: null,
     opening_hours: { 'Tue–Sat': '17:00–01:00' },
-    price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: null, peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('p13a', '13', 'Entry', 0, null, null, 'free'),
       mkPrice('p13b', '13', 'Signature cocktail', 16, 20, null, 'fixed'),
@@ -374,7 +374,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 4.6, min_age: 18, dress_code: null,
     image_url: PHOTOS.speakeasy, website: null, instagram: '@paradiso_bcn', phone: null,
     opening_hours: { 'Tue–Sun': '17:00–01:00' },
-    price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: null, peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('p14a', '14', 'Entry', 0, null, null, 'free'),
       mkPrice('p14b', '14', 'Signature cocktail', 16, 20, null, 'fixed'),
@@ -392,7 +392,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 4.5, min_age: 18, dress_code: null,
     image_url: PHOTOS.speakeasy, website: null, instagram: '@drstravinsky_bcn', phone: null,
     opening_hours: { 'Tue–Sun': '18:00–02:00' },
-    price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: null, peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('p15a', '15', 'Entry', 0, null, null, 'free'),
       mkPrice('p15b', '15', 'Signature cocktail', 13, 16, null, 'fixed'),
@@ -410,7 +410,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 4.5, min_age: 18, dress_code: 'Smart',
     image_url: PHOTOS.cocktailBar, website: null, instagram: '@drymartinibarcelona', phone: null,
     opening_hours: { 'Mon–Sat': '13:00–02:30' },
-    price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: null, peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('p16a', '16', 'Entry', 0, null, null, 'free'),
       mkPrice('p16b', '16', 'Classic cocktail', 15, 18, null, 'fixed'),
@@ -428,7 +428,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: null, min_age: 18, dress_code: null,
     image_url: PHOTOS.vintageBar, website: null, instagram: null, phone: null,
     opening_hours: { 'Mon–Sat': '22:00–02:00' },
-    price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: null, peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [mkPrice('p_mar', 'marsella', 'Average drink', 8, null, null, 'fixed')],
     ratings: [mkRating('r_mar', 'marsella', 5, 'Oldest bar in Barcelona — timeless')],
     events: [], avg_rating: 5, rating_count: 1,
@@ -445,7 +445,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 4.3, min_age: 18, dress_code: null,
     image_url: PHOTOS.casualBar, website: null, instagram: '@espitchupitos', phone: null,
     opening_hours: { 'Daily': '20:00–03:00' },
-    price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: null, peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('p17a', '17', 'Entry', 0, null, null, 'free'),
       mkPrice('p17b', '17', 'Shot', 2, 3, null, 'fixed'),
@@ -464,7 +464,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 4.3, min_age: 18, dress_code: null,
     image_url: PHOTOS.vintageBar, website: null, instagram: '@milkbarbarcelona', phone: null,
     opening_hours: { 'Daily': '10:00–03:00' },
-    price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: null, peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('p18a', '18', 'Entry', 0, null, null, 'free'),
       mkPrice('p18b', '18', 'Cocktail', 8, 12, null, 'fixed'),
@@ -483,7 +483,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 4.2, min_age: 18, dress_code: null,
     image_url: PHOTOS.casualBar, website: null, instagram: '@marmaladebarcelona', phone: null,
     opening_hours: { 'Daily': '10:00–03:00' },
-    price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: null, peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('p19a', '19', 'Entry', 0, null, null, 'free'),
       mkPrice('p19b', '19', 'Cocktail', 9, 13, null, 'fixed'),
@@ -502,7 +502,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 4.4, min_age: 0, dress_code: null,
     image_url: PHOTOS.tapasBar, website: null, instagram: '@elxampanyet_born', phone: null,
     opening_hours: { 'Tue–Sat': '19:00–23:30' },
-    price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: null, peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('p20a', '20', 'Entry', 0, null, null, 'free'),
       mkPrice('p20b', '20', 'House cava (glass)', 3, 4, null, 'fixed'),
@@ -522,7 +522,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 4.4, min_age: 18, dress_code: null,
     image_url: PHOTOS.casualBar, website: null, instagram: '@barcalders', phone: null,
     opening_hours: { 'Daily': '09:00–02:00' },
-    price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: null, peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('p21a', '21', 'Entry', 0, null, null, 'free'),
       mkPrice('p21b', '21', 'Cocktail', 7, 10, null, 'fixed'),
@@ -541,7 +541,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: null, min_age: 18, dress_code: null,
     image_url: PHOTOS.casualBar, website: null, instagram: null, phone: null,
     opening_hours: { 'Daily': '23:00–03:30' },
-    price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: null, peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('p_lp_a', 'laprevia', 'Entry', 0, null, null, 'free'),
       mkPrice('p_lp_b', 'laprevia', 'Spirit + mixer', 7, null, null, 'fixed'),
@@ -560,7 +560,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: null, min_age: 18, dress_code: null,
     image_url: PHOTOS.casualBar, website: null, instagram: null, phone: null,
     opening_hours: { 'Daily': 'until 03:00' },
-    price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: null, peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('p_om_a', 'ovellam', 'Entry', 0, null, null, 'free'),
       mkPrice('p_om_b', 'ovellam', 'Beer pitcher', 6, null, null, 'fixed'),
@@ -581,7 +581,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 3.9, min_age: 0, dress_code: null,
     image_url: PHOTOS.restaurant, website: null, instagram: '@cdlcbarcelona', phone: null,
     opening_hours: { 'Daily': '13:00–01:00' },
-    price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: null, peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('p22a', '22', 'Entry (restaurant)', 0, null, null, 'free'),
       mkPrice('p22b', '22', 'Dinner per person', 35, 60, 'food only', 'fixed'),
@@ -600,7 +600,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 4.3, min_age: 0, dress_code: null,
     image_url: PHOTOS.restaurant, website: null, instagram: '@cachitosbarcelona', phone: null,
     opening_hours: { 'Daily': '13:00–00:00' },
-    price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: null, peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('p23a', '23', 'Dinner per person', 25, 40, 'food only', 'fixed'),
       mkPrice('p23b', '23', 'Cocktail', 10, 14, null, 'fixed'),
@@ -618,7 +618,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 4.2, min_age: 0, dress_code: 'Smart',
     image_url: PHOTOS.luxRestau, website: null, instagram: '@gatsby_bcn', phone: null,
     opening_hours: { 'Tue–Sat': '20:00–01:00' },
-    price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: null, peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('p24a', '24', 'Dinner per person', 45, 80, 'food only', 'fixed'),
       mkPrice('p24b', '24', 'Cocktail', 14, 18, null, 'fixed'),
@@ -636,7 +636,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 3.9, min_age: 0, dress_code: null,
     image_url: PHOTOS.restaurant, website: null, instagram: '@shokobarcelona', phone: null,
     opening_hours: { 'Wed–Sun': '13:00–01:00' },
-    price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: null, peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('p25a', '25', 'Dinner per person', 35, 55, 'food only', 'fixed'),
       mkPrice('p25b', '25', 'Cocktail', 13, 17, null, 'fixed'),
@@ -654,7 +654,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: null, min_age: 0, dress_code: null,
     image_url: PHOTOS.tapasBar, website: null, instagram: null, phone: null,
     opening_hours: { 'Daily': '13:00–23:30' },
-    price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: null, peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [mkPrice('p_pep', 'pepita', 'Dinner per person', 20, null, 'food and drinks', 'fixed')],
     ratings: [], events: [], avg_rating: 0, rating_count: 0,
   },
@@ -670,7 +670,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 4.1, min_age: 18, dress_code: null,
     image_url: PHOTOS.casualBar, website: null, instagram: '@bbplus_bcn', phone: '+34 616 41 95 49',
     opening_hours: { 'Daily': '20:00–03:00' },
-    price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: null, peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('pbb1', 'bbplus', 'Entry', 0, null, null, 'free'),
       mkPrice('pbb2', 'bbplus', 'Cocktail', 7, 10, null, 'fixed'),
@@ -692,7 +692,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 4.3, min_age: 18, dress_code: null,
     image_url: PHOTOS.vintageBar, website: null, instagram: '@lecyranobar', phone: null,
     opening_hours: { 'Thu–Sat': '22:30–02:30' },
-    price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: null, peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('pcy1', 'lecyrano', 'Entry', 0, null, null, 'free'),
       mkPrice('pcy2', 'lecyrano', 'Spirit + mixer (self-pour!)', 3, null, 'you pour your own', 'fixed'),
@@ -713,7 +713,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 4.2, min_age: 18, dress_code: null,
     image_url: PHOTOS.casualBar, website: 'https://galeragroup.com/en/restaurants/barcelona/4-latas/', instagram: '@4latasbcn', phone: null,
     opening_hours: { 'Mon–Thu': '12:00–02:00', 'Fri–Sat': '12:00–03:00' },
-    price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: null, peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('p4l1', '4latas', 'Entry', 0, null, null, 'free'),
       mkPrice('p4l2', '4latas', 'Cocktail', 9, 12, null, 'fixed'),
@@ -736,7 +736,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 4.2, min_age: 18, dress_code: null,
     image_url: PHOTOS.casualBar, website: 'https://lapreviaeventos.com/', instagram: '@lapreviaribau', phone: null,
     opening_hours: { 'Daily': '23:00–03:30' },
-    price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: null, peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('ppa1', 'previaaribau', 'Entry', 0, null, null, 'free'),
       mkPrice('ppa2', 'previaaribau', 'Cocktail', 8, 11, null, 'fixed'),
@@ -760,7 +760,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 4.1, min_age: 18, dress_code: null,
     image_url: PHOTOS.poolParty, website: 'https://laterrrazza.com', instagram: '@laterrrazza', phone: null,
     opening_hours: { 'Fri–Sat': '00:00–06:00 (Apr–Nov)' },
-    price_sync_url: null, price_sync_source: 'fourvenues', created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: 'fourvenues', peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('plt1', 'laterrazza', 'Entry (varies by event)', 20, 30, null, 'dynamic', 'fourvenues', 'https://laterrrazza.com'),
       mkPrice('plt2', 'laterrazza', 'Spirit / cocktail', 14, 18, null, 'fixed'),
@@ -778,7 +778,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 4.1, min_age: 18, dress_code: null,
     image_url: PHOTOS.latinClub, website: 'https://bikinibcn.com', instagram: '@bikinibcn', phone: null,
     opening_hours: { 'Thu–Sun': 'from 23:00' },
-    price_sync_url: null, price_sync_source: 'fourvenues', created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: 'fourvenues', peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('pbk1', 'bikini', 'Entry + 1 drink', 10, 15, '1 drink', 'dynamic', 'fourvenues', 'https://bikinibcn.com'),
       mkPrice('pbk2', 'bikini', 'Spirit / cocktail', 10, 14, null, 'fixed'),
@@ -796,7 +796,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 4.2, min_age: 18, dress_code: null,
     image_url: PHOTOS.technoClub2, website: 'https://masimas.com/moog', instagram: '@moog_barcelona', phone: null,
     opening_hours: { 'Daily': '00:00–06:00' },
-    price_sync_url: null, price_sync_source: 'fourvenues', created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: 'fourvenues', peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('pmg1', 'moog', 'Entry', 8, 15, null, 'dynamic', 'fourvenues', 'https://masimas.com/moog'),
       mkPrice('pmg2', 'moog', 'Spirit / cocktail', 10, 13, null, 'fixed'),
@@ -814,7 +814,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 4.4, min_age: 18, dress_code: null,
     image_url: PHOTOS.technoClub, website: 'https://www.inputbcn.com', instagram: '@inputdanceclub', phone: null,
     opening_hours: { 'Fri–Sat': '00:00–12:00' },
-    price_sync_url: 'https://www.inputbcn.com/agenda', price_sync_source: 'scraping', created_at: '2024-01-01',
+    price_sync_url: 'https://www.inputbcn.com/agenda', price_sync_source: 'scraping', peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('pinh1', 'inputhifi', 'Entry (varies by event)', 15, 25, null, 'dynamic', 'scraping', 'https://www.inputbcn.com'),
       mkPrice('pinh2', 'inputhifi', 'Spirit / cocktail', 13, 16, null, 'fixed'),
@@ -832,7 +832,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 4.1, min_age: 18, dress_code: 'Smart elegant',
     image_url: PHOTOS.luxClub, website: null, instagram: '@boris.club', phone: null,
     opening_hours: { 'Thu–Sat': 'from 23:30' },
-    price_sync_url: null, price_sync_source: 'fourvenues', created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: 'fourvenues', peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('pbrs1', 'boris', 'Entry', 20, 35, null, 'dynamic', 'fourvenues'),
       mkPrice('pbrs2', 'boris', 'Spirit / cocktail', 16, 22, null, 'fixed'),
@@ -850,7 +850,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 4.0, min_age: 18, dress_code: 'Smart',
     image_url: PHOTOS.colorClub2, website: null, instagram: '@twentiesbarcelona', phone: null,
     opening_hours: { 'Thu–Sat': 'from 23:30' },
-    price_sync_url: null, price_sync_source: 'fourvenues', created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: 'fourvenues', peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('ptw1', 'twenties', 'Entry', 15, 25, null, 'dynamic', 'fourvenues'),
       mkPrice('ptw2', 'twenties', 'Spirit / cocktail', 14, 18, null, 'fixed'),
@@ -868,7 +868,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 3.8, min_age: 18, dress_code: null,
     image_url: PHOTOS.latinClub, website: null, instagram: '@latinpalacebcn', phone: null,
     opening_hours: { 'Thu–Sat': 'from 23:00' },
-    price_sync_url: null, price_sync_source: 'fourvenues', created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: 'fourvenues', peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('plp1', 'latinpalace', 'Entry', 10, 20, null, 'dynamic', 'fourvenues'),
       mkPrice('plp2', 'latinpalace', 'Spirit / cocktail', 12, 15, null, 'fixed'),
@@ -886,7 +886,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 3.8, min_age: 18, dress_code: 'Smart casual',
     image_url: PHOTOS.beachClub2, website: null, instagram: '@kubarcelonaofficial', phone: null,
     opening_hours: { 'Thu–Sun': '23:00–06:00' },
-    price_sync_url: null, price_sync_source: 'fourvenues', created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: 'fourvenues', peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('pku1', 'ku', 'Free entry (guest list)', 0, null, null, 'free_list'),
       mkPrice('pku2', 'ku', 'Entry at door', 15, 20, null, 'dynamic', 'fourvenues'),
@@ -905,7 +905,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 3.7, min_age: 18, dress_code: null,
     image_url: PHOTOS.colorClub, website: null, instagram: '@downtownbcn', phone: null,
     opening_hours: { 'Thu–Sun': '23:00–06:00' },
-    price_sync_url: null, price_sync_source: 'fourvenues', created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: 'fourvenues', peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('pdt1', 'downtown', 'Free entry (guest list)', 0, null, null, 'free_list'),
       mkPrice('pdt2', 'downtown', 'Entry at door', 10, 20, null, 'dynamic', 'fourvenues'),
@@ -926,7 +926,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 4.5, min_age: 18, dress_code: null,
     image_url: PHOTOS.cocktailBar2, website: null, instagram: '@platacocktailbar', phone: null,
     opening_hours: { 'Thu–Sun': '19:00–02:30' },
-    price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: null, peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('pplt1', 'plata', 'Entry', 0, null, null, 'free'),
       mkPrice('pplt2', 'plata', 'Signature cocktail', 12, 16, null, 'fixed'),
@@ -944,7 +944,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 4.3, min_age: 18, dress_code: null,
     image_url: PHOTOS.casualBar2, website: null, instagram: '@bettyfords_bcn', phone: null,
     opening_hours: { 'Tue–Sun': '19:00–02:30' },
-    price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: null, peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('pbf1', 'bettyfords', 'Entry', 0, null, null, 'free'),
       mkPrice('pbf2', 'bettyfords', 'Cocktail', 8, 12, null, 'fixed'),
@@ -965,7 +965,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 4.5, min_age: 18, dress_code: null,
     image_url: PHOTOS.tapasBar, website: 'https://www.barcanyete.com', instagram: '@barcanyete', phone: null,
     opening_hours: { 'Tue–Sat': '13:00–24:00' },
-    price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: null, peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('pcan1', 'barcanyete', 'Entry', 0, null, null, 'free'),
       mkPrice('pcan2', 'barcanyete', 'Cocktail / wine', 8, 12, null, 'fixed'),
@@ -984,7 +984,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 4.3, min_age: 18, dress_code: null,
     image_url: PHOTOS.casualBar, website: null, instagram: '@morrofi_bcn', phone: null,
     opening_hours: { 'Tue–Sun': '10:00–02:00' },
-    price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: null, peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('pmf1', 'morrofi', 'Entry', 0, null, null, 'free'),
       mkPrice('pmf2', 'morrofi', 'Vermouth / cocktail', 7, 10, null, 'fixed'),
@@ -1003,7 +1003,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 4.5, min_age: 18, dress_code: null,
     image_url: PHOTOS.vintageBar, website: null, instagram: '@bodegasepulveda', phone: null,
     opening_hours: { 'Daily': '10:00–02:00' },
-    price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: null, peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('pbs1', 'bodegasepulveda', 'Entry', 0, null, null, 'free'),
       mkPrice('pbs2', 'bodegasepulveda', 'Wine / cocktail', 6, 9, null, 'fixed'),
@@ -1024,7 +1024,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 4.1, min_age: 18, dress_code: 'Smart',
     image_url: PHOTOS.luxRestau2, website: null, instagram: '@nuba_bcn', phone: null,
     opening_hours: { 'Wed–Sun': '20:00–03:00' },
-    price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: null, peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('pnb1', 'nuba', 'Dinner per person', 35, 55, 'food only', 'fixed'),
       mkPrice('pnb2', 'nuba', 'Club entry (after dinner)', 15, 20, null, 'dynamic', 'fourvenues'),
@@ -1043,7 +1043,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 4.2, min_age: 0, dress_code: 'Smart',
     image_url: PHOTOS.seafood, website: null, instagram: '@bravowbarcelona', phone: null,
     opening_hours: { 'Daily': '13:00–23:00' },
-    price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: null, peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('pbrv1', 'bravo', 'Dinner per person', 50, 90, 'food only', 'fixed'),
       mkPrice('pbrv2', 'bravo', 'Cocktail', 16, 22, null, 'fixed'),
@@ -1061,7 +1061,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 4.3, min_age: 0, dress_code: 'Smart elegant',
     image_url: PHOTOS.rooftop, website: null, instagram: '@mareaaltabcn', phone: null,
     opening_hours: { 'Tue–Sun': '13:00–23:30' },
-    price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: null, peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('pma1', 'mareaalta', 'Dinner per person', 55, 90, 'food only', 'fixed'),
       mkPrice('pma2', 'mareaalta', 'Cocktail', 15, 20, null, 'fixed'),
@@ -1079,7 +1079,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 4.2, min_age: 18, dress_code: 'Smart casual',
     image_url: PHOTOS.poolParty, website: null, instagram: '@wetdeckbarcelona', phone: null,
     opening_hours: { 'Fri–Sun': '12:00–21:00 (seasonal)' },
-    price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: null, peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('pwd1', 'wetdeck', 'Entry (minimum spend)', 0, null, 'min. consumption required', 'free'),
       mkPrice('pwd2', 'wetdeck', 'Cocktail', 16, 22, null, 'fixed'),
@@ -1097,7 +1097,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 4.3, min_age: 0, dress_code: null,
     image_url: PHOTOS.rooftop, website: null, instagram: '@moodrooftopbcn', phone: null,
     opening_hours: { 'Tue–Sun': '12:00–00:00' },
-    price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: null, peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('pmd1', 'mood', 'Dinner per person', 35, 55, 'food only', 'fixed'),
       mkPrice('pmd2', 'mood', 'Cocktail', 14, 18, null, 'fixed'),
@@ -1115,7 +1115,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 3.9, min_age: 0, dress_code: null,
     image_url: PHOTOS.restaurant, website: null, instagram: '@gobeachclub_bcn', phone: null,
     opening_hours: { 'Thu–Sun': '20:00–03:00' },
-    price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: null, peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('pgb1', 'gobeach', 'Dinner per person', 30, 50, 'food only', 'fixed'),
       mkPrice('pgb2', 'gobeach', 'Cocktail', 13, 17, null, 'fixed'),
@@ -1133,7 +1133,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 4.3, min_age: 18, dress_code: 'Smart casual',
     image_url: PHOTOS.rooftop, website: 'https://www.sohohouse.com/en-us/houses/soho-house-barcelona', instagram: '@sohohousebarcelona', phone: null,
     opening_hours: { 'Daily': '12:00–00:00' },
-    price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: null, peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('psh1', 'sohohouse', 'Dinner per person', 40, 70, 'food only', 'fixed'),
       mkPrice('psh2', 'sohohouse', 'Cocktail', 15, 20, null, 'fixed'),
@@ -1151,7 +1151,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 4.4, min_age: 0, dress_code: null,
     image_url: PHOTOS.restaurant2, website: null, instagram: '@elguzzo_bcn', phone: null,
     opening_hours: { 'Tue–Sat': '20:00–00:00' },
-    price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: null, peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('peg1', 'elguzzo', 'Dinner per person', 30, 45, 'food + show', 'fixed'),
       mkPrice('peg2', 'elguzzo', 'Cocktail', 10, 14, null, 'fixed'),
@@ -1169,7 +1169,7 @@ export const mockVenues: VenueWithDetails[] = [
     google_rating: 4.2, min_age: 0, dress_code: 'Smart',
     image_url: PHOTOS.jazzClub2, website: null, instagram: '@salamilano_bcn', phone: null,
     opening_hours: { 'Tue–Sat': '20:00–00:00' },
-    price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
+    price_sync_url: null, price_sync_source: null, peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('psm1', 'salamilano', 'Jazz menu (dinner + concert)', 29, 45, 'dinner + live show', 'fixed'),
       mkPrice('psm2', 'salamilano', 'Cocktail', 10, 14, null, 'fixed'),

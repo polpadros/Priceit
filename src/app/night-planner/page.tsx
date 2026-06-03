@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { ArrowLeft, Euro, MapPin, Star, ChevronRight, RotateCcw, Search } from 'lucide-react'
 import { ShareButton } from '@/components/ui/ShareButton'
+import { getDistanceInfo } from '@/lib/distance'
 import { mockVenues } from '@/lib/mock-data'
 import { AMBIENT_LABELS } from '@/components/ui/AmbientBadge'
 import { AmbientBadge } from '@/components/ui/AmbientBadge'
@@ -132,6 +133,9 @@ export default function NightPlannerPage() {
     neighborhood: null,
     includeRestaurant: true,
     includePrevia: true,
+    customPrevia: '',
+    customRestaurant: '',
+    fixedDiscoId: null,
   })
   const [routes, setRoutes] = useState<NightRoute[] | null>(null)
   const [searched, setSearched] = useState(false)
@@ -153,11 +157,14 @@ export default function NightPlannerPage() {
     setFilters({
       budget: 50,
       ambients: [],
-    music: [],
+      music: [],
       day: 'saturday',
       neighborhood: null,
       includeRestaurant: true,
       includePrevia: true,
+      customPrevia: '',
+      customRestaurant: '',
+      fixedDiscoId: null,
     })
     setRoutes(null)
     setSearched(false)
@@ -282,20 +289,40 @@ export default function NightPlannerPage() {
               {/* Includes */}
               <div className="mb-6 space-y-2">
                 <label className="block text-sm font-semibold text-zinc-300 mb-2">Include in route</label>
-                {[
-                  { key: 'includeRestaurant', label: '🍽️ Dinner' },
-                  { key: 'includePrevia', label: '🥂 Pre-party' },
-                ].map(({ key, label }) => (
-                  <label key={key} className="flex items-center gap-3 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={filters[key as keyof NightPlanFilters] as boolean}
-                      onChange={(e) => setFilters((f) => ({ ...f, [key]: e.target.checked }))}
-                      className="w-4 h-4 accent-pink-500"
-                    />
-                    <span className="text-sm text-zinc-300">{label}</span>
-                  </label>
-                ))}
+                <div className="space-y-3">
+                  {/* Dinner */}
+                  <div>
+                    <label className="flex items-center gap-3 cursor-pointer mb-2">
+                      <input type="checkbox" checked={filters.includeRestaurant}
+                        onChange={e => setFilters(f => ({ ...f, includeRestaurant: e.target.checked }))}
+                        className="w-4 h-4 accent-pink-500" />
+                      <span className="text-sm text-zinc-300">🍽️ Dinner</span>
+                    </label>
+                    {filters.includeRestaurant && (
+                      <input type="text" placeholder="Or write your own (e.g. Resi Cases)"
+                        value={filters.customRestaurant}
+                        onChange={e => setFilters(f => ({ ...f, customRestaurant: e.target.value }))}
+                        className="w-full bg-zinc-800 border border-zinc-700 text-white text-xs rounded-lg px-3 py-2 outline-none focus:border-pink-500/50 placeholder:text-zinc-600 ml-7"
+                      />
+                    )}
+                  </div>
+                  {/* Pre-party */}
+                  <div>
+                    <label className="flex items-center gap-3 cursor-pointer mb-2">
+                      <input type="checkbox" checked={filters.includePrevia}
+                        onChange={e => setFilters(f => ({ ...f, includePrevia: e.target.checked }))}
+                        className="w-4 h-4 accent-pink-500" />
+                      <span className="text-sm text-zinc-300">🥂 Pre-party</span>
+                    </label>
+                    {filters.includePrevia && (
+                      <input type="text" placeholder="Or write your own (e.g. Casa Uri)"
+                        value={filters.customPrevia}
+                        onChange={e => setFilters(f => ({ ...f, customPrevia: e.target.value }))}
+                        className="w-full bg-zinc-800 border border-zinc-700 text-white text-xs rounded-lg px-3 py-2 outline-none focus:border-pink-500/50 placeholder:text-zinc-600 ml-7"
+                      />
+                    )}
+                  </div>
+                </div>
               </div>
 
               <div className="flex gap-2">
@@ -321,17 +348,17 @@ export default function NightPlannerPage() {
           {/* Results */}
           <div className="space-y-5">
             {!searched && (
-              <div className="text-center py-20 text-gray-400">
+              <div className="text-center py-20 text-zinc-400">
                 <p className="text-5xl mb-4">🌙</p>
-                <p className="text-lg font-semibold text-gray-600">Set your filters and plan the perfect night</p>
+                <p className="text-lg font-semibold text-zinc-300">Set your filters and plan the perfect night</p>
                 <p className="text-sm mt-1">We'll build your dinner → pre-party → club route within budget</p>
               </div>
             )}
 
             {searched && routes !== null && routes.length === 0 && (
-              <div className="text-center py-20 text-gray-400">
+              <div className="text-center py-20 text-zinc-400">
                 <p className="text-5xl mb-4">😔</p>
-                <p className="text-lg font-semibold text-gray-600">No routes found</p>
+                <p className="text-lg font-semibold text-zinc-300">No routes found</p>
                 <p className="text-sm mt-1">Try a higher budget, different vibe or remove the neighbourhood filter</p>
               </div>
             )}
@@ -365,27 +392,59 @@ export default function NightPlannerPage() {
                       <div className="bg-zinc-800 border border-zinc-700 rounded-xl px-3 py-1.5 text-sm">
                         <span className="text-zinc-400">Estimated cost: </span>
                         <span className="font-black text-pink-400">{route.totalEstimatedCost}€</span>
-                        <span className="text-gray-400"> / {filters.budget}€</span>
+                        <span className="text-zinc-400"> / {filters.budget}€</span>
                       </div>
                     </div>
 
                     <div className="space-y-5">
-                      {route.restaurant && (
+                      {/* Custom restaurant or suggested */}
+                      {filters.customRestaurant ? (
                         <>
-                          <RouteStep emoji="🍽️" label="Sopar" venue={route.restaurant} />
-                          <div className="flex items-center gap-2 ml-5">
-                            <div className="w-0.5 h-6 bg-gray-200 ml-4" />
-                            <ChevronRight className="w-4 h-4 text-gray-300" />
+                          <div className="flex items-start gap-4">
+                            <div className="w-10 h-10 rounded-full bg-pink-500/20 flex items-center justify-center text-lg shrink-0">🍽️</div>
+                            <div>
+                              <p className="text-xs font-semibold text-pink-400 uppercase tracking-wide mb-0.5">Dinner</p>
+                              <p className="font-bold text-white text-lg">{filters.customRestaurant}</p>
+                              <p className="text-xs text-zinc-500 mt-0.5">Your choice</p>
+                            </div>
                           </div>
+                          <div className="flex items-center gap-2 ml-14"><div className="w-0.5 h-6 bg-zinc-700" /><ChevronRight className="w-4 h-4 text-zinc-600" /></div>
+                        </>
+                      ) : route.restaurant && (
+                        <>
+                          <RouteStep emoji="🍽️" label="Dinner" venue={route.restaurant} />
+                          <div className="flex items-center gap-2 ml-14"><div className="w-0.5 h-6 bg-zinc-700" /><ChevronRight className="w-4 h-4 text-zinc-600" /></div>
                         </>
                       )}
-                      {route.previa && (
+                      {/* Custom previa or suggested */}
+                      {filters.customPrevia ? (
                         <>
-                          <RouteStep emoji="🥂" label="Previa" venue={route.previa} />
-                          <div className="flex items-center gap-2 ml-5">
-                            <div className="w-0.5 h-6 bg-gray-200 ml-4" />
-                            <ChevronRight className="w-4 h-4 text-gray-300" />
+                          <div className="flex items-start gap-4">
+                            <div className="w-10 h-10 rounded-full bg-pink-500/20 flex items-center justify-center text-lg shrink-0">🥂</div>
+                            <div>
+                              <p className="text-xs font-semibold text-pink-400 uppercase tracking-wide mb-0.5">Pre-party</p>
+                              <p className="font-bold text-white text-lg">{filters.customPrevia}</p>
+                              <p className="text-xs text-zinc-500 mt-0.5">Your choice</p>
+                            </div>
                           </div>
+                          <div className="flex items-center gap-2 ml-14"><div className="w-0.5 h-6 bg-zinc-700" /><ChevronRight className="w-4 h-4 text-zinc-600" /></div>
+                        </>
+                      ) : route.previa && (
+                        <>
+                          <RouteStep emoji="🥂" label="Pre-party" venue={route.previa} />
+                          {/* Distance previa → disco */}
+                          {(() => {
+                            const d = getDistanceInfo(route.previa!.lat, route.previa!.lng, route.disco.lat, route.disco.lng)
+                            return (
+                              <div className="flex items-center gap-3 ml-14 text-xs text-zinc-500">
+                                <div className="w-0.5 h-5 bg-zinc-700" />
+                                <span>🚶 {d.walkMin}min</span>
+                                <span>🚲 {d.bikeMin}min</span>
+                                <span>🚗 {d.carMin}min</span>
+                                <span className="text-zinc-600">({d.km}km)</span>
+                              </div>
+                            )
+                          })()}
                         </>
                       )}
                       <RouteStep emoji="🪩" label="Discoteca" venue={route.disco} />
@@ -399,7 +458,7 @@ export default function NightPlannerPage() {
                       </div>
                       <div className="h-2 bg-zinc-800 rounded-full overflow-hidden">
                         <div
-                          className="h-full bg-gradient-to-r from-fuchsia-500 to-fuchsia-600 rounded-full transition-all"
+                          className="h-full bg-gradient-to-r from-pink-500 to-pink-600 rounded-full transition-all"
                           style={{ width: `${Math.min((route.totalEstimatedCost / filters.budget) * 100, 100)}%` }}
                         />
                       </div>

@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
-import { LogOut, User } from 'lucide-react'
+import { LogOut, User, Settings } from 'lucide-react'
+import Link from 'next/link'
 import { useAuth } from '@/contexts/AuthContext'
 import { LoginModal } from './LoginModal'
 
@@ -26,9 +27,14 @@ export function AuthButton() {
 
         {showMenu && (
           <div className="absolute right-0 top-full mt-2 bg-zinc-900 border border-zinc-700 rounded-xl shadow-xl p-1 min-w-[160px] z-50">
+            <Link href="/profile" onClick={() => setShowMenu(false)}
+              className="w-full flex items-center gap-2 px-3 py-2 text-sm text-zinc-300 hover:text-white hover:bg-zinc-800 rounded-lg transition-colors">
+              <Settings className="w-4 h-4" />
+              My profile
+            </Link>
             <button
               onClick={async () => { await signOut(); setShowMenu(false) }}
-              className="w-full flex items-center gap-2 px-3 py-2 text-sm text-zinc-300 hover:text-white hover:bg-zinc-800 rounded-lg transition-colors"
+              className="w-full flex items-center gap-2 px-3 py-2 text-sm text-zinc-300 hover:text-red-400 hover:bg-zinc-800 rounded-lg transition-colors"
             >
               <LogOut className="w-4 h-4" />
               Sign out

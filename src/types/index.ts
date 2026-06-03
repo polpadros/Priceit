@@ -46,6 +46,14 @@ export type MusicGenre =
   | 'Minimal'
   | 'Salsa'
 
+export interface UserProfile {
+  id: string
+  username: string | null
+  avatar_url: string | null
+  full_name: string | null
+  created_at: string
+}
+
 export interface Venue {
   id: string
   name: string
@@ -67,6 +75,7 @@ export interface Venue {
   opening_hours: Record<string, string>
   price_sync_url: string | null
   price_sync_source: 'manual' | 'fever' | 'fourvenues' | 'scraping' | null
+  peak_days?: string[]
   created_at: string
 }
 
@@ -142,6 +151,16 @@ export interface NightPlanFilters {
   neighborhood: string | null
   includeRestaurant: boolean
   includePrevia: boolean
+  customPrevia: string
+  customRestaurant: string
+  fixedDiscoId: string | null
+}
+
+export interface DistanceInfo {
+  km: number
+  walkMin: number
+  bikeMin: number
+  carMin: number
 }
 
 export interface NightRoute {
