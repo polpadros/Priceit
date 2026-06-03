@@ -168,3 +168,20 @@ create policy "photos_owner_delete"  on public.venue_photos for delete using (au
 
 -- Storage bucket for photos (run via Supabase dashboard > Storage)
 -- create bucket 'venue-photos' with public = true
+
+-- ============================================================
+-- TAULA: favorites
+-- ============================================================
+create table if not exists public.favorites (
+  id         uuid primary key default gen_random_uuid(),
+  user_id    uuid not null references auth.users(id) on delete cascade,
+  venue_id   text not null,
+  created_at timestamptz not null default now(),
+  unique(user_id, venue_id)
+);
+
+create index if not exists favorites_user_idx on public.favorites(user_id);
+
+alter table public.favorites enable row level security;
+create policy "favorites_owner_all" on public.favorites
+  for all using (auth.uid() = user_id);

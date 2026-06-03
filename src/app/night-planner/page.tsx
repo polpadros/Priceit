@@ -3,6 +3,7 @@ import { useState } from 'react'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { ArrowLeft, Euro, MapPin, Star, ChevronRight, RotateCcw, Search } from 'lucide-react'
+import { ShareButton } from '@/components/ui/ShareButton'
 import { mockVenues } from '@/lib/mock-data'
 import { AMBIENT_LABELS } from '@/components/ui/AmbientBadge'
 import { AmbientBadge } from '@/components/ui/AmbientBadge'
@@ -346,7 +347,21 @@ export default function NightPlannerPage() {
                 {routes.map((route, i) => (
                   <div key={i} className="bg-zinc-900 rounded-2xl border border-zinc-800 p-6 shadow-sm">
                     <div className="flex items-center justify-between mb-5">
-                      <h3 className="font-bold text-white text-lg">Route #{i + 1}</h3>
+                      <div className="flex items-center gap-3">
+                    <h3 className="font-bold text-white text-lg">Route #{i + 1}</h3>
+                    <ShareButton
+                      title={`My Barcelona Night Route`}
+                      text={`🎉 My night out in Barcelona:\n🍽️ ${route.restaurant?.name ?? ''}\n🥂 ${route.previa?.name ?? ''}\n🪩 ${route.disco.name}\nTotal: ~${route.totalEstimatedCost}€`}
+                      label="Share"
+                      variant="default"
+                    />
+                    <ShareButton
+                      title="Night Route"
+                      text={`🎉 My Barcelona night:\n🪩 ${route.disco.name}\n🥂 ${route.previa?.name ?? ''}\n🍽️ ${route.restaurant?.name ?? ''}\nTotal: ~${route.totalEstimatedCost}€`}
+                      label="WhatsApp"
+                      variant="whatsapp"
+                    />
+                  </div>
                       <div className="bg-zinc-800 border border-zinc-700 rounded-xl px-3 py-1.5 text-sm">
                         <span className="text-zinc-400">Estimated cost: </span>
                         <span className="font-black text-pink-400">{route.totalEstimatedCost}€</span>

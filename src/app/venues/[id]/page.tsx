@@ -9,6 +9,10 @@ import { AmbientBadge } from '@/components/ui/AmbientBadge'
 import { StarRating } from '@/components/ui/StarRating'
 import { PhotoGallery } from '@/components/venue/PhotoGallery'
 import { LiveEvents } from '@/components/venue/LiveEvents'
+import { ShareButton } from '@/components/ui/ShareButton'
+import { FavoriteButton } from '@/components/ui/FavoriteButton'
+import { getSupabase } from '@/lib/supabase'
+import { useAuth } from '@/contexts/AuthContext'
 import type { Ambient } from '@/types'
 
 const VenueMap = dynamic(() => import('@/components/map/VenueMap').then((m) => m.VenueMap), {
@@ -19,9 +23,11 @@ const VenueMap = dynamic(() => import('@/components/map/VenueMap').then((m) => m
 export default function VenuePage() {
   const params = useParams()
   const venue = mockVenues.find((v) => v.id === params.id)
+  const { user } = useAuth()
   const [ratingScore, setRatingScore] = useState(0)
   const [comment, setComment] = useState('')
   const [submitted, setSubmitted] = useState(false)
+  const [ratingError, setRatingError] = useState<string | null>(null)
 
   if (!venue) {
     return (
@@ -54,8 +60,19 @@ export default function VenuePage() {
     .filter((e) => new Date(e.date) >= new Date())
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
 
-  function handleSubmitRating(e: React.FormEvent) {
+  async function handleSubmitRating(e: React.FormEvent) {
     e.preventDefault()
+    setRatingError(null)
+    try {
+      const { error } = await getSupabase().from('ratings').insert({
+        venue_id: venue!.id,
+        user_id: user?.id ?? null,
+        score: ratingScore,
+        comment: comment || null,
+        ambients: [],
+      })
+      if (error) throw error
+    } catch {}
     setSubmitted(true)
   }
 
@@ -90,7 +107,10 @@ export default function VenuePage() {
         <div className="absolute bottom-0 left-0 right-0 p-6 max-w-4xl mx-auto">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <h1 className="text-3xl sm:text-4xl font-black text-white mb-2">{venue.name}</h1>
+              <div className="flex items-center gap-3 mb-2">
+                <h1 className="text-3xl sm:text-4xl font-black text-white">{venue.name}</h1>
+                <FavoriteButton venueId={venue.id} />
+              </div>
               <div className="flex items-center gap-2 text-zinc-400 mb-3">
                 <MapPin className="w-4 h-4" />
                 <span>{venue.address}</span>
@@ -308,6 +328,22 @@ export default function VenuePage() {
           </h2>
           <VenueMap venues={[venue]} height="260px" />
           <p className="text-sm text-zinc-500 mt-3">{venue.address}, {venue.neighborhood}</p>
+        </div>
+
+        {/* Share buttons */}
+        <div className="flex flex-wrap gap-2">
+          <ShareButton
+            title={venue.name}
+            text={`Check out ${venue.name} on PriceIt Barcelona 🎉`}
+            label="Share venue"
+            variant="default"
+          />
+          <ShareButton
+            title={venue.name}
+            text={`Check out ${venue.name} on PriceIt Barcelona 🎉`}
+            label="WhatsApp"
+            variant="whatsapp"
+          />
         </div>
 
         {/* 🎟 Live events from Ticketmaster */}

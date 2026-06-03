@@ -2,6 +2,8 @@ import Link from 'next/link'
 import { MapPin, Euro, Users, Music } from 'lucide-react'
 import type { VenueWithDetails } from '@/types'
 import { AmbientBadge } from '@/components/ui/AmbientBadge'
+import { FavoriteButton } from '@/components/ui/FavoriteButton'
+import { isOpenNow } from '@/lib/hours'
 import type { Ambient } from '@/types'
 
 const TYPE_LABELS: Record<string, string> = {
@@ -17,6 +19,7 @@ export function VenueCard({ venue }: { venue: VenueWithDetails }) {
   const nextEvent = venue.events
     .filter((e) => new Date(e.date) >= new Date())
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())[0]
+  const openNow = isOpenNow(venue.opening_hours)
 
   return (
     <Link href={`/venues/${venue.id}`} className="group block">
@@ -35,8 +38,17 @@ export function VenueCard({ venue }: { venue: VenueWithDetails }) {
           {/* Dark overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
           {/* PriceIt watermark */}
-          <div className="absolute top-3 left-3 z-10">
+          <div className="absolute top-3 left-3 z-10 flex items-center gap-2">
             <span className="text-xs font-black text-pink-400/80 tracking-widest uppercase">PriceIt</span>
+            {openNow && (
+              <span className="flex items-center gap-1 text-xs font-bold text-white bg-green-500/90 rounded-full px-2 py-0.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+                Open
+              </span>
+            )}
+          </div>
+          <div className="absolute top-3 right-3 z-10">
+            <FavoriteButton venueId={venue.id} size="sm" />
           </div>
           <span className="relative z-10 text-xs font-semibold text-white/90 bg-black/40 rounded-full px-3 py-1 backdrop-blur-sm border border-white/10">
             {TYPE_LABELS[venue.type]}

@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import Link from 'next/link'
 import { AuthProvider } from '@/contexts/AuthContext'
+import { FavoritesProvider } from '@/contexts/FavoritesContext'
 import { AuthButton } from '@/components/auth/AuthButton'
 
 const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })
@@ -18,6 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col bg-zinc-950">
         <AuthProvider>
+          <FavoritesProvider>
           {/* Nav — black/gold */}
           <nav className="sticky top-0 z-50 bg-zinc-950/95 backdrop-blur-md border-b border-pink-500/10">
             <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
@@ -42,6 +44,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
           {children}
 
+          </FavoritesProvider>
           <footer className="border-t border-zinc-800 bg-zinc-950 mt-auto">
             <div className="max-w-6xl mx-auto px-4 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-zinc-600">
               <span className="text-pink-400/60 font-bold">PriceIt Barcelona</span>
