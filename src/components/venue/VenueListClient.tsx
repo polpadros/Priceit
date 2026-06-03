@@ -47,7 +47,7 @@ export function VenueListClient({ venues }: { venues: VenueWithDetails[] }) {
   return (
     <div className="space-y-6">
       {/* Filters */}
-      <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
+      <div className="bg-zinc-900 rounded-2xl border border-zinc-800 p-5 shadow-sm">
         <VenueFilters
           selectedType={selectedType}
           selectedAmbients={selectedAmbients}
@@ -60,20 +60,20 @@ export function VenueListClient({ venues }: { venues: VenueWithDetails[] }) {
 
       {/* Results header */}
       <div className="flex items-center justify-between">
-        <p className="text-sm text-gray-500">
-          <span className="font-semibold text-gray-900">{filtered.length}</span> venues found
-          {activeFilters > 0 && <span className="ml-1 text-fuchsia-600 font-medium">({activeFilters} filter{activeFilters > 1 ? 's' : ''} active)</span>}
+        <p className="text-sm text-zinc-400">
+          <span className="font-semibold text-white">{filtered.length}</span> venues found
+          {activeFilters > 0 && <span className="ml-1 text-yellow-400 font-medium">({activeFilters} filter{activeFilters > 1 ? 's' : ''} active)</span>}
         </p>
-        <div className="flex gap-1 bg-gray-100 rounded-lg p-1">
+        <div className="flex gap-1 bg-zinc-800 rounded-lg p-1">
           <button
             onClick={() => setView('grid')}
-            className={`p-1.5 rounded-md transition-colors ${view === 'grid' ? 'bg-white shadow-sm text-fuchsia-600' : 'text-gray-500'}`}
+            className={`p-1.5 rounded-md transition-colors ${view === 'grid' ? 'bg-zinc-700 shadow-sm text-yellow-400' : 'text-gray-500'}`}
           >
             <GridIcon className="w-4 h-4" />
           </button>
           <button
             onClick={() => setView('map')}
-            className={`p-1.5 rounded-md transition-colors ${view === 'map' ? 'bg-white shadow-sm text-fuchsia-600' : 'text-gray-500'}`}
+            className={`p-1.5 rounded-md transition-colors ${view === 'map' ? 'bg-zinc-700 shadow-sm text-yellow-400' : 'text-gray-500'}`}
           >
             <MapIcon className="w-4 h-4" />
           </button>
@@ -95,8 +95,8 @@ export function VenueListClient({ venues }: { venues: VenueWithDetails[] }) {
           ))}
           {filtered.length === 0 && (
             <div className="col-span-3 text-center py-16 text-gray-400">
-              <p className="text-lg font-medium">No venues found</p>
-              <p className="text-sm mt-1">Try different filters</p>
+              <p className="text-lg font-medium text-white">No venues found</p>
+              <p className="text-sm mt-1 text-zinc-500">Try different filters</p>
             </div>
           )}
         </div>

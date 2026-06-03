@@ -1,4 +1,5 @@
-import { supabase } from './supabase'
+import { getSupabase } from './supabase'
+const supabase = getSupabase()
 import type { Ambient, NightPlanFilters, NightRoute, VenueType, VenueWithDetails } from '@/types'
 
 export async function getVenues(filters?: {

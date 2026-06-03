@@ -69,15 +69,27 @@ export interface Price {
   venue_id: string
   label: string
   amount: number
-  amount_max: number | null           // for ranges like 10–20€
+  amount_max: number | null
   currency: string
   includes: string | null
   entrada_tipus: EntradaTipus
+  ticket_url: string | null           // direct buy-tickets link
   is_current: boolean
   valid_from: string
   valid_to: string | null
-  last_synced_at: string | null       // when price was last auto-updated
+  last_synced_at: string | null
   source: 'manual' | 'ticketmaster' | 'fever' | 'residentadvisor' | 'fourvenues' | 'scraping'
+  created_at: string
+}
+
+export interface VenuePhoto {
+  id: string
+  venue_id: string
+  user_id: string
+  user_email: string
+  storage_path: string
+  public_url: string
+  caption: string | null
   created_at: string
 }
 

@@ -20,32 +20,47 @@ export function VenueCard({ venue }: { venue: VenueWithDetails }) {
 
   return (
     <Link href={`/venues/${venue.id}`} className="group block">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md hover:border-fuchsia-200 transition-all duration-200">
-        {/* Header */}
-        <div className="h-40 bg-gradient-to-br from-fuchsia-500 via-fuchsia-600 to-pink-800 relative flex items-end justify-between p-4">
-          <span className="text-xs font-semibold text-white/90 bg-white/20 rounded-full px-3 py-1 backdrop-blur-sm">
+      <div className="bg-zinc-900 rounded-2xl shadow-sm border border-zinc-800 overflow-hidden hover:shadow-xl hover:border-yellow-500/30 transition-all duration-200">
+        {/* Header with photo */}
+        <div className="h-44 relative overflow-hidden flex items-end justify-between p-4">
+          {venue.image_url ? (
+            <img
+              src={venue.image_url}
+              alt={venue.name}
+              className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            />
+          ) : (
+            <div className="absolute inset-0 bg-gradient-to-br from-zinc-800 to-zinc-900" />
+          )}
+          {/* Dark overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+          {/* PriceIt watermark */}
+          <div className="absolute top-3 left-3 z-10">
+            <span className="text-xs font-black text-yellow-400/80 tracking-widest uppercase">PriceIt</span>
+          </div>
+          <span className="relative z-10 text-xs font-semibold text-white/90 bg-black/40 rounded-full px-3 py-1 backdrop-blur-sm border border-white/10">
             {TYPE_LABELS[venue.type]}
           </span>
-          <div className="flex items-center gap-2">
+          <div className="relative z-10 flex items-center gap-2">
             {venue.google_rating && (
-              <span className="text-xs font-bold text-white bg-white/20 rounded-full px-2 py-1 backdrop-blur-sm flex items-center gap-1">
+              <span className="text-xs font-bold text-white bg-black/50 rounded-full px-2 py-1 backdrop-blur-sm flex items-center gap-1">
                 ⭐ {venue.google_rating}
               </span>
             )}
             {nextEvent && (
-              <span className="text-xs font-semibold text-white bg-red-500 rounded-full px-2 py-1">
-                EVENT {new Date(nextEvent.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}
+              <span className="text-xs font-semibold text-white bg-red-600 rounded-full px-2 py-1">
+                🎟 EVENT
               </span>
             )}
           </div>
         </div>
 
         <div className="p-4">
-          <h3 className="font-bold text-gray-900 text-lg leading-tight group-hover:text-fuchsia-700 transition-colors mb-1">
+          <h3 className="font-bold text-white text-lg leading-tight group-hover:text-yellow-400 transition-colors mb-1">
             {venue.name}
           </h3>
 
-          <div className="flex items-center gap-1 text-gray-500 text-sm mb-3">
+          <div className="flex items-center gap-1 text-zinc-400 text-sm mb-3">
             <MapPin className="w-3.5 h-3.5 shrink-0" />
             <span className="truncate">{venue.neighborhood}</span>
           </div>
@@ -60,19 +75,19 @@ export function VenueCard({ venue }: { venue: VenueWithDetails }) {
           {/* Music tags */}
           {venue.music.length > 0 && (
             <div className="flex items-center gap-1 flex-wrap mb-3">
-              <Music className="w-3 h-3 text-gray-400 shrink-0" />
+              <Music className="w-3 h-3 text-zinc-500 shrink-0" />
               {venue.music.slice(0, 4).map((m) => (
-                <span key={m} className="text-xs text-gray-500 bg-gray-100 rounded-full px-2 py-0.5">
+                <span key={m} className="text-xs text-zinc-400 bg-zinc-800 rounded-full px-2 py-0.5">
                   {m}
                 </span>
               ))}
             </div>
           )}
 
-          <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+          <div className="flex items-center justify-between pt-3 border-t border-zinc-800">
             {currentPrice ? (
-              <div className="flex items-center gap-1.5 font-semibold text-gray-900 flex-wrap">
-                <Euro className="w-4 h-4 text-fuchsia-600 shrink-0" />
+              <div className="flex items-center gap-1.5 font-semibold text-white flex-wrap">
+                <Euro className="w-4 h-4 text-yellow-400 shrink-0" />
                 <span>
                   {currentPrice.amount === 0 && currentPrice.entrada_tipus === 'free_list'
                     ? 'Free (guest list)'
@@ -89,10 +104,10 @@ export function VenueCard({ venue }: { venue: VenueWithDetails }) {
                 )}
               </div>
             ) : (
-              <span className="text-sm text-gray-400">Price TBC</span>
+              <span className="text-sm text-zinc-500">Price TBC</span>
             )}
             {venue.min_age > 0 && (
-              <div className="flex items-center gap-1 text-xs text-gray-500">
+              <div className="flex items-center gap-1 text-xs text-zinc-500">
                 <Users className="w-3.5 h-3.5" />
                 <span>+{venue.min_age}</span>
               </div>

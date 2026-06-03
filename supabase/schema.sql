@@ -144,3 +144,27 @@ values
   ('Bodega Sepúlveda',  'previa',    'Bodega de vins naturals a l''Eixample.', 'Carrer de Sepúlveda, 180',              'Eixample',    41.3823, 2.1572, ARRAY['indie','casual'],               18, null,                            null,              '{"dl-ds":"18:00-01:00"}'),
   ('La Pepita BCN',     'restaurant','Braves i croquetes típiques barcelonines.','Carrer de Còrsega, 343',              'Eixample',    41.3984, 2.1631, ARRAY['casual','indie'],                0, null,                            null,              '{"dl-dg":"13:00-23:30"}')
 on conflict do nothing;
+
+-- ============================================================
+-- TAULA: venue_photos (user-uploaded photos)
+-- ============================================================
+create table if not exists public.venue_photos (
+  id           uuid primary key default gen_random_uuid(),
+  venue_id     text not null,
+  user_id      uuid references auth.users(id) on delete cascade,
+  user_email   text,
+  storage_path text not null,
+  public_url   text not null,
+  caption      text,
+  created_at   timestamptz not null default now()
+);
+
+create index if not exists venue_photos_venue_idx on public.venue_photos(venue_id);
+
+alter table public.venue_photos enable row level security;
+create policy "photos_public_read"   on public.venue_photos for select using (true);
+create policy "photos_auth_insert"   on public.venue_photos for insert with check (auth.uid() is not null);
+create policy "photos_owner_delete"  on public.venue_photos for delete using (auth.uid() = user_id);
+
+-- Storage bucket for photos (run via Supabase dashboard > Storage)
+-- create bucket 'venue-photos' with public = true

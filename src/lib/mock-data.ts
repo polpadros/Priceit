@@ -1,7 +1,29 @@
 import type { VenueWithDetails } from '@/types'
 
-function mkPrice(id: string, venueId: string, label: string, amount: number, amountMax: number | null, includes: string | null, tipus: 'fixed'|'dynamic'|'free_list'|'free', source: 'manual'|'fourvenues'|'scraping' = 'manual') {
-  return { id, venue_id: venueId, label, amount, amount_max: amountMax, currency: 'EUR', includes, entrada_tipus: tipus, is_current: true, valid_from: '2024-01-01', valid_to: null, last_synced_at: tipus === 'dynamic' ? '2026-06-02T00:00:00Z' : null, source, created_at: '2024-01-01' }
+// Unsplash photos — free to use, no legal issues
+const UNS = 'https://images.unsplash.com/photo-'
+const PHOTOS = {
+  beachClub:   UNS + '1533174072545-7a4b6ad7a6c3?w=800&h=500&fit=crop&q=80',
+  electroClub: UNS + '1571266028243-e4733b0f0bb0?w=800&h=500&fit=crop&q=80',
+  luxClub:     UNS + '1566737236500-c8ac43014a67?w=800&h=500&fit=crop&q=80',
+  indieClub:   UNS + '1516450360452-9312f5e86fc7?w=800&h=500&fit=crop&q=80',
+  technoClub:  UNS + '1574391884720-bbc3740c59d1?w=800&h=500&fit=crop&q=80',
+  colorClub:   UNS + '1530103862676-de8c9debad1d?w=800&h=500&fit=crop&q=80',
+  rooftop:     UNS + '1492684223066-81342ee5ff30?w=800&h=500&fit=crop&q=80',
+  hiphopClub:  UNS + '1516802273409-68526ee1bdd6?w=800&h=500&fit=crop&q=80',
+  jazzClub:    UNS + '1415201364774-f6f0bb35f28f?w=800&h=500&fit=crop&q=80',
+  cocktailBar: UNS + '1470337458703-46ad1756a187?w=800&h=500&fit=crop&q=80',
+  speakeasy:   UNS + '1514362545857-3bc16c4c7d1b?w=800&h=500&fit=crop&q=80',
+  vintageBar:  UNS + '1558618666-fcd25c85cd64?w=800&h=500&fit=crop&q=80',
+  casualBar:   UNS + '1525268323446-0505b0c3b8b8?w=800&h=500&fit=crop&q=80',
+  tapasBar:    UNS + '1559339352-11d035aa65de?w=800&h=500&fit=crop&q=80',
+  restaurant:  UNS + '1414235077428-338989a2e8c0?w=800&h=500&fit=crop&q=80',
+  luxRestau:   UNS + '1550966871-3ed3cfd9a87e?w=800&h=500&fit=crop&q=80',
+  poolParty:   UNS + '1519671482749-fd09be7ccebf?w=800&h=500&fit=crop&q=80',
+}
+
+function mkPrice(id: string, venueId: string, label: string, amount: number, amountMax: number | null, includes: string | null, tipus: 'fixed'|'dynamic'|'free_list'|'free', source: 'manual'|'fourvenues'|'scraping' = 'manual', ticketUrl: string | null = null) {
+  return { id, venue_id: venueId, label, amount, amount_max: amountMax, currency: 'EUR', includes, entrada_tipus: tipus, ticket_url: ticketUrl, is_current: true, valid_from: '2024-01-01', valid_to: null, last_synced_at: tipus === 'dynamic' ? '2026-06-02T00:00:00Z' : null, source, created_at: '2024-01-01' }
 }
 
 function mkRating(id: string, venueId: string, score: number, comment: string) {
@@ -19,7 +41,7 @@ export const mockVenues: VenueWithDetails[] = [
     lat: 41.3854, lng: 2.1974,
     ambients: ['pijo', 'casual'], music: ['House', 'Electronic', 'Pop'],
     google_rating: 3.9, min_age: 18, dress_code: 'Smart casual',
-    image_url: null, website: 'https://www.opiumbarcelona.com', instagram: '@opiumbarcelona', phone: null,
+    image_url: PHOTOS.beachClub, website: 'https://www.opiumbarcelona.com', instagram: '@opiumbarcelona', phone: null,
     opening_hours: { 'Thu–Sun': '23:00–06:00' },
     price_sync_url: null, price_sync_source: 'fourvenues', created_at: '2024-01-01',
     prices: [
@@ -39,7 +61,7 @@ export const mockVenues: VenueWithDetails[] = [
     lat: 41.4009, lng: 2.1972,
     ambients: ['indie', 'electronica', 'casual'], music: ['Electronic', 'Techno', 'Indie', 'House', 'Pop'],
     google_rating: 4.4, min_age: 18, dress_code: null,
-    image_url: null, website: 'https://www.salarazzmatazz.com', instagram: '@salarazzmatazz', phone: null,
+    image_url: PHOTOS.indieClub, website: 'https://www.salarazzmatazz.com', instagram: '@salarazzmatazz', phone: null,
     opening_hours: { 'Wed, Fri–Sat': '01:00–06:00' },
     price_sync_url: null, price_sync_source: 'fourvenues', created_at: '2024-01-01',
     prices: [
@@ -61,7 +83,7 @@ export const mockVenues: VenueWithDetails[] = [
     lat: 41.3974, lng: 2.1504,
     ambients: ['pijo'], music: ['Pop', 'R&B', 'Hip-Hop', 'Reggaeton'],
     google_rating: 3.8, min_age: 18, dress_code: 'Elegant — strictly enforced',
-    image_url: null, website: 'https://www.thesuttonclub.com', instagram: '@suttonbcn', phone: null,
+    image_url: PHOTOS.luxClub, website: 'https://www.thesuttonclub.com', instagram: '@suttonbcn', phone: null,
     opening_hours: { 'Thu–Sat': '23:30–06:00' },
     price_sync_url: null, price_sync_source: 'fourvenues', created_at: '2024-01-01',
     prices: [
@@ -81,7 +103,7 @@ export const mockVenues: VenueWithDetails[] = [
     lat: 41.3856, lng: 2.1978,
     ambients: ['pijo', 'casual'], music: ['House', 'Electronic', 'Pop'],
     google_rating: 3.8, min_age: 18, dress_code: 'Smart casual',
-    image_url: null, website: null, instagram: '@pachabarcelona', phone: null,
+    image_url: PHOTOS.beachClub, website: null, instagram: '@pachabarcelona', phone: null,
     opening_hours: { 'Thu–Sun': '23:00–06:00' },
     price_sync_url: null, price_sync_source: 'fourvenues', created_at: '2024-01-01',
     prices: [
@@ -100,7 +122,7 @@ export const mockVenues: VenueWithDetails[] = [
     lat: 41.3855, lng: 2.1976,
     ambients: ['pijo', 'casual'], music: ['House', 'Electronic', 'Pop', 'R&B'],
     google_rating: 3.9, min_age: 18, dress_code: 'Smart casual',
-    image_url: null, website: null, instagram: '@shokobarcelona', phone: null,
+    image_url: PHOTOS.beachClub, website: null, instagram: '@shokobarcelona', phone: null,
     opening_hours: { 'Wed–Sun': '23:00–06:00' },
     price_sync_url: null, price_sync_source: 'fourvenues', created_at: '2024-01-01',
     prices: [
@@ -119,7 +141,7 @@ export const mockVenues: VenueWithDetails[] = [
     lat: 41.4005, lng: 2.1430,
     ambients: ['casual', 'indie'], music: ['Hip-Hop', 'Reggaeton', 'R&B', 'Pop'],
     google_rating: 3.7, min_age: 18, dress_code: 'Smart casual',
-    image_url: null, website: null, instagram: '@ottuzutz_bcn', phone: null,
+    image_url: PHOTOS.hiphopClub, website: null, instagram: '@ottuzutz_bcn', phone: null,
     opening_hours: { 'Wed–Sat': 'from 23:30' },
     price_sync_url: null, price_sync_source: 'fourvenues', created_at: '2024-01-01',
     prices: [
@@ -138,7 +160,7 @@ export const mockVenues: VenueWithDetails[] = [
     lat: 41.3745, lng: 2.1647,
     ambients: ['indie', 'casual'], music: ['Indie', 'Electronic', 'Techno', 'House'],
     google_rating: 4.4, min_age: 18, dress_code: null,
-    image_url: null, website: 'https://www.sala-apolo.com', instagram: '@salaapolo', phone: null,
+    image_url: PHOTOS.colorClub, website: 'https://www.sala-apolo.com', instagram: '@salaapolo', phone: null,
     opening_hours: { 'Fri–Sat': '23:55–06:00' },
     price_sync_url: 'https://www.sala-apolo.com/agenda', price_sync_source: 'scraping', created_at: '2024-01-01',
     prices: [
@@ -157,7 +179,7 @@ export const mockVenues: VenueWithDetails[] = [
     lat: 41.3971, lng: 2.1498,
     ambients: ['pijo'], music: ['Pop', 'R&B', 'Reggaeton', 'Hip-Hop'],
     google_rating: 3.6, min_age: 18, dress_code: 'Elegant — very selective',
-    image_url: null, website: null, instagram: '@blingblingbcn', phone: null,
+    image_url: PHOTOS.luxClub, website: null, instagram: '@blingblingbcn', phone: null,
     opening_hours: { 'Thu–Sat': 'from 23:30' },
     price_sync_url: null, price_sync_source: 'fourvenues', created_at: '2024-01-01',
     prices: [
@@ -176,7 +198,7 @@ export const mockVenues: VenueWithDetails[] = [
     lat: 41.3920, lng: 2.1545,
     ambients: ['casual', 'indie'], music: ['Reggaeton', 'Pop', 'Hip-Hop'],
     google_rating: 4.0, min_age: 18, dress_code: null,
-    image_url: null, website: null, instagram: '@lafiravillarroel', phone: null,
+    image_url: PHOTOS.colorClub, website: null, instagram: '@lafiravillarroel', phone: null,
     opening_hours: { 'Thu–Sat': 'from 23:00' },
     price_sync_url: null, price_sync_source: 'fourvenues', created_at: '2024-01-01',
     prices: [
@@ -195,7 +217,7 @@ export const mockVenues: VenueWithDetails[] = [
     lat: 41.3720, lng: 2.1782,
     ambients: ['pijo'], music: ['House', 'Electronic'],
     google_rating: 4.0, min_age: 18, dress_code: 'Elegant',
-    image_url: null, website: null, instagram: '@noxebarcelona', phone: null,
+    image_url: PHOTOS.rooftop, website: null, instagram: '@noxebarcelona', phone: null,
     opening_hours: { 'Fri–Sat': 'from 23:00' },
     price_sync_url: null, price_sync_source: 'fourvenues', created_at: '2024-01-01',
     prices: [
@@ -214,7 +236,7 @@ export const mockVenues: VenueWithDetails[] = [
     lat: 41.3853, lng: 2.1972,
     ambients: ['pijo', 'casual'], music: ['Deep House', 'Tech House', 'Electronic'],
     google_rating: 3.9, min_age: 18, dress_code: 'Smart casual',
-    image_url: null, website: null, instagram: '@cdlcbarcelona', phone: null,
+    image_url: PHOTOS.beachClub, website: null, instagram: '@cdlcbarcelona', phone: null,
     opening_hours: { 'Daily': '23:00–06:00' },
     price_sync_url: null, price_sync_source: 'fourvenues', created_at: '2024-01-01',
     prices: [
@@ -233,7 +255,7 @@ export const mockVenues: VenueWithDetails[] = [
     lat: 41.3797, lng: 2.1750,
     ambients: ['casual', 'soul'], music: ['Jazz', 'Hip-Hop', 'R&B', 'Soul'],
     google_rating: 4.2, min_age: 18, dress_code: null,
-    image_url: null, website: null, instagram: '@jamboreejazzclub', phone: null,
+    image_url: PHOTOS.jazzClub, website: null, instagram: '@jamboreejazzclub', phone: null,
     opening_hours: { 'Daily': 'from 20:00' },
     price_sync_url: null, price_sync_source: 'fourvenues', created_at: '2024-01-01',
     prices: [
@@ -252,7 +274,7 @@ export const mockVenues: VenueWithDetails[] = [
     lat: 41.4100, lng: 2.2250,
     ambients: ['casual', 'pijo'], music: ['Electronic', 'House', 'Pop'],
     google_rating: 4.0, min_age: 18, dress_code: null,
-    image_url: null, website: null, instagram: '@seaseaclub', phone: null,
+    image_url: PHOTOS.poolParty, website: null, instagram: '@seaseaclub', phone: null,
     opening_hours: { 'Fri–Sun': 'from 22:00' },
     price_sync_url: null, price_sync_source: 'fourvenues', created_at: '2024-01-01',
     prices: [
@@ -270,7 +292,7 @@ export const mockVenues: VenueWithDetails[] = [
     lat: 41.3748, lng: 2.1378,
     ambients: ['techno', 'electronica'], music: ['Techno', 'Electronic'],
     google_rating: null, min_age: 18, dress_code: null,
-    image_url: null, website: 'https://www.inputbcn.com', instagram: '@inputbcn', phone: null,
+    image_url: PHOTOS.technoClub, website: 'https://www.inputbcn.com', instagram: '@inputbcn', phone: null,
     opening_hours: { 'Sat–Sun': '00:00–12:00' },
     price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
     prices: [mkPrice('p_in', '4_in', 'Entry', 18, null, null, 'fixed')],
@@ -285,7 +307,7 @@ export const mockVenues: VenueWithDetails[] = [
     lat: 41.3797, lng: 2.1766,
     ambients: ['reggaeton', 'latin'], music: ['Reggaeton', 'Latin'],
     google_rating: null, min_age: 18, dress_code: null,
-    image_url: null, website: null, instagram: '@macarenaclub', phone: null,
+    image_url: PHOTOS.electroClub, website: null, instagram: '@macarenaclub', phone: null,
     opening_hours: { 'Daily': '00:00–05:00' },
     price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
     prices: [mkPrice('p_mac', '5_mac', 'Free entry', 0, null, null, 'free')],
@@ -302,7 +324,7 @@ export const mockVenues: VenueWithDetails[] = [
     lat: 41.3870, lng: 2.1545,
     ambients: ['pijo', 'casual'], music: ['House', 'Jazz'],
     google_rating: 4.6, min_age: 18, dress_code: 'Smart casual',
-    image_url: null, website: null, instagram: '@sips_bcn', phone: null,
+    image_url: PHOTOS.cocktailBar, website: null, instagram: '@sips_bcn', phone: null,
     opening_hours: { 'Tue–Sat': '17:00–01:00' },
     price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
     prices: [
@@ -320,7 +342,7 @@ export const mockVenues: VenueWithDetails[] = [
     lat: 41.3845, lng: 2.1819,
     ambients: ['casual', 'indie'], music: ['Jazz', 'Soul', 'Electronic'],
     google_rating: 4.6, min_age: 18, dress_code: null,
-    image_url: null, website: null, instagram: '@paradiso_bcn', phone: null,
+    image_url: PHOTOS.speakeasy, website: null, instagram: '@paradiso_bcn', phone: null,
     opening_hours: { 'Tue–Sun': '17:00–01:00' },
     price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
     prices: [
@@ -338,7 +360,7 @@ export const mockVenues: VenueWithDetails[] = [
     lat: 41.3843, lng: 2.1816,
     ambients: ['indie', 'casual'], music: ['Jazz', 'Electronic'],
     google_rating: 4.5, min_age: 18, dress_code: null,
-    image_url: null, website: null, instagram: '@drstravinsky_bcn', phone: null,
+    image_url: PHOTOS.speakeasy, website: null, instagram: '@drstravinsky_bcn', phone: null,
     opening_hours: { 'Tue–Sun': '18:00–02:00' },
     price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
     prices: [
@@ -356,7 +378,7 @@ export const mockVenues: VenueWithDetails[] = [
     lat: 41.3912, lng: 2.1548,
     ambients: ['pijo'], music: ['Jazz', 'Soul'],
     google_rating: 4.5, min_age: 18, dress_code: 'Smart',
-    image_url: null, website: null, instagram: '@drymartinibarcelona', phone: null,
+    image_url: PHOTOS.cocktailBar, website: null, instagram: '@drymartinibarcelona', phone: null,
     opening_hours: { 'Mon–Sat': '13:00–02:30' },
     price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
     prices: [
@@ -374,7 +396,7 @@ export const mockVenues: VenueWithDetails[] = [
     lat: 41.3797, lng: 2.1748,
     ambients: ['indie', 'casual'], music: ['Soul', 'Jazz'],
     google_rating: null, min_age: 18, dress_code: null,
-    image_url: null, website: null, instagram: null, phone: null,
+    image_url: PHOTOS.vintageBar, website: null, instagram: null, phone: null,
     opening_hours: { 'Mon–Sat': '22:00–02:00' },
     price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
     prices: [mkPrice('p_mar', 'marsella', 'Average drink', 8, null, null, 'fixed')],
@@ -391,7 +413,7 @@ export const mockVenues: VenueWithDetails[] = [
     lat: 41.3882, lng: 2.1560,
     ambients: ['casual'], music: ['Pop', 'Reggaeton'],
     google_rating: 4.3, min_age: 18, dress_code: null,
-    image_url: null, website: null, instagram: '@espitchupitos', phone: null,
+    image_url: PHOTOS.casualBar, website: null, instagram: '@espitchupitos', phone: null,
     opening_hours: { 'Daily': '20:00–03:00' },
     price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
     prices: [
@@ -410,7 +432,7 @@ export const mockVenues: VenueWithDetails[] = [
     lat: 41.3807, lng: 2.1768,
     ambients: ['casual', 'indie'], music: ['Indie', 'Pop', 'Soul'],
     google_rating: 4.3, min_age: 18, dress_code: null,
-    image_url: null, website: null, instagram: '@milkbarbarcelona', phone: null,
+    image_url: PHOTOS.vintageBar, website: null, instagram: '@milkbarbarcelona', phone: null,
     opening_hours: { 'Daily': '10:00–03:00' },
     price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
     prices: [
@@ -429,7 +451,7 @@ export const mockVenues: VenueWithDetails[] = [
     lat: 41.3815, lng: 2.1678,
     ambients: ['casual', 'indie'], music: ['Soul', 'R&B', 'Indie'],
     google_rating: 4.2, min_age: 18, dress_code: null,
-    image_url: null, website: null, instagram: '@marmaladebarcelona', phone: null,
+    image_url: PHOTOS.casualBar, website: null, instagram: '@marmaladebarcelona', phone: null,
     opening_hours: { 'Daily': '10:00–03:00' },
     price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
     prices: [
@@ -448,7 +470,7 @@ export const mockVenues: VenueWithDetails[] = [
     lat: 41.3843, lng: 2.1811,
     ambients: ['casual'], music: ['Jazz', 'Soul'],
     google_rating: 4.4, min_age: 0, dress_code: null,
-    image_url: null, website: null, instagram: '@elxampanyet_born', phone: null,
+    image_url: PHOTOS.tapasBar, website: null, instagram: '@elxampanyet_born', phone: null,
     opening_hours: { 'Tue–Sat': '19:00–23:30' },
     price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
     prices: [
@@ -468,7 +490,7 @@ export const mockVenues: VenueWithDetails[] = [
     lat: 41.3820, lng: 2.1601,
     ambients: ['casual', 'indie'], music: ['Indie', 'Pop'],
     google_rating: 4.4, min_age: 18, dress_code: null,
-    image_url: null, website: null, instagram: '@barcalders', phone: null,
+    image_url: PHOTOS.casualBar, website: null, instagram: '@barcalders', phone: null,
     opening_hours: { 'Daily': '09:00–02:00' },
     price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
     prices: [
@@ -487,7 +509,7 @@ export const mockVenues: VenueWithDetails[] = [
     lat: 41.4013, lng: 2.1950,
     ambients: ['pop', 'reggaeton', 'casual'], music: ['Pop', 'Reggaeton'],
     google_rating: null, min_age: 18, dress_code: null,
-    image_url: null, website: null, instagram: null, phone: null,
+    image_url: PHOTOS.casualBar, website: null, instagram: null, phone: null,
     opening_hours: { 'Daily': '23:00–03:30' },
     price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
     prices: [
@@ -506,7 +528,7 @@ export const mockVenues: VenueWithDetails[] = [
     lat: 41.4007, lng: 2.1960,
     ambients: ['casual', 'indie'], music: ['Indie', 'Pop'],
     google_rating: null, min_age: 18, dress_code: null,
-    image_url: null, website: null, instagram: null, phone: null,
+    image_url: PHOTOS.casualBar, website: null, instagram: null, phone: null,
     opening_hours: { 'Daily': 'until 03:00' },
     price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
     prices: [
@@ -527,7 +549,7 @@ export const mockVenues: VenueWithDetails[] = [
     lat: 41.3853, lng: 2.1972,
     ambients: ['pijo', 'casual'], music: ['Deep House', 'Electronic', 'World Music'],
     google_rating: 3.9, min_age: 0, dress_code: null,
-    image_url: null, website: null, instagram: '@cdlcbarcelona', phone: null,
+    image_url: PHOTOS.restaurant, website: null, instagram: '@cdlcbarcelona', phone: null,
     opening_hours: { 'Daily': '13:00–01:00' },
     price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
     prices: [
@@ -546,7 +568,7 @@ export const mockVenues: VenueWithDetails[] = [
     lat: 41.3917, lng: 2.1600,
     ambients: ['casual', 'pijo'], music: ['Pop', 'Latin', 'Soul'],
     google_rating: 4.3, min_age: 0, dress_code: null,
-    image_url: null, website: null, instagram: '@cachitosbarcelona', phone: null,
+    image_url: PHOTOS.restaurant, website: null, instagram: '@cachitosbarcelona', phone: null,
     opening_hours: { 'Daily': '13:00–00:00' },
     price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
     prices: [
@@ -564,7 +586,7 @@ export const mockVenues: VenueWithDetails[] = [
     lat: 41.3976, lng: 2.1505,
     ambients: ['pijo'], music: ['Jazz', 'Soul', 'Pop'],
     google_rating: 4.2, min_age: 0, dress_code: 'Smart',
-    image_url: null, website: null, instagram: '@gatsby_bcn', phone: null,
+    image_url: PHOTOS.luxRestau, website: null, instagram: '@gatsby_bcn', phone: null,
     opening_hours: { 'Tue–Sat': '20:00–01:00' },
     price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
     prices: [
@@ -582,7 +604,7 @@ export const mockVenues: VenueWithDetails[] = [
     lat: 41.3855, lng: 2.1976,
     ambients: ['pijo', 'casual'], music: ['House', 'Electronic', 'Pop'],
     google_rating: 3.9, min_age: 0, dress_code: null,
-    image_url: null, website: null, instagram: '@shokobarcelona', phone: null,
+    image_url: PHOTOS.restaurant, website: null, instagram: '@shokobarcelona', phone: null,
     opening_hours: { 'Wed–Sun': '13:00–01:00' },
     price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
     prices: [
@@ -600,7 +622,7 @@ export const mockVenues: VenueWithDetails[] = [
     lat: 41.3984, lng: 2.1631,
     ambients: ['casual', 'indie'], music: ['Indie', 'Pop'],
     google_rating: null, min_age: 0, dress_code: null,
-    image_url: null, website: null, instagram: null, phone: null,
+    image_url: PHOTOS.tapasBar, website: null, instagram: null, phone: null,
     opening_hours: { 'Daily': '13:00–23:30' },
     price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
     prices: [mkPrice('p_pep', 'pepita', 'Dinner per person', 20, null, 'food and drinks', 'fixed')],

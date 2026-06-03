@@ -37,7 +37,7 @@ export function VenueFilters({
     <div className="space-y-4">
       {/* Type filter */}
       <div>
-        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Type</p>
+        <p className="text-xs font-semibold text-zinc-500 uppercase tracking-wide mb-2">Type</p>
         <div className="flex flex-wrap gap-2">
           {TYPES.map((t) => (
             <button
@@ -45,8 +45,8 @@ export function VenueFilters({
               onClick={() => onTypeChange(t.value)}
               className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors border ${
                 selectedType === t.value
-                  ? 'bg-fuchsia-600 text-white border-fuchsia-600'
-                  : 'bg-white text-gray-700 border-gray-200 hover:border-fuchsia-300'
+                  ? 'bg-yellow-500 text-black border-yellow-500'
+                  : 'bg-zinc-800 text-zinc-300 border-zinc-700 hover:border-yellow-500/50'
               }`}
             >
               {t.label}
@@ -57,7 +57,7 @@ export function VenueFilters({
 
       {/* Vibe filter */}
       <div>
-        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Vibe</p>
+        <p className="text-xs font-semibold text-zinc-500 uppercase tracking-wide mb-2">Vibe</p>
         <div className="flex flex-wrap gap-2">
           {AMBIENTS.map((a) => (
             <button
@@ -65,8 +65,8 @@ export function VenueFilters({
               onClick={() => onAmbientToggle(a)}
               className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors border ${
                 selectedAmbients.includes(a)
-                  ? 'bg-fuchsia-600 text-white border-fuchsia-600'
-                  : 'bg-white text-gray-700 border-gray-200 hover:border-fuchsia-300'
+                  ? 'bg-yellow-500 text-black border-yellow-500'
+                  : 'bg-zinc-800 text-zinc-300 border-zinc-700 hover:border-yellow-500/50'
               }`}
             >
               {AMBIENT_LABELS[a]}
@@ -77,7 +77,7 @@ export function VenueFilters({
 
       {/* Music filter */}
       <div>
-        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">🎵 Music</p>
+        <p className="text-xs font-semibold text-zinc-500 uppercase tracking-wide mb-2">🎵 Music</p>
         <div className="flex flex-wrap gap-2">
           {MUSIC_GENRES.map((m) => (
             <button
@@ -85,8 +85,8 @@ export function VenueFilters({
               onClick={() => onMusicToggle(m)}
               className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors border ${
                 selectedMusic.includes(m)
-                  ? 'bg-pink-600 text-white border-pink-600'
-                  : 'bg-white text-gray-700 border-gray-200 hover:border-pink-300'
+                  ? 'bg-yellow-500 text-black border-yellow-500'
+                  : 'bg-zinc-800 text-zinc-300 border-zinc-700 hover:border-yellow-500/50'
               }`}
             >
               {m}
