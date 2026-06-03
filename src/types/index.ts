@@ -39,6 +39,12 @@ export type MusicGenre =
   | 'Rock'
   | 'K-Pop'
   | 'World Music'
+  | 'Funk'
+  | 'Blues'
+  | 'Flamenco'
+  | 'Experimental'
+  | 'Minimal'
+  | 'Salsa'
 
 export interface Venue {
   id: string
