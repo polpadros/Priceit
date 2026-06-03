@@ -46,7 +46,7 @@ export const mockVenues: VenueWithDetails[] = [
     price_sync_url: null, price_sync_source: 'fourvenues', created_at: '2024-01-01',
     prices: [
       mkPrice('p1a', '1', 'Entry (free with list until 02:00)', 0, null, null, 'free_list'),
-      mkPrice('p1b', '1', 'Entry at door', 15, 25, null, 'dynamic', 'fourvenues'),
+      mkPrice('p1b', '1', 'Entry at door', 15, 25, null, 'dynamic', 'fourvenues', 'https://www.opiumbarcelona.com/entradas'),
       mkPrice('p1c', '1', 'Spirit / cocktail', 15, 18, null, 'fixed'),
       mkPrice('p1d', '1', 'Shot', 5, 7, null, 'fixed'),
     ],
@@ -65,7 +65,7 @@ export const mockVenues: VenueWithDetails[] = [
     opening_hours: { 'Wed, Fri–Sat': '01:00–06:00' },
     price_sync_url: null, price_sync_source: 'fourvenues', created_at: '2024-01-01',
     prices: [
-      mkPrice('p2a', '2', 'Entry + 1 drink', 13, 20, '1 drink', 'dynamic', 'fourvenues'),
+      mkPrice('p2a', '2', 'Entry + 1 drink', 13, 20, '1 drink', 'dynamic', 'fourvenues', 'https://www.salarazzmatazz.com/entradas'),
       mkPrice('p2b', '2', 'Spirit / cocktail', 12, 15, null, 'fixed'),
       mkPrice('p2c', '2', 'Shot', 4, 6, null, 'fixed'),
     ],
@@ -87,7 +87,7 @@ export const mockVenues: VenueWithDetails[] = [
     opening_hours: { 'Thu–Sat': '23:30–06:00' },
     price_sync_url: null, price_sync_source: 'fourvenues', created_at: '2024-01-01',
     prices: [
-      mkPrice('p3a', '3', 'Entry + 1 drink', 20, 30, '1 drink', 'dynamic', 'fourvenues'),
+      mkPrice('p3a', '3', 'Entry + 1 drink', 20, 30, '1 drink', 'dynamic', 'fourvenues', 'https://www.thesuttonclub.com/reservas'),
       mkPrice('p3b', '3', 'Spirit / cocktail', 15, 20, null, 'fixed'),
       mkPrice('p3c', '3', 'Shot', 6, 8, null, 'fixed'),
       mkPrice('p3d', '3', 'VIP table minimum', 300, null, 'bottle service', 'fixed'),
@@ -107,7 +107,7 @@ export const mockVenues: VenueWithDetails[] = [
     opening_hours: { 'Thu–Sun': '23:00–06:00' },
     price_sync_url: null, price_sync_source: 'fourvenues', created_at: '2024-01-01',
     prices: [
-      mkPrice('p4a', '4', 'Entry + 1 drink', 20, 25, '1 drink', 'dynamic', 'fourvenues'),
+      mkPrice('p4a', '4', 'Entry + 1 drink', 20, 25, '1 drink', 'dynamic', 'fourvenues', 'https://www.pacha-barcelona.com/tickets'),
       mkPrice('p4b', '4', 'Spirit / cocktail', 15, 18, null, 'fixed'),
       mkPrice('p4c', '4', 'Shot', 5, 7, null, 'fixed'),
     ],
@@ -127,7 +127,7 @@ export const mockVenues: VenueWithDetails[] = [
     price_sync_url: null, price_sync_source: 'fourvenues', created_at: '2024-01-01',
     prices: [
       mkPrice('p5a', '5', 'Free entry with list (until 01:30)', 0, null, null, 'free_list'),
-      mkPrice('p5b', '5', 'Entry at door', 15, 25, null, 'dynamic', 'fourvenues'),
+      mkPrice('p5b', '5', 'Entry at door', 15, 25, null, 'dynamic', 'fourvenues', 'https://www.shoko.biz/barcelona/tickets'),
       mkPrice('p5c', '5', 'Spirit / cocktail', 14, 18, null, 'fixed'),
     ],
     ratings: [mkRating('r5a', '5', 4, 'Best terrace on the seafront'), mkRating('r5b', '5', 4, 'Great Asian food before the club')],
@@ -146,7 +146,7 @@ export const mockVenues: VenueWithDetails[] = [
     price_sync_url: null, price_sync_source: 'fourvenues', created_at: '2024-01-01',
     prices: [
       mkPrice('p6a', '6', 'Free entry (guest list)', 0, null, null, 'free_list'),
-      mkPrice('p6b', '6', 'Entry at door', 10, 20, null, 'dynamic', 'fourvenues'),
+      mkPrice('p6b', '6', 'Entry at door', 10, 20, null, 'dynamic', 'fourvenues', 'https://www.ottozutz.com/guestlist'),
       mkPrice('p6c', '6', 'Spirit / cocktail', 12, 15, null, 'fixed'),
     ],
     ratings: [mkRating('r6a', '6', 4, '3 floors, always something good'), mkRating('r6b', '6', 3, 'Gets very crowded on Saturdays')],
@@ -164,7 +164,7 @@ export const mockVenues: VenueWithDetails[] = [
     opening_hours: { 'Fri–Sat': '23:55–06:00' },
     price_sync_url: 'https://www.sala-apolo.com/agenda', price_sync_source: 'scraping', created_at: '2024-01-01',
     prices: [
-      mkPrice('p7a', '7', 'Entry (varies by event)', 12, 20, null, 'dynamic', 'scraping'),
+      mkPrice('p7a', '7', 'Entry (varies by event)', 12, 20, null, 'dynamic', 'scraping', 'https://www.sala-apolo.com/entradas'),
       mkPrice('p7b', '7', 'Spirit / cocktail', 10, 14, null, 'fixed'),
       mkPrice('p7c', '7', 'Shot', 4, 5, null, 'fixed'),
     ],
@@ -183,7 +183,7 @@ export const mockVenues: VenueWithDetails[] = [
     opening_hours: { 'Thu–Sat': 'from 23:30' },
     price_sync_url: null, price_sync_source: 'fourvenues', created_at: '2024-01-01',
     prices: [
-      mkPrice('p8a', '8', 'Entry + 1 drink', 25, 40, '1 drink', 'dynamic', 'fourvenues'),
+      mkPrice('p8a', '8', 'Entry + 1 drink', 25, 40, '1 drink', 'dynamic', 'fourvenues', 'https://www.blingblingbarcelona.com/reservas'),
       mkPrice('p8b', '8', 'Spirit / cocktail', 18, 25, null, 'fixed'),
       mkPrice('p8c', '8', 'Shot', 7, 10, null, 'fixed'),
     ],
@@ -202,7 +202,7 @@ export const mockVenues: VenueWithDetails[] = [
     opening_hours: { 'Thu–Sat': 'from 23:00' },
     price_sync_url: null, price_sync_source: 'fourvenues', created_at: '2024-01-01',
     prices: [
-      mkPrice('p9a', '9', 'Entry + 1 drink', 10, 15, '1 drink', 'dynamic', 'fourvenues'),
+      mkPrice('p9a', '9', 'Entry + 1 drink', 10, 15, '1 drink', 'dynamic', 'fourvenues', 'https://lafirabarcelona.com/entradas'),
       mkPrice('p9b', '9', 'Spirit / cocktail', 10, 13, null, 'fixed'),
       mkPrice('p9c', '9', 'Shot', 3, 5, null, 'fixed'),
     ],
@@ -221,7 +221,7 @@ export const mockVenues: VenueWithDetails[] = [
     opening_hours: { 'Fri–Sat': 'from 23:00' },
     price_sync_url: null, price_sync_source: 'fourvenues', created_at: '2024-01-01',
     prices: [
-      mkPrice('p10a', '10', 'Entry', 20, 30, null, 'dynamic', 'fourvenues'),
+      mkPrice('p10a', '10', 'Entry', 20, 30, null, 'dynamic', 'fourvenues', 'https://www.w-barcelona.com/noxe'),
       mkPrice('p10b', '10', 'Spirit / cocktail', 18, 22, null, 'fixed'),
       mkPrice('p10c', '10', 'Shot', 7, 9, null, 'fixed'),
     ],
@@ -241,7 +241,7 @@ export const mockVenues: VenueWithDetails[] = [
     price_sync_url: null, price_sync_source: 'fourvenues', created_at: '2024-01-01',
     prices: [
       mkPrice('p11a', '11', 'Free entry (guest list)', 0, null, null, 'free_list'),
-      mkPrice('p11b', '11', 'Entry at door', 15, 25, null, 'dynamic', 'fourvenues'),
+      mkPrice('p11b', '11', 'Entry at door', 15, 25, null, 'dynamic', 'fourvenues', 'https://www.cdlcbarcelona.com/tickets'),
       mkPrice('p11c', '11', 'Spirit / cocktail', 14, 18, null, 'fixed'),
     ],
     ratings: [mkRating('r11a', '11', 4, 'Great vibe every night of the week'), mkRating('r11b', '11', 4, 'VIP lounge is gorgeous')],
@@ -259,7 +259,7 @@ export const mockVenues: VenueWithDetails[] = [
     opening_hours: { 'Daily': 'from 20:00' },
     price_sync_url: null, price_sync_source: 'fourvenues', created_at: '2024-01-01',
     prices: [
-      mkPrice('p12a', '12', 'Entry (varies by event)', 10, 15, null, 'dynamic', 'fourvenues'),
+      mkPrice('p12a', '12', 'Entry (varies by event)', 10, 15, null, 'dynamic', 'fourvenues', 'https://www.masimas.com/jamboree/tickets'),
       mkPrice('p12b', '12', 'Spirit / cocktail', 10, 13, null, 'fixed'),
       mkPrice('p12c', '12', 'Shot', 4, 5, null, 'fixed'),
     ],
@@ -278,7 +278,7 @@ export const mockVenues: VenueWithDetails[] = [
     opening_hours: { 'Fri–Sun': 'from 22:00' },
     price_sync_url: null, price_sync_source: 'fourvenues', created_at: '2024-01-01',
     prices: [
-      mkPrice('p26a', '26', 'Entry (varies by event)', 20, 35, null, 'dynamic', 'fourvenues'),
+      mkPrice('p26a', '26', 'Entry (varies by event)', 20, 35, null, 'dynamic', 'fourvenues', 'https://www.seaseaclub.com/tickets'),
       mkPrice('p26b', '26', 'Spirit / cocktail', 14, 18, null, 'fixed'),
     ],
     ratings: [mkRating('r26a', '26', 4, 'Best pool parties in summer'), mkRating('r26b', '26', 4, 'Unmissable during Sónar')],

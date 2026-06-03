@@ -2,7 +2,7 @@ import type { Ambient } from '@/types'
 
 const AMBIENT_COLORS: Record<Ambient, string> = {
   pijo: 'bg-yellow-100 text-yellow-800 border-yellow-200',
-  indie: 'bg-fuchsia-600 text-fuchsia-600 border-fuchsia-600',
+  indie: 'bg-purple-600 text-white border-purple-500',
   reggaeton: 'bg-green-100 text-green-800 border-green-200',
   electronica: 'bg-blue-100 text-blue-800 border-blue-200',
   techno: 'bg-gray-100 text-gray-800 border-gray-200',
@@ -19,7 +19,7 @@ const AMBIENT_COLORS: Record<Ambient, string> = {
 }
 
 export const AMBIENT_LABELS: Record<Ambient, string> = {
-  pijo: '💎 Pijo',
+  pijo: '💎 Upper-Class',
   indie: '🎸 Indie',
   reggaeton: '🎵 Reggaeton',
   electronica: '⚡ Electronic',
