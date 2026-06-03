@@ -45,8 +45,8 @@ export function VenueFilters({
               onClick={() => onTypeChange(t.value)}
               className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors border ${
                 selectedType === t.value
-                  ? 'bg-yellow-500 text-black border-yellow-500'
-                  : 'bg-zinc-800 text-zinc-300 border-zinc-700 hover:border-yellow-500/50'
+                  ? 'bg-pink-500 text-black border-pink-500'
+                  : 'bg-zinc-800 text-zinc-300 border-zinc-700 hover:border-pink-500/50'
               }`}
             >
               {t.label}
@@ -65,8 +65,8 @@ export function VenueFilters({
               onClick={() => onAmbientToggle(a)}
               className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors border ${
                 selectedAmbients.includes(a)
-                  ? 'bg-yellow-500 text-black border-yellow-500'
-                  : 'bg-zinc-800 text-zinc-300 border-zinc-700 hover:border-yellow-500/50'
+                  ? 'bg-pink-500 text-black border-pink-500'
+                  : 'bg-zinc-800 text-zinc-300 border-zinc-700 hover:border-pink-500/50'
               }`}
             >
               {AMBIENT_LABELS[a]}
@@ -85,8 +85,8 @@ export function VenueFilters({
               onClick={() => onMusicToggle(m)}
               className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors border ${
                 selectedMusic.includes(m)
-                  ? 'bg-yellow-500 text-black border-yellow-500'
-                  : 'bg-zinc-800 text-zinc-300 border-zinc-700 hover:border-yellow-500/50'
+                  ? 'bg-pink-500 text-black border-pink-500'
+                  : 'bg-zinc-800 text-zinc-300 border-zinc-700 hover:border-pink-500/50'
               }`}
             >
               {m}

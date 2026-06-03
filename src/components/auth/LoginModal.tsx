@@ -35,13 +35,13 @@ export function LoginModal({ onClose }: { onClose: () => void }) {
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={onClose}>
       <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
       <div
-        className="relative w-full max-w-md bg-zinc-950 border border-yellow-500/20 rounded-3xl p-8 shadow-2xl"
+        className="relative w-full max-w-md bg-zinc-950 border border-pink-500/20 rounded-3xl p-8 shadow-2xl"
         onClick={e => e.stopPropagation()}
       >
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <span className="text-2xl font-black text-yellow-400">🎉 PriceIt</span>
+            <span className="text-2xl font-black text-pink-400">🎉 PriceIt</span>
             <p className="text-zinc-400 text-sm mt-1">
               {mode === 'login' ? 'Welcome back' : 'Create your account'}
             </p>
@@ -54,7 +54,7 @@ export function LoginModal({ onClose }: { onClose: () => void }) {
         {/* Google button */}
         <button
           onClick={signInWithGoogle}
-          className="w-full flex items-center justify-center gap-3 border border-zinc-700 hover:border-yellow-500/50 text-white rounded-xl py-3 mb-6 transition-colors hover:bg-zinc-900"
+          className="w-full flex items-center justify-center gap-3 border border-zinc-700 hover:border-pink-500/50 text-white rounded-xl py-3 mb-6 transition-colors hover:bg-zinc-900"
         >
           <svg className="w-5 h-5" viewBox="0 0 24 24">
             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -81,7 +81,7 @@ export function LoginModal({ onClose }: { onClose: () => void }) {
               value={email}
               onChange={e => setEmail(e.target.value)}
               required
-              className="w-full bg-zinc-900 border border-zinc-700 focus:border-yellow-500/50 text-white rounded-xl pl-10 pr-4 py-3 text-sm outline-none transition-colors placeholder:text-zinc-600"
+              className="w-full bg-zinc-900 border border-zinc-700 focus:border-pink-500/50 text-white rounded-xl pl-10 pr-4 py-3 text-sm outline-none transition-colors placeholder:text-zinc-600"
             />
           </div>
           <div className="relative">
@@ -92,7 +92,7 @@ export function LoginModal({ onClose }: { onClose: () => void }) {
               value={password}
               onChange={e => setPassword(e.target.value)}
               required
-              className="w-full bg-zinc-900 border border-zinc-700 focus:border-yellow-500/50 text-white rounded-xl pl-10 pr-10 py-3 text-sm outline-none transition-colors placeholder:text-zinc-600"
+              className="w-full bg-zinc-900 border border-zinc-700 focus:border-pink-500/50 text-white rounded-xl pl-10 pr-10 py-3 text-sm outline-none transition-colors placeholder:text-zinc-600"
             />
             <button type="button" onClick={() => setShowPw(!showPw)}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300">
@@ -106,7 +106,7 @@ export function LoginModal({ onClose }: { onClose: () => void }) {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-yellow-500 hover:bg-yellow-400 text-black font-bold rounded-xl py-3 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+            className="w-full bg-pink-500 hover:bg-pink-400 text-black font-bold rounded-xl py-3 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
           >
             {loading && <Loader2 className="w-4 h-4 animate-spin" />}
             {mode === 'login' ? 'Sign in' : 'Create account'}
@@ -116,7 +116,7 @@ export function LoginModal({ onClose }: { onClose: () => void }) {
         <p className="text-center text-zinc-500 text-sm mt-6">
           {mode === 'login' ? "Don't have an account? " : 'Already have an account? '}
           <button onClick={() => { setMode(mode === 'login' ? 'signup' : 'login'); setError(null); setSuccess(null) }}
-            className="text-yellow-400 hover:text-yellow-300 font-semibold">
+            className="text-pink-400 hover:text-pink-300 font-semibold">
             {mode === 'login' ? 'Sign up' : 'Sign in'}
           </button>
         </p>

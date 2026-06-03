@@ -62,18 +62,18 @@ export function VenueListClient({ venues }: { venues: VenueWithDetails[] }) {
       <div className="flex items-center justify-between">
         <p className="text-sm text-zinc-400">
           <span className="font-semibold text-white">{filtered.length}</span> venues found
-          {activeFilters > 0 && <span className="ml-1 text-yellow-400 font-medium">({activeFilters} filter{activeFilters > 1 ? 's' : ''} active)</span>}
+          {activeFilters > 0 && <span className="ml-1 text-pink-400 font-medium">({activeFilters} filter{activeFilters > 1 ? 's' : ''} active)</span>}
         </p>
         <div className="flex gap-1 bg-zinc-800 rounded-lg p-1">
           <button
             onClick={() => setView('grid')}
-            className={`p-1.5 rounded-md transition-colors ${view === 'grid' ? 'bg-zinc-700 shadow-sm text-yellow-400' : 'text-gray-500'}`}
+            className={`p-1.5 rounded-md transition-colors ${view === 'grid' ? 'bg-zinc-700 shadow-sm text-pink-400' : 'text-gray-500'}`}
           >
             <GridIcon className="w-4 h-4" />
           </button>
           <button
             onClick={() => setView('map')}
-            className={`p-1.5 rounded-md transition-colors ${view === 'map' ? 'bg-zinc-700 shadow-sm text-yellow-400' : 'text-gray-500'}`}
+            className={`p-1.5 rounded-md transition-colors ${view === 'map' ? 'bg-zinc-700 shadow-sm text-pink-400' : 'text-gray-500'}`}
           >
             <MapIcon className="w-4 h-4" />
           </button>

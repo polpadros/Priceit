@@ -11,7 +11,7 @@ import type { Ambient, NightPlanFilters, NightRoute, VenueWithDetails } from '@/
 
 const VenueMap = dynamic(() => import('@/components/map/VenueMap').then((m) => m.VenueMap), {
   ssr: false,
-  loading: () => <div className="h-64 bg-gray-100 rounded-xl animate-pulse" />,
+  loading: () => <div className="h-64 bg-zinc-800 rounded-xl animate-pulse" />,
 })
 
 const AMBIENTS = Object.keys(AMBIENT_LABELS) as Ambient[]
@@ -86,28 +86,28 @@ function RouteStep({
 
   return (
     <div className="flex items-start gap-4">
-      <div className="w-10 h-10 rounded-full bg-fuchsia-100 flex items-center justify-center text-lg shrink-0">
+      <div className="w-10 h-10 rounded-full bg-pink-500/20 flex items-center justify-center text-lg shrink-0">
         {emoji}
       </div>
       <div className="flex-1 min-w-0">
-        <p className="text-xs font-semibold text-fuchsia-600 uppercase tracking-wide mb-0.5">{label}</p>
-        <Link href={`/venues/${venue.id}`} className="font-bold text-gray-900 hover:text-fuchsia-700 transition-colors">
+        <p className="text-xs font-semibold text-pink-400 uppercase tracking-wide mb-0.5">{label}</p>
+        <Link href={`/venues/${venue.id}`} className="font-bold text-gray-900 hover:text-pink-400 transition-colors">
           {venue.name}
         </Link>
-        <div className="flex items-center gap-3 mt-1 text-sm text-gray-500">
+        <div className="flex items-center gap-3 mt-1 text-sm text-zinc-400">
           <span className="flex items-center gap-1">
             <MapPin className="w-3.5 h-3.5" />
             {venue.neighborhood}
           </span>
           {price && (
-            <span className="flex items-center gap-1 font-semibold text-gray-700">
-              <Euro className="w-3.5 h-3.5 text-fuchsia-500" />
+            <span className="flex items-center gap-1 font-semibold text-zinc-300">
+              <Euro className="w-3.5 h-3.5 text-pink-400" />
               {price.amount === 0 ? 'Free' : `${price.amount}€`}
             </span>
           )}
           {venue.rating_count > 0 && (
             <span className="flex items-center gap-1">
-              <Star className="w-3.5 h-3.5 text-yellow-400 fill-yellow-400" />
+              <Star className="w-3.5 h-3.5 text-pink-400 fill-pink-400" />
               {venue.avg_rating.toFixed(1)}
             </span>
           )}
@@ -167,16 +167,23 @@ export default function NightPlannerPage() {
     : []
 
   return (
-    <main className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-gradient-to-br from-fuchsia-700 via-fuchsia-600 to-pink-800 text-white">
-        <div className="max-w-5xl mx-auto px-4 py-8">
-          <Link href="/" className="inline-flex items-center gap-2 text-fuchsia-200 hover:text-white mb-6 transition-colors text-sm">
+    <main className="min-h-screen bg-zinc-950">
+      {/* Header — black + pink */}
+      <div className="relative overflow-hidden bg-black border-b border-pink-500/20">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-pink-600/25 via-transparent to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-pink-800/20 via-transparent to-transparent pointer-events-none" />
+
+        <div className="relative max-w-5xl mx-auto px-4 py-16 text-center">
+          <Link href="/" className="inline-flex items-center gap-2 text-zinc-500 hover:text-pink-400 mb-8 transition-colors text-sm">
             <ArrowLeft className="w-4 h-4" />
             Back
           </Link>
-          <h1 className="text-3xl sm:text-4xl font-black mb-2">🗺️ Night Planner</h1>
-          <p className="text-fuchsia-200">
+          <h1 className="text-6xl sm:text-8xl font-black mb-4 leading-none tracking-tight">
+            <span className="text-pink-400 drop-shadow-[0_0_40px_rgba(236,72,153,0.6)]">
+              Night Planner
+            </span>
+          </h1>
+          <p className="text-zinc-400 text-lg max-w-md mx-auto">
             Tell us your budget and vibe. We&apos;ll design your perfect night out.
           </p>
         </div>
@@ -186,18 +193,18 @@ export default function NightPlannerPage() {
         <div className="grid lg:grid-cols-[380px_1fr] gap-8">
           {/* Filter panel */}
           <div className="space-y-5">
-            <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
-              <h2 className="font-bold text-gray-900 mb-4">Plan your night</h2>
+            <div className="bg-zinc-900 rounded-2xl border border-zinc-800 p-5 shadow-sm">
+              <h2 className="font-bold text-white mb-4">Plan your night</h2>
 
               {/* Budget */}
               <div className="mb-5">
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label className="block text-sm font-semibold text-zinc-300 mb-2">
                   Budget per person
                 </label>
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-xs text-gray-400">0€</span>
-                  <span className="text-xl font-black text-fuchsia-700">{filters.budget}€</span>
-                  <span className="text-xs text-gray-400">150€</span>
+                  <span className="text-xs text-zinc-500">0€</span>
+                  <span className="text-xl font-black text-pink-400">{filters.budget}€</span>
+                  <span className="text-xs text-zinc-500">150€</span>
                 </div>
                 <input
                   type="range"
@@ -206,13 +213,13 @@ export default function NightPlannerPage() {
                   step={5}
                   value={filters.budget}
                   onChange={(e) => setFilters((f) => ({ ...f, budget: Number(e.target.value) }))}
-                  className="w-full accent-fuchsia-600"
+                  className="w-full accent-pink-500"
                 />
               </div>
 
               {/* Day */}
               <div className="mb-5">
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Day</label>
+                <label className="block text-sm font-semibold text-zinc-300 mb-2">Day</label>
                 <div className="grid grid-cols-2 gap-2">
                   {DAYS.map((d) => (
                     <button
@@ -221,7 +228,7 @@ export default function NightPlannerPage() {
                       className={`py-2 rounded-xl text-sm font-medium transition-colors border ${
                         filters.day === d.value
                           ? 'bg-fuchsia-600 text-white border-fuchsia-600'
-                          : 'bg-white text-gray-700 border-gray-200 hover:border-fuchsia-300'
+                          : 'bg-zinc-800 text-zinc-300 border-zinc-700 hover:border-fuchsia-300'
                       }`}
                     >
                       {d.label}
@@ -232,7 +239,7 @@ export default function NightPlannerPage() {
 
               {/* Ambient */}
               <div className="mb-5">
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label className="block text-sm font-semibold text-zinc-300 mb-2">
                   Vibe <span className="text-gray-400 font-normal">(pick one or more)</span>
                 </label>
                 <div className="flex flex-wrap gap-1.5">
@@ -243,7 +250,7 @@ export default function NightPlannerPage() {
                       className={`px-2.5 py-1 rounded-full text-xs font-medium transition-colors border ${
                         filters.ambients.includes(a)
                           ? 'bg-fuchsia-600 text-white border-fuchsia-600'
-                          : 'bg-white text-gray-700 border-gray-200 hover:border-fuchsia-300'
+                          : 'bg-zinc-800 text-zinc-300 border-zinc-700 hover:border-fuchsia-300'
                       }`}
                     >
                       {AMBIENT_LABELS[a]}
@@ -254,7 +261,7 @@ export default function NightPlannerPage() {
 
               {/* Neighborhood */}
               <div className="mb-5">
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Neighbourhood</label>
+                <label className="block text-sm font-semibold text-zinc-300 mb-2">Neighbourhood</label>
                 <select
                   value={filters.neighborhood ?? 'Tots'}
                   onChange={(e) =>
@@ -263,7 +270,7 @@ export default function NightPlannerPage() {
                       neighborhood: e.target.value === 'All' ? null : e.target.value,
                     }))
                   }
-                  className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
+                  className="w-full border border-zinc-700 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-fuchsia-300"
                 >
                   {NEIGHBORHOODS.map((n) => (
                     <option key={n} value={n}>{n}</option>
@@ -273,7 +280,7 @@ export default function NightPlannerPage() {
 
               {/* Includes */}
               <div className="mb-6 space-y-2">
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Include in route</label>
+                <label className="block text-sm font-semibold text-zinc-300 mb-2">Include in route</label>
                 {[
                   { key: 'includeRestaurant', label: '🍽️ Dinner' },
                   { key: 'includePrevia', label: '🥂 Pre-party' },
@@ -283,9 +290,9 @@ export default function NightPlannerPage() {
                       type="checkbox"
                       checked={filters[key as keyof NightPlanFilters] as boolean}
                       onChange={(e) => setFilters((f) => ({ ...f, [key]: e.target.checked }))}
-                      className="w-4 h-4 accent-fuchsia-600"
+                      className="w-4 h-4 accent-pink-500"
                     />
-                    <span className="text-sm text-gray-700">{label}</span>
+                    <span className="text-sm text-zinc-300">{label}</span>
                   </label>
                 ))}
               </div>
@@ -301,7 +308,7 @@ export default function NightPlannerPage() {
                 {searched && (
                   <button
                     onClick={handleReset}
-                    className="p-3 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors text-gray-500"
+                    className="p-3 border border-zinc-700 rounded-xl hover:bg-zinc-950 transition-colors text-zinc-400"
                   >
                     <RotateCcw className="w-4 h-4" />
                   </button>
@@ -330,19 +337,19 @@ export default function NightPlannerPage() {
 
             {routes && routes.length > 0 && (
               <>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-zinc-400">
                   <span className="font-semibold text-gray-900">{routes.length}</span> routes found for{' '}
-                  <span className="font-semibold text-fuchsia-700">{filters.day}</span> with{' '}
-                  <span className="font-semibold text-fuchsia-700">{filters.budget}€</span> budget
+                  <span className="font-semibold text-pink-400">{filters.day}</span> with{' '}
+                  <span className="font-semibold text-pink-400">{filters.budget}€</span> budget
                 </p>
 
                 {routes.map((route, i) => (
-                  <div key={i} className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
+                  <div key={i} className="bg-zinc-900 rounded-2xl border border-zinc-800 p-6 shadow-sm">
                     <div className="flex items-center justify-between mb-5">
-                      <h3 className="font-bold text-gray-900 text-lg">Route #{i + 1}</h3>
+                      <h3 className="font-bold text-white text-lg">Route #{i + 1}</h3>
                       <div className="bg-fuchsia-50 border border-fuchsia-100 rounded-xl px-3 py-1.5 text-sm">
-                        <span className="text-gray-500">Estimated cost: </span>
-                        <span className="font-black text-fuchsia-700">{route.totalEstimatedCost}€</span>
+                        <span className="text-zinc-400">Estimated cost: </span>
+                        <span className="font-black text-pink-400">{route.totalEstimatedCost}€</span>
                         <span className="text-gray-400"> / {filters.budget}€</span>
                       </div>
                     </div>
@@ -371,7 +378,7 @@ export default function NightPlannerPage() {
 
                     {/* Budget bar */}
                     <div className="mt-5 pt-5 border-t border-gray-100">
-                      <div className="flex justify-between text-xs text-gray-500 mb-1.5">
+                      <div className="flex justify-between text-xs text-zinc-400 mb-1.5">
                         <span>Budget used</span>
                         <span>{Math.round((route.totalEstimatedCost / filters.budget) * 100)}%</span>
                       </div>
@@ -386,8 +393,8 @@ export default function NightPlannerPage() {
                 ))}
 
                 {/* Map with all venues */}
-                <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
-                  <h3 className="font-bold text-gray-900 mb-4">Route map</h3>
+                <div className="bg-zinc-900 rounded-2xl border border-zinc-800 p-5 shadow-sm">
+                  <h3 className="font-bold text-white mb-4">Route map</h3>
                   <VenueMap venues={allVenuesInRoutes} height="350px" />
                 </div>
               </>

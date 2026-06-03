@@ -14,12 +14,12 @@ export function AuthButton() {
       <div className="relative">
         <button
           onClick={() => setShowMenu(!showMenu)}
-          className="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-yellow-500/30 hover:border-yellow-500/60 transition-colors"
+          className="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-pink-500/30 hover:border-pink-500/60 transition-colors"
         >
-          <div className="w-6 h-6 rounded-full bg-yellow-500 flex items-center justify-center">
+          <div className="w-6 h-6 rounded-full bg-pink-500 flex items-center justify-center">
             <User className="w-3.5 h-3.5 text-black" />
           </div>
-          <span className="text-sm text-yellow-400 font-medium max-w-[120px] truncate">
+          <span className="text-sm text-pink-400 font-medium max-w-[120px] truncate">
             {user.email?.split('@')[0]}
           </span>
         </button>
@@ -43,7 +43,7 @@ export function AuthButton() {
     <>
       <button
         onClick={() => setShowLogin(true)}
-        className="px-4 py-1.5 text-sm font-bold text-black bg-yellow-500 hover:bg-yellow-400 rounded-xl transition-colors"
+        className="px-4 py-1.5 text-sm font-bold text-black bg-pink-500 hover:bg-pink-400 rounded-xl transition-colors"
       >
         Sign in
       </button>

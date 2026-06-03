@@ -20,7 +20,7 @@ export function VenueCard({ venue }: { venue: VenueWithDetails }) {
 
   return (
     <Link href={`/venues/${venue.id}`} className="group block">
-      <div className="bg-zinc-900 rounded-2xl shadow-sm border border-zinc-800 overflow-hidden hover:shadow-xl hover:border-yellow-500/30 transition-all duration-200">
+      <div className="bg-zinc-900 rounded-2xl shadow-sm border border-zinc-800 overflow-hidden hover:shadow-xl hover:border-pink-500/30 transition-all duration-200">
         {/* Header with photo */}
         <div className="h-44 relative overflow-hidden flex items-end justify-between p-4">
           {venue.image_url ? (
@@ -36,7 +36,7 @@ export function VenueCard({ venue }: { venue: VenueWithDetails }) {
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
           {/* PriceIt watermark */}
           <div className="absolute top-3 left-3 z-10">
-            <span className="text-xs font-black text-yellow-400/80 tracking-widest uppercase">PriceIt</span>
+            <span className="text-xs font-black text-pink-400/80 tracking-widest uppercase">PriceIt</span>
           </div>
           <span className="relative z-10 text-xs font-semibold text-white/90 bg-black/40 rounded-full px-3 py-1 backdrop-blur-sm border border-white/10">
             {TYPE_LABELS[venue.type]}
@@ -56,7 +56,7 @@ export function VenueCard({ venue }: { venue: VenueWithDetails }) {
         </div>
 
         <div className="p-4">
-          <h3 className="font-bold text-white text-lg leading-tight group-hover:text-yellow-400 transition-colors mb-1">
+          <h3 className="font-bold text-white text-lg leading-tight group-hover:text-pink-400 transition-colors mb-1">
             {venue.name}
           </h3>
 
@@ -87,7 +87,7 @@ export function VenueCard({ venue }: { venue: VenueWithDetails }) {
           <div className="flex items-center justify-between pt-3 border-t border-zinc-800">
             {currentPrice ? (
               <div className="flex items-center gap-1.5 font-semibold text-white flex-wrap">
-                <Euro className="w-4 h-4 text-yellow-400 shrink-0" />
+                <Euro className="w-4 h-4 text-pink-400 shrink-0" />
                 <span>
                   {currentPrice.amount === 0 && currentPrice.entrada_tipus === 'free_list'
                     ? 'Free (guest list)'

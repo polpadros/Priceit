@@ -58,7 +58,7 @@ function PhotoGrid({ photos, onDelete, currentUserId }: {
       {/* Lightbox */}
       {lightbox && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4" onClick={() => setLightbox(null)}>
-          <button className="absolute top-4 right-4 text-white hover:text-yellow-400" onClick={() => setLightbox(null)}>
+          <button className="absolute top-4 right-4 text-white hover:text-pink-400" onClick={() => setLightbox(null)}>
             <X className="w-8 h-8" />
           </button>
           <img
@@ -136,7 +136,7 @@ function PhotoUploadForm({ venueId, onUploaded }: { venueId: string; onUploaded:
   return (
     <div className="border border-zinc-700 rounded-2xl p-4 bg-zinc-950">
       <p className="font-semibold text-white mb-3 flex items-center gap-2">
-        <Camera className="w-4 h-4 text-yellow-400" />
+        <Camera className="w-4 h-4 text-pink-400" />
         Share your night
       </p>
 
@@ -151,7 +151,7 @@ function PhotoUploadForm({ venueId, onUploaded }: { venueId: string; onUploaded:
       ) : (
         <button
           onClick={() => inputRef.current?.click()}
-          className="w-full h-28 border-2 border-dashed border-zinc-700 hover:border-yellow-500/50 rounded-xl flex flex-col items-center justify-center gap-2 text-zinc-500 hover:text-zinc-300 transition-colors mb-3"
+          className="w-full h-28 border-2 border-dashed border-zinc-700 hover:border-pink-500/50 rounded-xl flex flex-col items-center justify-center gap-2 text-zinc-500 hover:text-zinc-300 transition-colors mb-3"
         >
           <Upload className="w-6 h-6" />
           <span className="text-sm">Click to upload (max 5MB)</span>
@@ -167,7 +167,7 @@ function PhotoUploadForm({ venueId, onUploaded }: { venueId: string; onUploaded:
         value={caption}
         onChange={e => setCaption(e.target.value)}
         maxLength={120}
-        className="w-full bg-zinc-900 border border-zinc-700 text-white text-sm rounded-xl px-3 py-2 outline-none focus:border-yellow-500/50 placeholder:text-zinc-600 mb-3"
+        className="w-full bg-zinc-900 border border-zinc-700 text-white text-sm rounded-xl px-3 py-2 outline-none focus:border-pink-500/50 placeholder:text-zinc-600 mb-3"
       />
 
       {error && <p className="text-red-400 text-sm mb-2">{error}</p>}
@@ -175,7 +175,7 @@ function PhotoUploadForm({ venueId, onUploaded }: { venueId: string; onUploaded:
       <button
         onClick={handleUpload}
         disabled={!file || uploading}
-        className="w-full bg-yellow-500 hover:bg-yellow-400 text-black font-bold rounded-xl py-2.5 text-sm transition-colors disabled:opacity-40 flex items-center justify-center gap-2"
+        className="w-full bg-pink-500 hover:bg-pink-400 text-black font-bold rounded-xl py-2.5 text-sm transition-colors disabled:opacity-40 flex items-center justify-center gap-2"
       >
         {uploading && <Loader2 className="w-4 h-4 animate-spin" />}
         {uploading ? 'Uploading...' : 'Share photo'}
@@ -222,7 +222,7 @@ export function PhotoGallery({ venueId }: { venueId: string }) {
     <div className="bg-zinc-950 border border-zinc-800 rounded-2xl p-6">
       <div className="flex items-center justify-between mb-5">
         <h2 className="font-bold text-white text-lg flex items-center gap-2">
-          <Camera className="w-5 h-5 text-yellow-400" />
+          <Camera className="w-5 h-5 text-pink-400" />
           Community photos
           {photos.length > 0 && (
             <span className="text-sm font-normal text-zinc-500">({photos.length})</span>
@@ -231,7 +231,7 @@ export function PhotoGallery({ venueId }: { venueId: string }) {
         {user ? (
           <button
             onClick={() => setShowUpload(!showUpload)}
-            className="px-3 py-1.5 bg-yellow-500 hover:bg-yellow-400 text-black text-xs font-bold rounded-xl transition-colors flex items-center gap-1.5"
+            className="px-3 py-1.5 bg-pink-500 hover:bg-pink-400 text-black text-xs font-bold rounded-xl transition-colors flex items-center gap-1.5"
           >
             <Upload className="w-3.5 h-3.5" />
             Add photo
@@ -255,7 +255,7 @@ export function PhotoGallery({ venueId }: { venueId: string }) {
 
       {loading ? (
         <div className="flex items-center justify-center py-10">
-          <Loader2 className="w-6 h-6 animate-spin text-yellow-400" />
+          <Loader2 className="w-6 h-6 animate-spin text-pink-400" />
         </div>
       ) : (
         <PhotoGrid
