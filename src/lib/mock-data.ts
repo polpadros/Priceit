@@ -628,4 +628,94 @@ export const mockVenues: VenueWithDetails[] = [
     prices: [mkPrice('p_pep', 'pepita', 'Dinner per person', 20, null, 'food and drinks', 'fixed')],
     ratings: [], events: [], avg_rating: 0, rating_count: 0,
   },
+
+  // ── NEW PRE-PARTY BARS ───────────────────────────────────────────────────────
+
+  {
+    id: 'bbplus', name: 'BB+', type: 'previa',
+    description: 'Popular pre-party cocktail bar in Eixample. Affordable drinks, relaxed vibe and a young crowd. Great spot before heading to Sutton or Otto Zutz. Known for strong cocktails at budget-friendly prices.',
+    address: 'Carrer del Rosselló, 164', neighborhood: 'Eixample',
+    lat: 41.3938, lng: 2.1558,
+    ambients: ['casual', 'indie'], music: ['Pop', 'Indie', 'Reggaeton'],
+    google_rating: 4.1, min_age: 18, dress_code: null,
+    image_url: PHOTOS.casualBar, website: null, instagram: '@bbplus_bcn', phone: '+34 616 41 95 49',
+    opening_hours: { 'Daily': '20:00–03:00' },
+    price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
+    prices: [
+      mkPrice('pbb1', 'bbplus', 'Entry', 0, null, null, 'free'),
+      mkPrice('pbb2', 'bbplus', 'Cocktail', 7, 10, null, 'fixed'),
+      mkPrice('pbb3', 'bbplus', 'Shot', 2, 3, null, 'fixed'),
+    ],
+    ratings: [
+      mkRating('rbb1', 'bbplus', 4, 'Best value cocktails in Eixample'),
+      mkRating('rbb2', 'bbplus', 4, 'Perfect pre-party before Sutton'),
+    ],
+    events: [], avg_rating: 4.1, rating_count: 2,
+  },
+
+  {
+    id: 'lecyrano', name: 'Le Cyrano', type: 'previa',
+    description: 'Iconic self-service bar on Aribau — you pour your own drink! The bartender hands you a bottle of spirit and a mixer for just €3. Gets packed fast, arrive before 11pm. Free popcorn included. A true Barcelona institution.',
+    address: 'Carrer d\'Aribau, 154', neighborhood: 'Eixample',
+    lat: 41.3903, lng: 2.1536,
+    ambients: ['casual', 'indie'], music: ['Pop', 'Indie'],
+    google_rating: 4.3, min_age: 18, dress_code: null,
+    image_url: PHOTOS.vintageBar, website: null, instagram: '@lecyranobar', phone: null,
+    opening_hours: { 'Thu–Sat': '22:30–02:30' },
+    price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
+    prices: [
+      mkPrice('pcy1', 'lecyrano', 'Entry', 0, null, null, 'free'),
+      mkPrice('pcy2', 'lecyrano', 'Spirit + mixer (self-pour!)', 3, null, 'you pour your own', 'fixed'),
+    ],
+    ratings: [
+      mkRating('rcy1', 'lecyrano', 5, 'Cheapest and most fun pre-party in BCN!'),
+      mkRating('rcy2', 'lecyrano', 4, '€3 for a self-pour drink is unbeatable'),
+    ],
+    events: [], avg_rating: 4.3, rating_count: 2,
+  },
+
+  {
+    id: '4latas', name: '4 Latas', type: 'previa',
+    description: 'Lively tapas and cocktail bar chain with multiple locations across Barcelona. Live music, great cocktails and a party atmosphere. Multiple spots: Diagonal/Tuset, Letamendi, Granados, Poblenou. Perfect group pre-party.',
+    address: 'Carrer de Tuset, 3 (also: Enric Granados 6 · Muntaner 211 · Poblenou)', neighborhood: 'Zona Alta',
+    lat: 41.3970, lng: 2.1507,
+    ambients: ['casual', 'pijo'], music: ['Pop', 'Latin', 'Reggaeton'],
+    google_rating: 4.2, min_age: 18, dress_code: null,
+    image_url: PHOTOS.casualBar, website: 'https://galeragroup.com/en/restaurants/barcelona/4-latas/', instagram: '@4latasbcn', phone: null,
+    opening_hours: { 'Mon–Thu': '12:00–02:00', 'Fri–Sat': '12:00–03:00' },
+    price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
+    prices: [
+      mkPrice('p4l1', '4latas', 'Entry', 0, null, null, 'free'),
+      mkPrice('p4l2', '4latas', 'Cocktail', 9, 12, null, 'fixed'),
+      mkPrice('p4l3', '4latas', 'Shot', 3, 4, null, 'fixed'),
+      mkPrice('p4l4', '4latas', 'Tapa', 4, 7, null, 'fixed'),
+    ],
+    ratings: [
+      mkRating('r4l1', '4latas', 4, 'Great tapas + cocktails combo'),
+      mkRating('r4l2', '4latas', 4, 'Multiple locations, always a good vibe'),
+    ],
+    events: [], avg_rating: 4.2, rating_count: 2,
+  },
+
+  {
+    id: 'previaaribau', name: 'La Previa Aribau', type: 'previa',
+    description: 'High-energy pre-party bar on Carrer Aribau, steps from Le Cyrano. Open every night until 03:30. Capacity for 130 people. Modern interior, strong drinks and great music. One of the best-known pre-party spots in Eixample.',
+    address: 'Carrer d\'Aribau, 132', neighborhood: 'Eixample',
+    lat: 41.3897, lng: 2.1540,
+    ambients: ['casual', 'indie'], music: ['Pop', 'Reggaeton', 'Hip-Hop'],
+    google_rating: 4.2, min_age: 18, dress_code: null,
+    image_url: PHOTOS.casualBar, website: 'https://lapreviaeventos.com/', instagram: '@lapreviaribau', phone: null,
+    opening_hours: { 'Daily': '23:00–03:30' },
+    price_sync_url: null, price_sync_source: null, created_at: '2024-01-01',
+    prices: [
+      mkPrice('ppa1', 'previaaribau', 'Entry', 0, null, null, 'free'),
+      mkPrice('ppa2', 'previaaribau', 'Cocktail', 8, 11, null, 'fixed'),
+      mkPrice('ppa3', 'previaaribau', 'Shot', 3, 4, null, 'fixed'),
+    ],
+    ratings: [
+      mkRating('rpa1', 'previaaribau', 4, 'Best pre-party on Aribau street'),
+      mkRating('rpa2', 'previaaribau', 4, 'Always packed, great energy'),
+    ],
+    events: [], avg_rating: 4.2, rating_count: 2,
+  },
 ]
