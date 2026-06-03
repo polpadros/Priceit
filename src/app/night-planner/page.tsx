@@ -91,7 +91,7 @@ function RouteStep({
       </div>
       <div className="flex-1 min-w-0">
         <p className="text-xs font-semibold text-pink-400 uppercase tracking-wide mb-0.5">{label}</p>
-        <Link href={`/venues/${venue.id}`} className="font-bold text-gray-900 hover:text-pink-400 transition-colors">
+        <Link href={`/venues/${venue.id}`} className="font-bold text-white hover:text-pink-400 transition-colors text-lg">
           {venue.name}
         </Link>
         <div className="flex items-center gap-3 mt-1 text-sm text-zinc-400">
@@ -227,7 +227,7 @@ export default function NightPlannerPage() {
                       onClick={() => setFilters((f) => ({ ...f, day: d.value }))}
                       className={`py-2 rounded-xl text-sm font-medium transition-colors border ${
                         filters.day === d.value
-                          ? 'bg-fuchsia-600 text-white border-fuchsia-600'
+                          ? 'bg-pink-500 text-white border-pink-500'
                           : 'bg-zinc-800 text-zinc-300 border-zinc-700 hover:border-fuchsia-300'
                       }`}
                     >
@@ -249,7 +249,7 @@ export default function NightPlannerPage() {
                       onClick={() => toggleAmbient(a)}
                       className={`px-2.5 py-1 rounded-full text-xs font-medium transition-colors border ${
                         filters.ambients.includes(a)
-                          ? 'bg-fuchsia-600 text-white border-fuchsia-600'
+                          ? 'bg-pink-500 text-white border-pink-500'
                           : 'bg-zinc-800 text-zinc-300 border-zinc-700 hover:border-fuchsia-300'
                       }`}
                     >
@@ -300,7 +300,7 @@ export default function NightPlannerPage() {
               <div className="flex gap-2">
                 <button
                   onClick={handleSearch}
-                  className="flex-1 flex items-center justify-center gap-2 bg-fuchsia-600 text-white font-bold px-4 py-3 rounded-xl hover:bg-fuchsia-700 transition-colors text-sm"
+                  className="flex-1 flex items-center justify-center gap-2 bg-fuchsia-600 text-white font-bold px-4 py-3 rounded-xl hover:bg-pink-600 transition-colors text-sm"
                 >
                   <Search className="w-4 h-4" />
                   Plan my night
@@ -338,7 +338,7 @@ export default function NightPlannerPage() {
             {routes && routes.length > 0 && (
               <>
                 <p className="text-sm text-zinc-400">
-                  <span className="font-semibold text-gray-900">{routes.length}</span> routes found for{' '}
+                  <span className="font-semibold text-white">{routes.length}</span> routes found for{' '}
                   <span className="font-semibold text-pink-400">{filters.day}</span> with{' '}
                   <span className="font-semibold text-pink-400">{filters.budget}€</span> budget
                 </p>
@@ -347,7 +347,7 @@ export default function NightPlannerPage() {
                   <div key={i} className="bg-zinc-900 rounded-2xl border border-zinc-800 p-6 shadow-sm">
                     <div className="flex items-center justify-between mb-5">
                       <h3 className="font-bold text-white text-lg">Route #{i + 1}</h3>
-                      <div className="bg-fuchsia-50 border border-fuchsia-100 rounded-xl px-3 py-1.5 text-sm">
+                      <div className="bg-zinc-800 border border-zinc-700 rounded-xl px-3 py-1.5 text-sm">
                         <span className="text-zinc-400">Estimated cost: </span>
                         <span className="font-black text-pink-400">{route.totalEstimatedCost}€</span>
                         <span className="text-gray-400"> / {filters.budget}€</span>
@@ -377,12 +377,12 @@ export default function NightPlannerPage() {
                     </div>
 
                     {/* Budget bar */}
-                    <div className="mt-5 pt-5 border-t border-gray-100">
+                    <div className="mt-5 pt-5 border-t border-zinc-800">
                       <div className="flex justify-between text-xs text-zinc-400 mb-1.5">
                         <span>Budget used</span>
                         <span>{Math.round((route.totalEstimatedCost / filters.budget) * 100)}%</span>
                       </div>
-                      <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+                      <div className="h-2 bg-zinc-800 rounded-full overflow-hidden">
                         <div
                           className="h-full bg-gradient-to-r from-fuchsia-500 to-fuchsia-600 rounded-full transition-all"
                           style={{ width: `${Math.min((route.totalEstimatedCost / filters.budget) * 100, 100)}%` }}
