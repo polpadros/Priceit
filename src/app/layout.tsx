@@ -29,6 +29,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <Link href="/" className="px-3 py-1.5 text-sm font-medium text-zinc-400 hover:text-pink-400 rounded-lg transition-colors">
                   Venues
                 </Link>
+                <Link href="/events" className="px-3 py-1.5 text-sm font-medium text-zinc-400 hover:text-pink-400 rounded-lg transition-colors">
+                  🎟 Events
+                </Link>
                 <Link href="/night-planner" className="px-3 py-1.5 text-sm font-bold text-black bg-pink-500 hover:bg-pink-400 rounded-xl transition-colors">
                   🗺️ Night Planner
                 </Link>

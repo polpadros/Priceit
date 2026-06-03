@@ -8,6 +8,7 @@ import { mockVenues } from '@/lib/mock-data'
 import { AmbientBadge } from '@/components/ui/AmbientBadge'
 import { StarRating } from '@/components/ui/StarRating'
 import { PhotoGallery } from '@/components/venue/PhotoGallery'
+import { LiveEvents } from '@/components/venue/LiveEvents'
 import type { Ambient } from '@/types'
 
 const VenueMap = dynamic(() => import('@/components/map/VenueMap').then((m) => m.VenueMap), {
@@ -308,6 +309,9 @@ export default function VenuePage() {
           <VenueMap venues={[venue]} height="260px" />
           <p className="text-sm text-zinc-500 mt-3">{venue.address}, {venue.neighborhood}</p>
         </div>
+
+        {/* 🎟 Live events from Ticketmaster */}
+        <LiveEvents venueName={venue.name} />
 
         {/* 📸 Community Photos */}
         <PhotoGallery venueId={venue.id} />
