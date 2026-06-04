@@ -834,7 +834,7 @@ export const mockVenues: VenueWithDetails[] = [
     opening_hours: { 'Thu–Sat': 'from 23:30' },
     price_sync_url: null, price_sync_source: 'fourvenues', peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
-      mkPrice('pbrs1', 'boris', 'Entry', 20, 35, null, 'dynamic', 'fourvenues'),
+      mkPrice('pbrs1', 'boris', 'Entry', 20, 35, null, 'dynamic', 'fourvenues', 'https://www.borisclub.es'),
       mkPrice('pbrs2', 'boris', 'Spirit / cocktail', 16, 22, null, 'fixed'),
     ],
     ratings: [mkRating('rbrs1', 'boris', 4, 'Exclusive electronic club, incredible sound'), mkRating('rbrs2', 'boris', 4, 'The pijo electronic club')],
@@ -852,7 +852,7 @@ export const mockVenues: VenueWithDetails[] = [
     opening_hours: { 'Thu–Sat': 'from 23:30' },
     price_sync_url: null, price_sync_source: 'fourvenues', peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
-      mkPrice('ptw1', 'twenties', 'Entry', 15, 25, null, 'dynamic', 'fourvenues'),
+      mkPrice('ptw1', 'twenties', 'Entry', 15, 25, null, 'dynamic', 'fourvenues', 'https://www.twentiesbarcelona.com'),
       mkPrice('ptw2', 'twenties', 'Spirit / cocktail', 14, 18, null, 'fixed'),
     ],
     ratings: [mkRating('rtw1', 'twenties', 4, 'Great alternative to Sutton'), mkRating('rtw2', 'twenties', 4, 'Stylish crowd, good music')],
@@ -870,7 +870,7 @@ export const mockVenues: VenueWithDetails[] = [
     opening_hours: { 'Thu–Sat': 'from 23:00' },
     price_sync_url: null, price_sync_source: 'fourvenues', peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
-      mkPrice('plp1', 'latinpalace', 'Entry', 10, 20, null, 'dynamic', 'fourvenues'),
+      mkPrice('plp1', 'latinpalace', 'Entry', 10, 20, null, 'dynamic', 'fourvenues', 'https://www.latinpalace.es'),
       mkPrice('plp2', 'latinpalace', 'Spirit / cocktail', 12, 15, null, 'fixed'),
     ],
     ratings: [mkRating('rlp1', 'latinpalace', 4, 'Best salsa and bachata club in BCN'), mkRating('rlp2', 'latinpalace', 3, 'Great for groups and bachelor parties')],
@@ -889,7 +889,7 @@ export const mockVenues: VenueWithDetails[] = [
     price_sync_url: null, price_sync_source: 'fourvenues', peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('pku1', 'ku', 'Free entry (guest list)', 0, null, null, 'free_list'),
-      mkPrice('pku2', 'ku', 'Entry at door', 15, 20, null, 'dynamic', 'fourvenues'),
+      mkPrice('pku2', 'ku', 'Entry at door', 15, 20, null, 'dynamic', 'fourvenues', 'https://www.kbarcelona.com'),
       mkPrice('pku3', 'ku', 'Spirit / cocktail', 13, 16, null, 'fixed'),
     ],
     ratings: [mkRating('rku1', 'ku', 4, 'Classic Olympic Port beach club'), mkRating('rku2', 'ku', 3, 'Good for a summer night out')],
@@ -908,7 +908,7 @@ export const mockVenues: VenueWithDetails[] = [
     price_sync_url: null, price_sync_source: 'fourvenues', peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('pdt1', 'downtown', 'Free entry (guest list)', 0, null, null, 'free_list'),
-      mkPrice('pdt2', 'downtown', 'Entry at door', 10, 20, null, 'dynamic', 'fourvenues'),
+      mkPrice('pdt2', 'downtown', 'Entry at door', 10, 20, null, 'dynamic', 'fourvenues', 'https://www.downtownbarcelona.es'),
       mkPrice('pdt3', 'downtown', 'Spirit / cocktail', 12, 15, null, 'fixed'),
     ],
     ratings: [mkRating('rdt1', 'downtown', 3, 'Very touristy but fun'), mkRating('rdt2', 'downtown', 4, 'Good value for the Port Olímpic area')],
@@ -1027,7 +1027,7 @@ export const mockVenues: VenueWithDetails[] = [
     price_sync_url: null, price_sync_source: null, peak_days: ['Friday','Saturday'], created_at: '2024-01-01',
     prices: [
       mkPrice('pnb1', 'nuba', 'Dinner per person', 35, 55, 'food only', 'fixed'),
-      mkPrice('pnb2', 'nuba', 'Club entry (after dinner)', 15, 20, null, 'dynamic', 'fourvenues'),
+      mkPrice('pnb2', 'nuba', 'Club entry (after dinner)', 15, 20, null, 'dynamic', 'fourvenues', 'https://www.nuba.es/barcelona'),
       mkPrice('pnb3', 'nuba', 'Cocktail', 14, 18, null, 'fixed'),
     ],
     ratings: [mkRating('rnb1', 'nuba', 4, 'Best restaurant-to-club transition in BCN'), mkRating('rnb2', 'nuba', 4, 'Dinner + party in one place')],
@@ -1200,7 +1200,7 @@ export const mockVenues: VenueWithDetails[] = [
     image_url:PHOTOS.luxClub, website:null, instagram:'@labibliobcn', phone:null,
     opening_hours:{'Thu–Sat':'23:30–06:00'},
     price_sync_url:null, price_sync_source:'fourvenues', created_at:'2024-01-01',
-    prices:[mkPrice('plb1','labiblio','Free entry (guest list until 01:00)',0,null,null,'free_list'),mkPrice('plb2','labiblio','Entry at door',8,20,null,'dynamic','fourvenues'),mkPrice('plb3','labiblio','Spirit / cocktail',14,18,null,'fixed')],
+    prices:[mkPrice('plb1','labiblio','Free entry (guest list until 01:00)',0,null,null,'free_list'),mkPrice('plb2','labiblio','Entry at door',8,20,null,'dynamic','fourvenues','https://www.labibliobcn.com'),mkPrice('plb3','labiblio','Spirit / cocktail',14,18,null,'fixed')],
     ratings:[mkRating('rlb1','labiblio',4,'Best new club on Tuset street'),mkRating('rlb2','labiblio',4,'More accessible than Sutton')],
     events:[], avg_rating:4.0, rating_count:2 },
 
@@ -1212,7 +1212,7 @@ export const mockVenues: VenueWithDetails[] = [
     image_url:PHOTOS.colorClub, website:null, instagram:'@karmadisco_bcn', phone:null,
     opening_hours:{'Tue–Sat':'23:00–05:00'},
     price_sync_url:null, price_sync_source:'fourvenues', created_at:'2024-01-01',
-    prices:[mkPrice('pkrm1','karma','Entry',8,12,null,'dynamic','fourvenues'),mkPrice('pkrm2','karma','Spirit / cocktail',9,12,null,'fixed')],
+    prices:[mkPrice('pkrm1','karma','Entry',8,12,null,'dynamic','fourvenues','https://www.masimas.com/karma'),mkPrice('pkrm2','karma','Spirit / cocktail',9,12,null,'fixed')],
     ratings:[mkRating('rkrm1','karma',5,'Rock classic of Barcelona nightlife since 1978'),mkRating('rkrm2','karma',4,'Intimate and authentic')],
     events:[], avg_rating:4.1, rating_count:2 },
 
@@ -1224,7 +1224,7 @@ export const mockVenues: VenueWithDetails[] = [
     image_url:PHOTOS.indieClub, website:null, instagram:'@clubsauvage_bcn', phone:null,
     opening_hours:{'Thu–Sat':'23:00–05:00'},
     price_sync_url:null, price_sync_source:'fourvenues', created_at:'2024-01-01',
-    prices:[mkPrice('psvg1','sauvage','Entry (varies by event)',8,15,null,'dynamic','fourvenues'),mkPrice('psvg2','sauvage','Spirit / cocktail',10,13,null,'fixed')],
+    prices:[mkPrice('psvg1','sauvage','Entry (varies by event)',8,15,null,'dynamic','fourvenues','https://www.clubsauvage.es'),mkPrice('psvg2','sauvage','Spirit / cocktail',10,13,null,'fixed')],
     ratings:[mkRating('rsvg1','sauvage',4,'40 years of history, reinvented perfectly'),mkRating('rsvg2','sauvage',4,'Best indie spot on Plaça Reial')],
     events:[], avg_rating:4.2, rating_count:2 },
 
@@ -1236,7 +1236,7 @@ export const mockVenues: VenueWithDetails[] = [
     image_url:PHOTOS.colorClub, website:null, instagram:'@cityhallbarcelona', phone:null,
     opening_hours:{'Thu–Sat':'23:00–05:30'},
     price_sync_url:null, price_sync_source:'fourvenues', created_at:'2024-01-01',
-    prices:[mkPrice('pch1','cityhall','Entry + 1 drink',10,18,'1 drink','dynamic','fourvenues'),mkPrice('pch2','cityhall','Spirit / cocktail',11,14,null,'fixed')],
+    prices:[mkPrice('pch1','cityhall','Entry + 1 drink',10,18,'1 drink','dynamic','fourvenues','https://www.cityhallbarcelona.com'),mkPrice('pch2','cityhall','Spirit / cocktail',11,14,null,'fixed')],
     ratings:[mkRating('rch1','cityhall',4,'Central, accessible, always fun'),mkRating('rch2','cityhall',3,'Very touristy but decent night out')],
     events:[], avg_rating:4.0, rating_count:2 },
 
@@ -1248,7 +1248,7 @@ export const mockVenues: VenueWithDetails[] = [
     image_url:PHOTOS.colorClub, website:'https://www.arenadisco.com', instagram:'@arenabarcelona', phone:null,
     opening_hours:{'Thu–Sun':'00:00–06:00'},
     price_sync_url:null, price_sync_source:'fourvenues', created_at:'2024-01-01',
-    prices:[mkPrice('parn1','arena','Entry + 1 drink',10,15,'1 drink','dynamic','fourvenues'),mkPrice('parn2','arena','Spirit / cocktail',10,13,null,'fixed')],
+    prices:[mkPrice('parn1','arena','Entry + 1 drink',10,15,'1 drink','dynamic','fourvenues','https://www.arenadisco.com'),mkPrice('parn2','arena','Spirit / cocktail',10,13,null,'fixed')],
     ratings:[mkRating('rarn1','arena',5,'Most inclusive and fun club in BCN'),mkRating('rarn2','arena',4,'Amazing energy every weekend')],
     events:[], avg_rating:4.2, rating_count:2 },
 
@@ -1260,7 +1260,7 @@ export const mockVenues: VenueWithDetails[] = [
     image_url:PHOTOS.luxClub, website:null, instagram:'@duvetbcn', phone:null,
     opening_hours:{'Thu–Sat':'23:30–06:00'},
     price_sync_url:null, price_sync_source:'fourvenues', created_at:'2024-01-01',
-    prices:[mkPrice('pdvt1','duvet','Entry',15,25,null,'dynamic','fourvenues'),mkPrice('pdvt2','duvet','Spirit / cocktail',14,18,null,'fixed')],
+    prices:[mkPrice('pdvt1','duvet','Entry',15,25,null,'dynamic','fourvenues','https://www.duvetbcn.com'),mkPrice('pdvt2','duvet','Spirit / cocktail',14,18,null,'fixed')],
     ratings:[mkRating('rdvt1','duvet',4,'Great Zona Alta club'),mkRating('rdvt2','duvet',3,'Selective but fun')],
     events:[], avg_rating:3.9, rating_count:2 },
 
