@@ -63,6 +63,8 @@ export default function ProfilePage() {
         username: username || null,
         avatar_url: urlWithCacheBust,
       })
+      // Notify navbar
+      window.dispatchEvent(new Event('profile-updated'))
     } catch (e) {
       console.error('Avatar upload error:', e)
     }
@@ -80,6 +82,8 @@ export default function ProfilePage() {
     setSaving(false)
     setSaved(true)
     setTimeout(() => setSaved(false), 2000)
+    // Notify navbar to refresh profile
+    window.dispatchEvent(new Event('profile-updated'))
   }
 
   if (!user) {
