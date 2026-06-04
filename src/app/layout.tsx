@@ -24,7 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <nav className="sticky top-0 z-50 bg-zinc-950/95 backdrop-blur-md border-b border-pink-500/10">
             <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
               <Link href="/" className="flex items-center gap-2">
-                <span className="font-black text-pink-400 text-xl tracking-tight">Priceit</span>
+                <span className="font-black text-pink-400 text-xl tracking-tight">Price<span className="italic">it</span></span>
                 <span className="text-xs text-zinc-600 font-medium">Barcelona</span>
               </Link>
               <div className="flex items-center gap-1 sm:gap-2">
@@ -50,7 +50,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </FavoritesProvider>
           <footer className="border-t border-zinc-800 bg-zinc-950 mt-auto">
             <div className="max-w-6xl mx-auto px-4 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-zinc-600">
-              <span className="text-pink-400/60 font-bold">Priceit Barcelona</span>
+              <span className="text-pink-400/60 font-bold">Price<span className="italic">it</span> Barcelona</span>
               <span>Prices auto-updated via Ticketmaster · Fever · Resident Advisor</span>
             </div>
           </footer>

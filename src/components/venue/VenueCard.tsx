@@ -39,7 +39,7 @@ export function VenueCard({ venue }: { venue: VenueWithDetails }) {
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
           {/* PriceIt watermark */}
           <div className="absolute top-3 left-3 z-10 flex items-center gap-2">
-            <span className="text-xs font-black text-pink-400/80 tracking-widest uppercase">PriceIt</span>
+            <span className="text-xs font-black text-pink-400/80 tracking-widest uppercase">Priceit</span>
             {openNow && (
               <span className="flex items-center gap-1 text-xs font-bold text-white bg-green-500/90 rounded-full px-2 py-0.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />

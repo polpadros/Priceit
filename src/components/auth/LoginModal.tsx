@@ -41,7 +41,7 @@ export function LoginModal({ onClose }: { onClose: () => void }) {
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <span className="text-2xl font-black text-pink-400">🎉 PriceIt</span>
+            <span className="text-2xl font-black text-pink-400">🎉 Priceit</span>
             <p className="text-zinc-400 text-sm mt-1">
               {mode === 'login' ? 'Welcome back' : 'Create your account'}
             </p>

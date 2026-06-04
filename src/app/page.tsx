@@ -15,7 +15,7 @@ export default function HomePage() {
           {/* Big PriceIt title */}
           <h1 className="text-7xl sm:text-9xl font-black mb-4 leading-none tracking-tight">
             <span className="text-pink-400 drop-shadow-[0_0_40px_rgba(236,72,153,0.6)]">
-              PriceIt
+              Price<span className="italic">it</span>
             </span>
           </h1>
           <p className="text-zinc-300 text-xl sm:text-2xl font-semibold mb-3 tracking-wide">

@@ -96,7 +96,7 @@ export default function VenuePage() {
         <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/50 to-transparent" />
         {/* PriceIt branding on banner */}
         <div className="absolute top-4 left-4 flex items-center gap-2">
-          <span className="font-black text-pink-400 text-lg tracking-widest uppercase">PriceIt</span>
+          <span className="font-black text-pink-400 text-lg tracking-widest uppercase">Priceit</span>
           <span className="text-zinc-500 text-xs">Barcelona</span>
         </div>
         <Link href="/" className="absolute top-4 right-4 inline-flex items-center gap-2 text-zinc-400 hover:text-white transition-colors text-sm bg-black/40 rounded-full px-3 py-1.5 backdrop-blur-sm">
@@ -334,13 +334,13 @@ export default function VenuePage() {
         <div className="flex flex-wrap gap-2">
           <ShareButton
             title={venue.name}
-            text={`Check out ${venue.name} on PriceIt Barcelona 🎉`}
+            text={`Check out ${venue.name} on Priceit Barcelona 🎉`}
             label="Share venue"
             variant="default"
           />
           <ShareButton
             title={venue.name}
-            text={`Check out ${venue.name} on PriceIt Barcelona 🎉`}
+            text={`Check out ${venue.name} on Priceit Barcelona 🎉`}
             label="WhatsApp"
             variant="whatsapp"
           />

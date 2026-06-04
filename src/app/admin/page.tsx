@@ -42,7 +42,7 @@ export default function AdminPage() {
           <div className="text-center mb-6">
             <Shield className="w-12 h-12 text-pink-400 mx-auto mb-3" />
             <h1 className="text-2xl font-black text-white">Admin Panel</h1>
-            <p className="text-zinc-500 text-sm mt-1">PriceIt Barcelona</p>
+            <p className="text-zinc-500 text-sm mt-1">Priceit Barcelona</p>
           </div>
           <input
             type="password"
