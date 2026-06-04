@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
-import { ArrowLeft, Euro, MapPin, Star, ChevronRight, RotateCcw, Search } from 'lucide-react'
+import { ArrowLeft, Euro, MapPin, Star, ChevronRight, RotateCcw, Search, Send } from 'lucide-react'
 import { ShareButton } from '@/components/ui/ShareButton'
 import { getDistanceInfo } from '@/lib/distance'
 import { mockVenues } from '@/lib/mock-data'
@@ -10,6 +10,9 @@ import { AMBIENT_LABELS } from '@/components/ui/AmbientBadge'
 import { AmbientBadge } from '@/components/ui/AmbientBadge'
 import { StarRating } from '@/components/ui/StarRating'
 import { VenuePicker } from '@/components/venue/VenuePicker'
+import { useSocial } from '@/contexts/SocialContext'
+import { useAuth } from '@/contexts/AuthContext'
+import { getSupabase } from '@/lib/supabase'
 import type { Ambient, NightPlanFilters, NightRoute, VenueWithDetails } from '@/types'
 
 const VenueMap = dynamic(() => import('@/components/map/VenueMap').then((m) => m.VenueMap), {
@@ -128,6 +131,95 @@ function RouteStep({
         </div>
       </div>
     </div>
+  )
+}
+
+function buildPlanUrl(route: NightRoute, filters: NightPlanFilters): string {
+  const base = typeof window !== 'undefined' ? window.location.origin : 'https://priceit-hazel.vercel.app'
+  const p = new URLSearchParams()
+  if (route.disco) p.set('d', route.disco.id)
+  if (route.previa) p.set('p', route.previa.id)
+  else if (filters.customPrevia) p.set('cp', filters.customPrevia)
+  if (route.restaurant) p.set('r', route.restaurant.id)
+  else if (filters.customRestaurant) p.set('cr', filters.customRestaurant)
+  p.set('b', String(filters.budget))
+  p.set('day', filters.day)
+  return `${base}/plan?${p.toString()}`
+}
+
+function buildWhatsAppText(route: NightRoute, filters: NightPlanFilters): string {
+  const lines = [`🎉 Night out plan — ${filters.day}`]
+  const r = route.restaurant?.name ?? filters.customRestaurant
+  const p = route.previa?.name ?? filters.customPrevia
+  if (r) lines.push(`🍽️ Dinner: ${r}`)
+  if (p) lines.push(`🥂 Pre-party: ${p}`)
+  lines.push(`🪩 Club: ${route.disco.name}`)
+  lines.push(`💰 ~${route.totalEstimatedCost}€`)
+  lines.push(buildPlanUrl(route, filters))
+  return lines.join('\n')
+}
+
+function InAppShareButton({ route, filters }: { route: NightRoute; filters: NightPlanFilters }) {
+  const { user } = useAuth()
+  const { following, getOrCreateConversation } = useSocial()
+  const [open, setOpen] = useState(false)
+  const [profiles, setProfiles] = useState<any[]>([])
+  const [sent, setSent] = useState<Set<string>>(new Set())
+
+  async function loadFriends() {
+    if (following.size === 0) return
+    const { data } = await getSupabase().from('profiles').select('id,username,avatar_url').in('id', [...following])
+    setProfiles(data ?? [])
+  }
+
+  async function sendPlan(friendId: string) {
+    if (!user) return
+    const planUrl = buildPlanUrl(route, filters)
+    const username = user.email?.split('@')[0] ?? 'Someone'
+    const msgText = `🎉 ${username} is inviting you to go out!\n🪩 ${route.disco.name}${route.previa ? `\n🥂 ${route.previa.name}` : filters.customPrevia ? `\n🥂 ${filters.customPrevia}` : ''}${route.restaurant ? `\n🍽️ ${route.restaurant.name}` : filters.customRestaurant ? `\n🍽️ ${filters.customRestaurant}` : ''}\n\nSee the full plan: ${planUrl}`
+    const convId = await getOrCreateConversation(friendId)
+    if (convId) {
+      await getSupabase().from('messages').insert({ conversation_id: convId, sender_id: user.id, content: msgText, type: 'text' })
+      await getSupabase().from('conversations').update({ last_message: `🎉 Night plan invitation`, last_message_at: new Date().toISOString() }).eq('id', convId)
+    }
+    setSent(prev => new Set([...prev, friendId]))
+  }
+
+  if (!user) return null
+
+  return (
+    <>
+      <button onClick={() => { setOpen(true); loadFriends() }}
+        className="flex items-center gap-1.5 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-zinc-300 font-semibold px-3 py-1.5 rounded-xl text-sm transition-colors">
+        <Send className="w-3.5 h-3.5" /> Send to friends
+      </button>
+
+      {open && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm" onClick={() => setOpen(false)}>
+          <div className="bg-zinc-900 border border-zinc-800 rounded-3xl w-full max-w-sm p-5" onClick={e => e.stopPropagation()}>
+            <h3 className="font-bold text-white mb-4">Send plan to a friend</h3>
+            {profiles.length === 0 ? (
+              <p className="text-zinc-500 text-sm text-center py-6">Follow people first to send them plans</p>
+            ) : (
+              <div className="space-y-2 max-h-64 overflow-y-auto">
+                {profiles.map(p => (
+                  <div key={p.id} className="flex items-center gap-3 p-3 bg-zinc-800 rounded-xl">
+                    <div className="w-9 h-9 rounded-full bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center text-white font-bold shrink-0 overflow-hidden">
+                      {p.avatar_url ? <img src={p.avatar_url} className="w-full h-full object-cover" alt="" /> : (p.username?.[0] ?? '?').toUpperCase()}
+                    </div>
+                    <p className="flex-1 text-white text-sm font-medium">{p.username ?? 'User'}</p>
+                    <button onClick={() => sendPlan(p.id)} disabled={sent.has(p.id)}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-colors ${sent.has(p.id) ? 'bg-green-600 text-white' : 'bg-pink-500 hover:bg-pink-400 text-white'}`}>
+                      {sent.has(p.id) ? '✓ Sent!' : 'Send'}
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </>
   )
 }
 
@@ -413,20 +505,22 @@ export default function NightPlannerPage() {
                 {routes.map((route, i) => (
                   <div key={i} className="bg-zinc-900 rounded-2xl border border-zinc-800 p-6 shadow-sm">
                     <div className="flex items-center justify-between mb-5">
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-2 flex-wrap">
                     <h3 className="font-bold text-white text-lg">Route #{i + 1}</h3>
                     <ShareButton
-                      title={`My Barcelona Night Route`}
-                      text={`🎉 My night out in Barcelona:\n🍽️ ${route.restaurant?.name ?? ''}\n🥂 ${route.previa?.name ?? ''}\n🪩 ${route.disco.name}\nTotal: ~${route.totalEstimatedCost}€`}
+                      title="Night Plan"
+                      text={buildWhatsAppText(route, filters)}
+                      url={buildPlanUrl(route, filters)}
                       label="Share"
                       variant="default"
                     />
                     <ShareButton
-                      title="Night Route"
-                      text={`🎉 My Barcelona night:\n🪩 ${route.disco.name}\n🥂 ${route.previa?.name ?? ''}\n🍽️ ${route.restaurant?.name ?? ''}\nTotal: ~${route.totalEstimatedCost}€`}
+                      title="Night Plan"
+                      text={buildWhatsAppText(route, filters)}
                       label="WhatsApp"
                       variant="whatsapp"
                     />
+                    <InAppShareButton route={route} filters={filters} />
                   </div>
                       <div className="bg-zinc-800 border border-zinc-700 rounded-xl px-3 py-1.5 text-sm">
                         <span className="text-zinc-400">Estimated cost: </span>

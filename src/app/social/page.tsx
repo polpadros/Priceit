@@ -29,7 +29,7 @@ export default function SocialPage() {
                 <span className="absolute top-1 right-1 w-2 h-2 bg-pink-500 rounded-full" />
               )}
             </Link>
-            <Link href="/social/people" className="p-2 text-zinc-400 hover:text-pink-400 transition-colors">
+            <Link href="/social/connections" className="p-2 text-zinc-400 hover:text-pink-400 transition-colors" title="Followers & Following">
               <Users className="w-5 h-5" />
             </Link>
           </div>

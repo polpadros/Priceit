@@ -79,14 +79,21 @@ export default function UserProfilePage() {
             <p className="font-black text-white text-xl mb-1">{displayName}</p>
             <div className="flex gap-5 text-center mb-3">
               {[
-                { label: 'Posts', value: photos.length },
-                { label: 'Followers', value: followerCount },
-                { label: 'Following', value: followingCount },
+                { label: 'Posts', value: photos.length, link: null },
+                { label: 'Followers', value: followerCount, link: isMe ? '/social/connections' : null },
+                { label: 'Following', value: followingCount, link: isMe ? '/social/connections' : null },
               ].map(s => (
-                <div key={s.label}>
-                  <p className="font-black text-white text-lg">{s.value}</p>
-                  <p className="text-zinc-500 text-xs">{s.label}</p>
-                </div>
+                s.link ? (
+                  <Link key={s.label} href={s.link} className="hover:opacity-70 transition-opacity">
+                    <p className="font-black text-white text-lg">{s.value}</p>
+                    <p className="text-zinc-500 text-xs">{s.label}</p>
+                  </Link>
+                ) : (
+                  <div key={s.label}>
+                    <p className="font-black text-white text-lg">{s.value}</p>
+                    <p className="text-zinc-500 text-xs">{s.label}</p>
+                  </div>
+                )
               ))}
             </div>
             {!isMe && (

@@ -21,13 +21,30 @@ export default function ChatPage() {
   useEffect(() => {
     if (!id || !user) return
     loadMessages()
+
     // Real-time subscription
-    const sub = getSupabase()
-      .channel(`chat:${id}`)
-      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages', filter: `conversation_id=eq.${id}` },
-        (payload) => setMessages(prev => [...prev, payload.new as Message]))
+    const supabase = getSupabase()
+    const sub = supabase
+      .channel(`chat-${id}`)
+      .on('postgres_changes', {
+        event: 'INSERT', schema: 'public', table: 'messages',
+        filter: `conversation_id=eq.${id}`
+      }, (payload) => {
+        setMessages(prev => {
+          // Avoid duplicates
+          if (prev.find(m => m.id === payload.new.id)) return prev
+          return [...prev, payload.new as Message]
+        })
+      })
       .subscribe()
-    return () => { sub.unsubscribe() }
+
+    // Polling fallback every 3s in case realtime is slow
+    const poll = setInterval(() => loadMessages(), 3000)
+
+    return () => {
+      sub.unsubscribe()
+      clearInterval(poll)
+    }
   }, [id, user])
 
   useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: 'smooth' }) }, [messages])
@@ -47,7 +64,15 @@ export default function ChatPage() {
     setSending(true)
     const content = text.trim()
     setText('')
-    await getSupabase().from('messages').insert({ conversation_id: id, sender_id: user.id, content })
+    // Optimistic update — show message immediately
+    const optimistic: Message = {
+      id: `temp-${Date.now()}`, conversation_id: id, sender_id: user.id,
+      content, type: 'text', metadata: null, read_at: null, created_at: new Date().toISOString()
+    }
+    setMessages(prev => [...prev, optimistic])
+    const { data } = await getSupabase().from('messages')
+      .insert({ conversation_id: id, sender_id: user.id, content }).select().single()
+    if (data) setMessages(prev => prev.map(m => m.id === optimistic.id ? data as Message : m))
     await getSupabase().from('conversations').update({ last_message: content, last_message_at: new Date().toISOString() }).eq('id', id)
     setSending(false)
   }

@@ -13,6 +13,7 @@ export default function ProfilePage() {
   const { favorites } = useFavorites()
   const [username, setUsername] = useState('')
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
+  const [imgError, setImgError] = useState(false)
   const [uploading, setUploading] = useState(false)
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
@@ -41,32 +42,41 @@ export default function ProfilePage() {
     setUploading(true)
     try {
       const supabase = getSupabase()
-      // Convert to webp for better compatibility
-      const ext = 'jpg'
-      const path = `avatars/${user.id}/avatar.${ext}`
+      // Use real extension from file
+      const ext = file.name.split('.').pop()?.toLowerCase() ?? 'jpg'
+      const path = `avatars/${user.id}.${ext}`
 
-      // Upload with upsert to replace existing
+      // Remove old avatar first (any extension)
+      await supabase.storage.from('venue-photos').remove([
+        `avatars/${user.id}.jpg`,
+        `avatars/${user.id}.jpeg`,
+        `avatars/${user.id}.png`,
+        `avatars/${user.id}.webp`,
+        `avatars/${user.id}.heic`,
+      ])
+
+      // Upload new avatar
       const { error: uploadError } = await supabase.storage
         .from('venue-photos')
         .upload(path, file, { upsert: true, contentType: file.type })
 
       if (uploadError) throw uploadError
 
-      // Get public URL with cache-busting
+      // Get clean public URL (no cache-busting in DB, just in state)
       const { data: { publicUrl } } = supabase.storage.from('venue-photos').getPublicUrl(path)
-      const urlWithCacheBust = `${publicUrl}?t=${Date.now()}`
-      setAvatarUrl(urlWithCacheBust)
+      const displayUrl = `${publicUrl}?v=${Date.now()}`
+      setAvatarUrl(displayUrl)
 
-      // Save to profile immediately
+      // Save clean URL to profile
       await supabase.from('profiles').upsert({
         id: user.id,
         username: username || null,
-        avatar_url: urlWithCacheBust,
+        avatar_url: publicUrl, // store clean URL, no cache buster
       })
       // Notify navbar
       window.dispatchEvent(new Event('profile-updated'))
-    } catch (e) {
-      console.error('Avatar upload error:', e)
+    } catch (e: any) {
+      console.error('Avatar upload error:', e?.message)
     }
     setUploading(false)
   }
