@@ -16,8 +16,8 @@ export function CitySelector() {
     if (btnRef.current) {
       const rect = btnRef.current.getBoundingClientRect()
       setPos({
-        top: rect.bottom + window.scrollY + 6,
-        left: rect.left + window.scrollX,
+        top: rect.bottom + 4,   // viewport coords — no scrollY needed for fixed
+        left: rect.left,
       })
     }
     setOpen(!open)
