@@ -43,38 +43,30 @@ export default function ProfilePage() {
     setUploading(true)
     try {
       const supabase = getSupabase()
-      // Use real extension from file
-      const ext = file.name.split('.').pop()?.toLowerCase() ?? 'jpg'
-      const path = `avatars/${user.id}.${ext}`
+      // Always use .jpg as extension for consistency
+      const path = `avatars/${user.id}.jpg`
 
-      // Remove old avatar first (any extension)
-      await supabase.storage.from('venue-photos').remove([
-        `avatars/${user.id}.jpg`,
-        `avatars/${user.id}.jpeg`,
-        `avatars/${user.id}.png`,
-        `avatars/${user.id}.webp`,
-        `avatars/${user.id}.heic`,
-      ])
-
-      // Upload new avatar
       const { error: uploadError } = await supabase.storage
         .from('venue-photos')
-        .upload(path, file, { upsert: true, contentType: file.type })
+        .upload(path, file, { upsert: true, contentType: 'image/jpeg' })
 
-      if (uploadError) throw uploadError
+      if (uploadError) {
+        alert(`Upload error: ${uploadError.message}`)
+        throw uploadError
+      }
 
-      // Get clean public URL (no cache-busting in DB, just in state)
       const { data: { publicUrl } } = supabase.storage.from('venue-photos').getPublicUrl(path)
-      const displayUrl = `${publicUrl}?v=${Date.now()}`
-      setAvatarUrl(displayUrl)
 
-      // Save clean URL to profile
+      // Show immediately in UI with cache bust
+      setAvatarUrl(`${publicUrl}?t=${Date.now()}`)
+
+      // Save clean URL to DB
       await supabase.from('profiles').upsert({
         id: user.id,
         username: username || null,
-        avatar_url: publicUrl, // store clean URL, no cache buster
+        avatar_url: publicUrl,
       })
-      // Notify navbar
+
       window.dispatchEvent(new Event('profile-updated'))
     } catch (e: any) {
       console.error('Avatar upload error:', e?.message)
