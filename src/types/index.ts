@@ -54,10 +54,18 @@ export interface UserProfile {
   created_at: string
 }
 
+export type City = 'barcelona' | 'girona'
+
+export const CITY_LABELS: Record<City, string> = {
+  barcelona: '🏙️ Barcelona',
+  girona: '🏰 Girona',
+}
+
 export interface Venue {
   id: string
   name: string
   type: VenueType
+  city?: City
   description: string
   address: string
   neighborhood: string

@@ -5,6 +5,8 @@ import { ArrowLeft, Camera, Save, Loader2, Heart } from 'lucide-react'
 import { Avatar } from '@/components/ui/Avatar'
 import { useAuth } from '@/contexts/AuthContext'
 import { useFavorites } from '@/contexts/FavoritesContext'
+import { useCity } from '@/contexts/CityContext'
+import { CITY_LABELS, type City } from '@/types'
 import { getSupabase } from '@/lib/supabase'
 import { mockVenues } from '@/lib/mock-data'
 import { VenueCard } from '@/components/venue/VenueCard'
@@ -12,6 +14,7 @@ import { VenueCard } from '@/components/venue/VenueCard'
 export default function ProfilePage() {
   const { user, signOut } = useAuth()
   const { favorites } = useFavorites()
+  const { city, setCity } = useCity()
   const [username, setUsername] = useState('')
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
   const [imgError, setImgError] = useState(false)
@@ -151,6 +154,24 @@ export default function ProfilePage() {
                 className="w-full bg-zinc-800 border border-zinc-700 focus:border-pink-500/50 text-white rounded-xl px-4 py-2.5 outline-none placeholder:text-zinc-600 text-sm"
               />
               <p className="text-zinc-600 text-xs mt-1">This is how others will see you</p>
+
+              {/* Default city */}
+              <div className="mt-4">
+                <label className="block text-sm font-semibold text-zinc-400 mb-2">Default city</label>
+                <div className="flex gap-2">
+                  {(Object.entries(CITY_LABELS) as [City, string][]).map(([key, label]) => (
+                    <button key={key} onClick={() => setCity(key)}
+                      className={`flex-1 py-2 rounded-xl text-sm font-semibold border transition-colors ${
+                        city === key
+                          ? 'bg-pink-500 text-white border-pink-500'
+                          : 'bg-zinc-800 text-zinc-400 border-zinc-700 hover:border-pink-500/50'
+                      }`}>
+                      {label}
+                    </button>
+                  ))}
+                </div>
+                <p className="text-zinc-600 text-xs mt-1">The app will open on your default city</p>
+              </div>
             </div>
           </div>
 

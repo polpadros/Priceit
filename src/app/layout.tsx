@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { AuthProvider } from '@/contexts/AuthContext'
 import { FavoritesProvider } from '@/contexts/FavoritesContext'
 import { SocialProvider } from '@/contexts/SocialContext'
+import { CityProvider } from '@/contexts/CityContext'
 import { AuthButton } from '@/components/auth/AuthButton'
 
 const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })
@@ -21,6 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="min-h-full flex flex-col bg-zinc-950">
         <AuthProvider>
           <FavoritesProvider>
+          <CityProvider>
           <SocialProvider>
           {/* Nav — black/gold */}
           <nav className="sticky top-0 z-50 bg-zinc-950/95 backdrop-blur-md border-b border-pink-500/10">
@@ -50,6 +52,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {children}
 
           </SocialProvider>
+          </CityProvider>
           </FavoritesProvider>
           <footer className="border-t border-zinc-800 bg-zinc-950 mt-auto">
             <div className="max-w-6xl mx-auto px-4 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-zinc-600">

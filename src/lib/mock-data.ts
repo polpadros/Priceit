@@ -66,6 +66,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: '1', name: 'Opium Barcelona', type: 'discoteca',
+    city: 'barcelona',
     description: 'One of Barcelona\'s most famous clubs, right on the beach at the Olympic Port. Combines a Mediterranean restaurant, sea-view terrace and one of the city\'s best dancefloors. Capacity 3,000+. Considered top 10 worldwide.',
     address: 'Passeig Marítim de la Barceloneta, 34', neighborhood: 'Barceloneta',
     lat: 41.3854, lng: 2.1974,
@@ -86,6 +87,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: '2', name: 'Razzmatazz', type: 'discoteca',
+    city: 'barcelona',
     description: 'Barcelona\'s only "hyperclub" with 5 rooms and completely different music styles. Capacity 4,000+. Reference for alternative and electronic music. Hosts international concerts and world-renowned club nights. Top 100 clubs worldwide.',
     address: 'Carrer dels Almogàvers, 122', neighborhood: 'Poblenou',
     lat: 41.4009, lng: 2.1972,
@@ -108,6 +110,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: '3', name: 'Sutton Club', type: 'discoteca',
+    city: 'barcelona',
     description: 'Iconic club in the upper part of Barcelona, favourite of the locals. Exclusive and elegant crowd, strict door policy. Top 20 clubs worldwide. The go-to spot for Barcelona\'s in-crowd.',
     address: 'Carrer de Tuset, 13', neighborhood: 'Zona Alta',
     lat: 41.3974, lng: 2.1504,
@@ -128,6 +131,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: '4', name: 'Pacha Barcelona', type: 'discoteca',
+    city: 'barcelona',
     description: 'The Ibiza legend lands in Barcelona, right on the seafront. Glamorous atmosphere, international DJs and renowned themed parties. Includes restaurant and lounge area. Famous for "El Paripé" afternoon parties and exclusive events.',
     address: 'Passeig Marítim de la Barceloneta, 38', neighborhood: 'Barceloneta',
     lat: 41.3856, lng: 2.1978,
@@ -147,6 +151,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: '5', name: 'Shôko Club', type: 'discoteca',
+    city: 'barcelona',
     description: 'Beach club with Asian fusion restaurant and nightclub. Located right next to Opium — together they form the heart of the Olympic Port nightlife. Spectacular terrace with sea views. Top 5 clubs worldwide at its peak.',
     address: 'Passeig Marítim de la Barceloneta, 36', neighborhood: 'Barceloneta',
     lat: 41.3855, lng: 2.1976,
@@ -166,6 +171,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: '6', name: 'Otto Zutz', type: 'discoteca',
+    city: 'barcelona',
     description: 'Hip-Hop and Reggaeton temple with 3 floors of different music. Mixed crowd of local uni students and international tourists. 4-floor modernist building converted into a club. Accessible guest-list policy.',
     address: 'Carrer de Lincoln, 15', neighborhood: 'Zona Alta',
     lat: 41.4005, lng: 2.1430,
@@ -185,6 +191,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: '7', name: 'Sala Apolo', type: 'discoteca',
+    city: 'barcelona',
     description: 'Historic 1940s venue converted into a reference for alternative music. Live concerts and club nights. La Nitsa is Barcelona\'s flagship electronic session. Iconic space with vintage decor. Prices vary by event — auto-synced.',
     address: 'Carrer Nou de la Rambla, 113', neighborhood: 'Paral·lel',
     lat: 41.3745, lng: 2.1647,
@@ -204,6 +211,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: '8', name: 'Bling Bling Barcelona', type: 'discoteca',
+    city: 'barcelona',
     description: 'The most exclusive and glamorous club in Barcelona, the reference for the local high society. Luxurious design, very selective door policy and VIP atmosphere par excellence. Top 15 clubs worldwide. Direct neighbour of Sutton on Carrer Tuset.',
     address: 'Carrer de Tuset, 10', neighborhood: 'Zona Alta',
     lat: 41.3971, lng: 2.1498,
@@ -223,6 +231,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: '9', name: 'La Fira', type: 'discoteca',
+    city: 'barcelona',
     description: 'Themed club set in a 1920s fairground. Unique decor with fairground mirrors, carousel horses and neon lights. Very popular with uni students. Relaxed and accessible atmosphere. Two rooms with different music.',
     address: 'Carrer de Villarroel, 207', neighborhood: 'Eixample',
     lat: 41.3920, lng: 2.1545,
@@ -242,6 +251,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: '10', name: 'Noxe (Hotel W)', type: 'discoteca',
+    city: 'barcelona',
     description: 'Club on floor 26 of the iconic Hotel W Barcelona, with 360° panoramic views over the city and the Mediterranean. Glamorous and exclusive atmosphere. Ideal for hotel guests and luxury crowd.',
     address: 'Plaça de la Rosa dels Vents, 1 (Floor 26, Hotel W)', neighborhood: 'Barceloneta',
     lat: 41.3720, lng: 2.1782,
@@ -261,6 +271,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: '11', name: 'CDLC', type: 'discoteca',
+    city: 'barcelona',
     description: 'Reference club-restaurant at the Vila Olímpica. Combines Asian fusion restaurant, lounge terrace with sofas and nightclub. Open every day. Exclusive national and international crowd. VIP area with curtains for privacy. Top 100 clubs worldwide.',
     address: 'Passeig Marítim de la Barceloneta, 32', neighborhood: 'Barceloneta',
     lat: 41.3853, lng: 2.1972,
@@ -280,6 +291,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: '12', name: 'Jamboree', type: 'discoteca',
+    city: 'barcelona',
     description: 'Jazz club and nightclub in the basement of Plaça Reial. Since 1960, a reference for live jazz and hip-hop. Monday jazz concerts (WTF Jazz Club). Intimate and underground atmosphere, very authentic.',
     address: 'Plaça Reial, 17', neighborhood: 'Barri Gòtic',
     lat: 41.3797, lng: 2.1750,
@@ -299,6 +311,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: '26', name: 'Sea Sea Club', type: 'discoteca',
+    city: 'barcelona',
     description: 'Open-air summer club with pool, terrace and 4 rooms. The go-to destination for festival pool parties in summer. Restaurant option. Huge capacity. International DJs. Very popular during Sónar festival season.',
     address: 'Rambla Prim, 17 (Port Fòrum)', neighborhood: 'Fòrum',
     lat: 41.4100, lng: 2.2250,
@@ -317,6 +330,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: '4_in', name: 'Input Dance Club', type: 'discoteca',
+    city: 'barcelona',
     description: 'Temple of underground techno and electronic music. Best sound system in Barcelona.',
     address: 'Carrer de Gran Via de les Corts Catalanes, 235', neighborhood: 'Sants',
     lat: 41.3748, lng: 2.1378,
@@ -332,6 +346,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: '5_mac', name: 'Macarena Club', type: 'discoteca',
+    city: 'barcelona',
     description: 'Hidden gem in the Gothic Quarter. Reggaeton and Latin music all night long. Free entry.',
     address: 'Carrer Nou de Sant Francesc, 5', neighborhood: 'Barri Gòtic',
     lat: 41.3797, lng: 2.1766,
@@ -349,6 +364,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: '13', name: 'Sips', type: 'bar',
+    city: 'barcelona',
     description: 'Voted #1 in the World\'s 50 Best Bars. Founded by Simone Caporale and Marc Álvarez. Minimalist and innovative approach, signature cocktails. Reservation practically required. Inside there\'s a secret bar "Esencia" with a liquid tasting menu.',
     address: 'Carrer de Muntaner, 108', neighborhood: 'Eixample',
     lat: 41.3870, lng: 2.1545,
@@ -367,6 +383,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: '14', name: 'Paradiso', type: 'bar',
+    city: 'barcelona',
     description: 'Speakeasy hidden behind a fridge in a pastrami deli. One of the world\'s best cocktail bars. Stunning modernist interior that feels like another world. Reservation strongly recommended. World\'s 50 Best Bars award winner.',
     address: 'Carrer de Rera Palau, 4', neighborhood: 'El Born',
     lat: 41.3845, lng: 2.1819,
@@ -385,6 +402,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: '15', name: 'Dr. Stravinsky', type: 'bar',
+    city: 'barcelona',
     description: 'Signature cocktail bar with an interior evoking an alchemist\'s laboratory. Shelves full of flasks and bottles. Innovative and surprising cocktail menu. One of El Born\'s best-kept secrets. Intimate bohemian atmosphere.',
     address: 'Carrer dels Mirallers, 5', neighborhood: 'El Born',
     lat: 41.3843, lng: 2.1816,
@@ -403,6 +421,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: '16', name: 'Dry Martini', type: 'bar',
+    city: 'barcelona',
     description: 'A Barcelona cocktail legend since 1978. Temple of the classic Martini, with the recipe on the wall. Elegant and timeless atmosphere. Run by Javier de las Muelas, a world reference in mixology. Featured in countless international guides.',
     address: 'Carrer d\'Aribau, 162', neighborhood: 'Eixample',
     lat: 41.3912, lng: 2.1548,
@@ -421,6 +440,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: 'marsella', name: 'Bar Marsella', type: 'bar',
+    city: 'barcelona',
     description: 'The oldest bar in Barcelona (1820). Absinthe and classic cocktails in a unique atmosphere. A must-visit.',
     address: 'Carrer dels Escudellers Blancs, 3', neighborhood: 'Barri Gòtic',
     lat: 41.3797, lng: 2.1748,
@@ -438,6 +458,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: '17', name: 'Espit Chupitos', type: 'previa',
+    city: 'barcelona',
     description: 'Specialist shot bar with hundreds of themed and surprising options. The go-to place to kick off the night. Budget prices (~€2/shot). Great for groups. Two strategic locations: Eixample (near Sutton/Otto Zutz) and Gothic (near Plaça Reial).',
     address: 'Carrer d\'Aribau, 77 / Passatge de Colom, 8', neighborhood: 'Eixample',
     lat: 41.3882, lng: 2.1560,
@@ -457,6 +478,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: '18', name: 'Milk Bar', type: 'previa',
+    city: 'barcelona',
     description: 'Classic cocktail bar in the Gothic Quarter with retro decor and lively atmosphere. Open all day, ideal to start the night. Quality cocktails at great prices. Close to the clubs of Plaça Reial (Jamboree, Sidecar, Karma).',
     address: 'Carrer d\'en Gignàs, 21', neighborhood: 'Barri Gòtic',
     lat: 41.3807, lng: 2.1768,
@@ -476,6 +498,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: '19', name: 'Marmalade', type: 'previa',
+    city: 'barcelona',
     description: 'Restaurant-cocktail bar with an elegant-vintage interior inspired by "1950s Havana meets New York". High ceilings, ambient lighting and glamorous kitsch furniture. Extensive cocktail menu. Open all day. Close to Sala Apolo.',
     address: 'Carrer Riera Alta, 4–6', neighborhood: 'El Raval',
     lat: 41.3815, lng: 2.1678,
@@ -495,6 +518,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: '20', name: 'El Xampanyet', type: 'previa',
+    city: 'barcelona',
     description: 'Iconic tapas and cava bar in El Born since the 1940s. The perfect spot for an aperitivo or pre-party with authentic tapas. Very popular house cava. Genuinely Barcelonian atmosphere.',
     address: 'Carrer de Montcada, 22', neighborhood: 'El Born',
     lat: 41.3843, lng: 2.1811,
@@ -515,6 +539,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: '21', name: 'Bar Calders', type: 'previa',
+    city: 'barcelona',
     description: 'Iconic bar in Sant Antoni, epicentre of Barcelona\'s most hipster neighbourhood. Very popular terrace, vibrant neighbourhood atmosphere. The meeting point of Carrer Parlament, with the best terraces in the area. Perfect for a relaxed social pre-party.',
     address: 'Carrer del Parlament, 25', neighborhood: 'Sant Antoni',
     lat: 41.3820, lng: 2.1601,
@@ -534,6 +559,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: 'laprevia', name: 'La Previa', type: 'previa',
+    city: 'barcelona',
     description: 'Lively pre-party bar in Poblenou with live DJs playing current hits. Young, mixed crowd — perfect before heading to Razzmatazz or Wolf.',
     address: 'Carrer de Pallars, Barcelona', neighborhood: 'Poblenou',
     lat: 41.4013, lng: 2.1950,
@@ -553,6 +579,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: 'ovellam', name: "L'Ovella Negra (Marina)", type: 'previa',
+    city: 'barcelona',
     description: 'University-favourite tavern right next to Razzmatazz — the perfect pre-party for big groups. Relaxed vibe, cheap pitchers and sangria.',
     address: 'Carrer dels Almogàvers, Poblenou', neighborhood: 'Poblenou',
     lat: 41.4007, lng: 2.1960,
@@ -574,6 +601,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: '22', name: 'CDLC Restaurant', type: 'restaurant',
+    city: 'barcelona',
     description: 'Lounge restaurant serving Asian fusion cuisine on the seafront. DJ sessions during dinner. Terrace with sofas and Mediterranean views. Open every day. Perfect for dinner that naturally flows into the adjacent club. Exclusive atmosphere.',
     address: 'Passeig Marítim de la Barceloneta, 32', neighborhood: 'Barceloneta',
     lat: 41.3853, lng: 2.1972,
@@ -593,6 +621,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: '23', name: 'Cachitos', type: 'restaurant',
+    city: 'barcelona',
     description: 'Tapas and Mediterranean-Spanish restaurant with a festive atmosphere and music sessions. Sharing concept. Quality rice dishes, tapas and montaditos. Two strategic locations. Ideal for group dinner before a night out.',
     address: 'Rambla de Catalunya, 30', neighborhood: 'Eixample',
     lat: 41.3917, lng: 2.1600,
@@ -611,6 +640,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: '24', name: 'Gatsby Barcelona', type: 'restaurant',
+    city: 'barcelona',
     description: 'High-end restaurant inspired by the Jazz Age of the 1920s, on the same Carrer Tuset as Sutton and Bling Bling. Ideal for a luxurious dinner before the clubs next door. Elegant and festive, live DJ sessions.',
     address: 'Carrer de Tuset, 19', neighborhood: 'Zona Alta',
     lat: 41.3976, lng: 2.1505,
@@ -629,6 +659,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: '25', name: 'Shôko Restaurant', type: 'restaurant',
+    city: 'barcelona',
     description: 'Japanese-Peruvian fusion (Nikkei) restaurant on the seafront. Terrace opens with a DJ at sunset and transforms into a club at night. Perfect for dinner and staying for the party in the same venue. Mediterranean views.',
     address: 'Passeig Marítim de la Barceloneta, 36', neighborhood: 'Barceloneta',
     lat: 41.3855, lng: 2.1976,
@@ -647,6 +678,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: 'pepita', name: 'La Pepita BCN', type: 'restaurant',
+    city: 'barcelona',
     description: 'Typical Barcelona patatas bravas and croquettes. Casual and quality dinner spot.',
     address: 'Carrer de Còrsega, 343', neighborhood: 'Eixample',
     lat: 41.3984, lng: 2.1631,
@@ -663,6 +695,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: 'bbplus', name: 'BB+', type: 'previa',
+    city: 'barcelona',
     description: 'Popular pre-party cocktail bar in Eixample. Affordable drinks, relaxed vibe and a young crowd. Great spot before heading to Sutton or Otto Zutz. Known for strong cocktails at budget-friendly prices.',
     address: 'Carrer del Rosselló, 164', neighborhood: 'Eixample',
     lat: 41.3938, lng: 2.1558,
@@ -685,6 +718,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: 'lecyrano', name: 'Le Cyrano', type: 'previa',
+    city: 'barcelona',
     description: 'Iconic self-service bar on Aribau — you pour your own drink! The bartender hands you a bottle of spirit and a mixer for just €3. Gets packed fast, arrive before 11pm. Free popcorn included. A true Barcelona institution.',
     address: 'Carrer d\'Aribau, 154', neighborhood: 'Eixample',
     lat: 41.3903, lng: 2.1536,
@@ -706,6 +740,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: '4latas', name: '4 Latas', type: 'previa',
+    city: 'barcelona',
     description: 'Lively tapas and cocktail bar chain with multiple locations across Barcelona. Live music, great cocktails and a party atmosphere. Multiple spots: Diagonal/Tuset, Letamendi, Granados, Poblenou. Perfect group pre-party.',
     address: 'Carrer de Tuset, 3 (also: Enric Granados 6 · Muntaner 211 · Poblenou)', neighborhood: 'Zona Alta',
     lat: 41.3970, lng: 2.1507,
@@ -729,6 +764,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: 'previaaribau', name: 'La Previa Aribau', type: 'previa',
+    city: 'barcelona',
     description: 'High-energy pre-party bar on Carrer Aribau, steps from Le Cyrano. Open every night until 03:30. Capacity for 130 people. Modern interior, strong drinks and great music. One of the best-known pre-party spots in Eixample.',
     address: 'Carrer d\'Aribau, 132', neighborhood: 'Eixample',
     lat: 41.3897, lng: 2.1540,
@@ -753,6 +789,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: 'laterrazza', name: 'La Terrrazza', type: 'discoteca',
+    city: 'barcelona',
     description: 'Open-air electronic club at Poble Espanyol on Montjuïc. Dancing under the stars every weekend from April to November since 1995. Stunning 1920s architecture and unique open-air festival atmosphere. A Barcelona electronic summer institution.',
     address: 'Av. Francesc Ferrer i Guàrdia, 13 (Poble Espanyol)', neighborhood: 'Montjuïc',
     lat: 41.3696, lng: 2.1496,
@@ -771,6 +808,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: 'bikini', name: 'Bikini Barcelona', type: 'discoteca',
+    city: 'barcelona',
     description: 'The oldest entertainment venue in Barcelona, open since 1953. Reference for Latin music and salsa. Hosts live concerts by national and international artists. Two rooms with different vibes. Over 70 years of nightlife history.',
     address: 'Avinguda Diagonal, 547', neighborhood: 'Les Corts',
     lat: 41.3877, lng: 2.1362,
@@ -789,6 +827,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: 'moog', name: 'Moog Club', type: 'discoteca',
+    city: 'barcelona',
     description: 'Cult underground club in El Raval, open 365 days a year. Small intimate venue with minimal decor and maximum intensity. Main room dedicated to pure techno; Villarosa room does pop-rock. A reference for underground electronic music since the 90s.',
     address: "Carrer de l'Arc del Teatre, 3", neighborhood: 'El Raval',
     lat: 41.3783, lng: 2.1754,
@@ -807,6 +846,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: 'inputhifi', name: 'INPUT High Fidelity', type: 'discoteca',
+    city: 'barcelona',
     description: 'Barcelona\'s most technically advanced techno club. State-of-the-art Funktion-One sound system and circular design with 360° LED screen. An immersive experience that blurs the line between sound and vision. International reference for electronic music.',
     address: 'Av. Francesc Ferrer i Guàrdia, 13 (Poble Espanyol)', neighborhood: 'Montjuïc',
     lat: 41.3697, lng: 2.1498,
@@ -825,6 +865,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: 'boris', name: 'Boris Club', type: 'discoteca',
+    city: 'barcelona',
     description: 'The most exclusive electronic club in the upper part of Barcelona. Electronic music, elegance and impeccable sound in a selective setting. Avant-garde design, private areas and spectacular lighting. Meeting point for the Barcelona elite who love electronic music.',
     address: 'Carrer de Rosselló, 208', neighborhood: 'Eixample',
     lat: 41.3940, lng: 2.1555,
@@ -843,6 +884,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: 'twenties', name: 'Twenties Barcelona', type: 'discoteca',
+    city: 'barcelona',
     description: 'Elegant club next to Boris Club in Eixample. Sophisticated atmosphere and selective crowd. Commercial and trendy music. More accessible alternative to the Zona Alta clubs without being as exclusive as Sutton or Bling Bling.',
     address: 'Carrer de Rosselló, 208', neighborhood: 'Eixample',
     lat: 41.3941, lng: 2.1556,
@@ -861,6 +903,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: 'latinpalace', name: 'Latin Palace', type: 'discoteca',
+    city: 'barcelona',
     description: 'The former Danzatoria, reinvented as the big Latin club of the Zona Alta. Two dancefloors with hip hop and electronic music. Bachelor parties and large groups welcome. Specialised in Latin music: salsa, bachata, reggaeton and Caribbean sounds.',
     address: 'Avinguda Diagonal, 477', neighborhood: 'Zona Alta',
     lat: 41.3933, lng: 2.1402,
@@ -879,6 +922,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: 'ku', name: 'Ku Barcelona', type: 'discoteca',
+    city: 'barcelona',
     description: 'Beach club with seafront terrace at the heart of the Olympic Port. Festive and international atmosphere. Part of the Vila Olímpica circuit alongside Opium, Shôko and CDLC. Perfect for summer nights with house and pop music.',
     address: 'Passeig Marítim de la Barceloneta, 42', neighborhood: 'Barceloneta',
     lat: 41.3857, lng: 2.1982,
@@ -898,6 +942,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: 'downtown', name: 'Downtown Barcelona', type: 'discoteca',
+    city: 'barcelona',
     description: 'Club at the Olympic Port with terrace and international crowd. Commercial music, pop and reggaeton. Very popular with tourists and young locals. Relaxed and festive atmosphere, ideal for a fun night of dancing without pretensions.',
     address: 'Passeig Marítim de la Barceloneta, 30', neighborhood: 'Barceloneta',
     lat: 41.3852, lng: 2.1970,
@@ -919,6 +964,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: 'plata', name: 'Plata Cocktail Bar', type: 'bar',
+    city: 'barcelona',
     description: 'Innovative cocktail bar in Eixample combining pop art, neon lights and signature mixology. Huge social media presence thanks to its photogenic aesthetic. Creative cocktail menu in a modern and vibrant atmosphere. Popular with a young and trendy crowd.',
     address: 'Carrer del Consell de Cent, 233', neighborhood: 'Eixample',
     lat: 41.3876, lng: 2.1572,
@@ -937,6 +983,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: 'bettyfords', name: "Betty Ford's", type: 'bar',
+    city: 'barcelona',
     description: 'Bohemian indie bar in El Born known for creative cocktails and craft beers. Pleasant terrace and lively atmosphere night after night. Popular with creative young locals and bohemians of the neighbourhood.',
     address: 'Carrer de Joaquín Costa, 56', neighborhood: 'El Born',
     lat: 41.3834, lng: 2.1765,
@@ -958,6 +1005,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: 'barcanyete', name: 'Bar Cañete', type: 'previa',
+    city: 'barcelona',
     description: 'Modern high-quality tapas tavern in El Raval. Long bar counter with vibrant atmosphere and excellent cuisine. Ideal for tapas and wine before heading out. Highly praised by critics and locals alike. Sophisticated yet accessible.',
     address: 'Carrer de la Unió, 17', neighborhood: 'El Raval',
     lat: 41.3792, lng: 2.1700,
@@ -977,6 +1025,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: 'morrofi', name: 'Morro Fi', type: 'previa',
+    city: 'barcelona',
     description: 'Modern vermuteria bar in Sant Antoni, popular for great vermouths, cocktails and neighbourhood atmosphere. Ideal for a long and relaxed pre-party. Very popular with young locals. Lively terrace on weekends.',
     address: 'Carrer del Consell de Cent, 171', neighborhood: 'Sant Antoni',
     lat: 41.3810, lng: 2.1578,
@@ -996,6 +1045,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: 'bodegasepulveda', name: 'Bodega Sepúlveda', type: 'previa',
+    city: 'barcelona',
     description: 'Wine and vermouth bar with great atmosphere in Sant Antoni. Open all day, ideal for long aperitivos and lively pre-parties. Popular with young locals. Part of the Parlament Street bar circuit. Authentic bodega converted into a modern bar.',
     address: 'Carrer de Sepúlveda, 173', neighborhood: 'Sant Antoni',
     lat: 41.3815, lng: 2.1593,
@@ -1017,6 +1067,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: 'nuba', name: 'Nuba Barcelona', type: 'restaurant',
+    city: 'barcelona',
     description: 'Zona Alta classic where the restaurant slowly transforms into a club as the night progresses. Live DJs, international author menus and quality cocktails. Seductive terrace and exclusive atmosphere. Open Wed–Sun.',
     address: 'Carrer de Granja Elena, 1', neighborhood: 'Zona Alta',
     lat: 41.4003, lng: 2.1428,
@@ -1036,6 +1087,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: 'bravo', name: 'Bravo (Hotel W)', type: 'restaurant',
+    city: 'barcelona',
     description: 'Mediterranean restaurant at Hotel W Barcelona with spectacular sea views. Barcelona tapas with local quality produce and grilled dishes. Perfect for a luxury dinner with sea views before continuing at the Wet Deck or Noxe. Premium atmosphere.',
     address: 'Plaça de la Rosa dels Vents, 1 (Hotel W)', neighborhood: 'Barceloneta',
     lat: 41.3721, lng: 2.1783,
@@ -1054,6 +1106,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: 'mareaalta', name: 'Marea Alta', type: 'restaurant',
+    city: 'barcelona',
     description: 'Fish and seafood restaurant on floor 24 of Torre Colón with 360° panoramic views over Barcelona and the Mediterranean. Daily-changing menu with the best seasonal fish. Elegant and exclusive, ideal for a special dinner. Saturday midday Mimosa Party.',
     address: 'Avinguda de les Drassanes, 6 (Torre Colón, floor 24)', neighborhood: 'Barri Gòtic',
     lat: 41.3768, lng: 2.1793,
@@ -1072,6 +1125,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: 'wetdeck', name: 'Wet Deck (Hotel W)', type: 'restaurant',
+    city: 'barcelona',
     description: "Barcelona's most exclusive pool terrace, at Hotel W. Centre of attention every summer with Sunday Wet Deck Summer Series. DJs, dancers, fireworks and sea views. High-quality snacks and cocktails menu. Ibiza-meets-Barcelona atmosphere.",
     address: 'Plaça de la Rosa dels Vents, 1 (Hotel W, terrace)', neighborhood: 'Barceloneta',
     lat: 41.3722, lng: 2.1784,
@@ -1090,6 +1144,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: 'mood', name: 'Mood Rooftop', type: 'restaurant',
+    city: 'barcelona',
     description: 'Rooftop bar-restaurant with panoramic city views. Mediterranean cuisine with fresh ingredients, creative cocktails and sophisticated atmosphere. Live jazz and hip-hop music on some evenings. Very popular for afternoon sessions and special dinners.',
     address: 'Gran Via de les Corts Catalanes, 616 (Hotel Gallery)', neighborhood: 'Eixample',
     lat: 41.3895, lng: 2.1608,
@@ -1108,6 +1163,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: 'gobeach', name: 'Go Beach Club', type: 'restaurant',
+    city: 'barcelona',
     description: 'Beach club with restaurant, pool and live music sessions. Singing and dancing shows during dinner, then nightclub after. 1920s decor. Ideal for groups combining dinner and a party in one place. Part of the Sea Sea complex.',
     address: 'Rambla Prim, 17 (Port Fòrum)', neighborhood: 'Fòrum',
     lat: 41.4101, lng: 2.2251,
@@ -1126,6 +1182,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: 'sohohouse', name: 'Soho House Barcelona', type: 'restaurant',
+    city: 'barcelona',
     description: 'International private members club with restaurant and rooftop pool bar with exceptional views. The upper floors offer quality cocktails, Italian food and sea-and-city views. Restaurant open to all; rooftop exclusive to members. Creative and sophisticated crowd.',
     address: 'Plaça de Catalunya, 10', neighborhood: 'Eixample',
     lat: 41.3870, lng: 2.1694,
@@ -1144,6 +1201,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: 'elguzzo', name: 'El Guzzo', type: 'restaurant',
+    city: 'barcelona',
     description: 'El Born restaurant with live jazz, blues and soul concerts every night. Creative Mediterranean cuisine and excellent wine selection. One of the best places in Barcelona to combine a quality dinner with live music. Bohemian and authentic atmosphere.',
     address: 'Carrer dels Flassaders, 49', neighborhood: 'El Born',
     lat: 41.3839, lng: 2.1810,
@@ -1162,6 +1220,7 @@ export const mockVenues: VenueWithDetails[] = [
 
   {
     id: 'salamilano', name: 'Sala Milano', type: 'restaurant',
+    city: 'barcelona',
     description: 'Classic restaurant with live jazz shows. Jazz menu from €29 includes concert. Quality Italian and Mediterranean cuisine. The perfect option for an elegant dinner with live music. Elegant and nostalgic atmosphere. A true Barcelona classic since the 1950s.',
     address: 'Ronda de la Universitat, 35', neighborhood: 'Eixample',
     lat: 41.3876, lng: 2.1660,

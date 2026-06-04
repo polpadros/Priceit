@@ -1,72 +1,38 @@
 'use client'
-import { useEffect, useRef } from 'react'
 import type { VenueWithDetails } from '@/types'
 
 export function VenueMap({
   venues,
-  selectedId,
-  onSelect,
-  height = '400px',
+  height = '300px',
 }: {
   venues: VenueWithDetails[]
   selectedId?: string
   onSelect?: (id: string) => void
   height?: string
 }) {
-  const mapRef = useRef<HTMLDivElement>(null)
-  const mapInstanceRef = useRef<any>(null)
+  if (venues.length === 0) return null
 
-  useEffect(() => {
-    if (typeof window === 'undefined' || !mapRef.current) return
-    if (mapInstanceRef.current) return
+  // For single venue use place embed, for multiple use the first
+  const primary = venues[0]
+  const { lat, lng } = primary
 
-    // Dynamic import per evitar SSR issues amb Leaflet
-    import('leaflet').then((L) => {
-      // Fix icones Leaflet amb Next.js
-      const DefaultIcon = L.icon({
-        iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-        shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-        iconSize: [25, 41],
-        iconAnchor: [12, 41],
-        popupAnchor: [1, -34],
-      })
-
-      const map = L.map(mapRef.current!).setView([41.3874, 2.1686], 13)
-      mapInstanceRef.current = map
-
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-      }).addTo(map)
-
-      venues.forEach((venue) => {
-        const marker = L.marker([venue.lat, venue.lng], { icon: DefaultIcon })
-          .addTo(map)
-          .bindPopup(
-            `<div class="font-semibold">${venue.name}</div><div class="text-sm text-gray-600">${venue.neighborhood}</div>`
-          )
-
-        if (onSelect) {
-          marker.on('click', () => onSelect(venue.id))
-        }
-      })
-    })
-
-    return () => {
-      if (mapInstanceRef.current) {
-        mapInstanceRef.current.remove()
-        mapInstanceRef.current = null
-      }
-    }
-  }, [venues, onSelect])
+  // Free Google Maps embed (no API key needed)
+  const src = `https://maps.google.com/maps?q=${lat},${lng}&t=&z=15&ie=UTF8&iwloc=&output=embed`
 
   return (
-    <>
-      <link
-        rel="stylesheet"
-        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-        crossOrigin=""
+    <div className="w-full rounded-xl overflow-hidden" style={{ height }}>
+      <iframe
+        src={src}
+        width="100%"
+        height="100%"
+        style={{ border: 0 }}
+        allowFullScreen
+        loading="lazy"
+        referrerPolicy="no-referrer-when-downgrade"
+        title={primary.name}
       />
-      <div ref={mapRef} style={{ height, width: '100%' }} className="rounded-xl z-0" />
-    </>
+    </div>
   )
 }
+
+export default VenueMap
