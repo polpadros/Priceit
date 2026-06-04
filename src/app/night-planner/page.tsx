@@ -9,6 +9,7 @@ import { mockVenues } from '@/lib/mock-data'
 import { AMBIENT_LABELS } from '@/components/ui/AmbientBadge'
 import { AmbientBadge } from '@/components/ui/AmbientBadge'
 import { StarRating } from '@/components/ui/StarRating'
+import { VenuePicker } from '@/components/venue/VenuePicker'
 import type { Ambient, NightPlanFilters, NightRoute, VenueWithDetails } from '@/types'
 
 const VenueMap = dynamic(() => import('@/components/map/VenueMap').then((m) => m.VenueMap), {
@@ -33,40 +34,46 @@ function computeRoutes(filters: NightPlanFilters): NightRoute[] {
   const matchesAmbient = (v: VenueWithDetails) =>
     filters.ambients.length === 0 || v.ambients.some((a) => filters.ambients.includes(a as Ambient))
 
-  const discos = venues.filter((v) => v.type === 'discoteca' && matchesAmbient(v))
-  const previes = venues.filter((v) => (v.type === 'previa' || v.type === 'bar') && matchesAmbient(v))
-  const restaurants = venues.filter((v) => v.type === 'restaurant')
+  // If user picked a specific disco, only use that one; otherwise filter by ambient
+  const fixedDisco = filters.fixedDiscoId ? venues.find(v => v.id === filters.fixedDiscoId) : null
+  const discoPool = fixedDisco ? [fixedDisco] : venues.filter(v => v.type === 'discoteca' && matchesAmbient(v))
+
+  const fixedPrevia = filters.fixedPreviaId ? venues.find(v => v.id === filters.fixedPreviaId) : null
+  const previes = fixedPrevia ? [fixedPrevia] : venues.filter(v => (v.type === 'previa' || v.type === 'bar') && matchesAmbient(v))
+
+  const fixedRestaurant = filters.fixedRestaurantId ? venues.find(v => v.id === filters.fixedRestaurantId) : null
+  const restaurants = fixedRestaurant ? [fixedRestaurant] : venues.filter(v => v.type === 'restaurant')
 
   const routes: NightRoute[] = []
 
-  for (const disco of discos) {
-    if (filters.neighborhood && filters.neighborhood !== 'Tots' && disco.neighborhood !== filters.neighborhood) continue
+  for (const disco of discoPool) {
+    if (!fixedDisco && filters.neighborhood && filters.neighborhood !== 'All' && disco.neighborhood !== filters.neighborhood) continue
 
-    const discoPrice = disco.prices.find((p) => p.is_current)?.amount ?? 0
+    const discoPrice = disco.prices.find(p => p.is_current)?.amount ?? 0
     if (discoPrice > filters.budget) continue
 
     const remaining = filters.budget - discoPrice
 
-    const previa = filters.includePrevia
-      ? previes.find((p) => {
-          const price = p.prices.find((pr) => pr.is_current)?.amount ?? 15
+    const previa = filters.includePrevia && !filters.customPrevia
+      ? (fixedPrevia ?? previes.find(p => {
+          const price = p.prices.find(pr => pr.is_current)?.amount ?? 15
           return price <= remaining * 0.35
-        }) ?? null
+        }) ?? null)
       : null
 
-    const previaPrice = previa ? (previa.prices.find((p) => p.is_current)?.amount ?? 0) : 0
+    const previaPrice = previa ? (previa.prices.find(p => p.is_current)?.amount ?? 0) : 0
 
-    const restaurant = filters.includeRestaurant
-      ? restaurants.find((r) => {
-          const price = r.prices.find((p) => p.is_current)?.amount ?? 20
+    const restaurant = filters.includeRestaurant && !filters.customRestaurant
+      ? (fixedRestaurant ?? restaurants.find(r => {
+          const price = r.prices.find(p => p.is_current)?.amount ?? 20
           return price <= (remaining - previaPrice) * 0.6
-        }) ?? null
+        }) ?? null)
       : null
 
-    const restaurantPrice = restaurant ? (restaurant.prices.find((p) => p.is_current)?.amount ?? 0) : 0
+    const restaurantPrice = restaurant ? (restaurant.prices.find(p => p.is_current)?.amount ?? 0) : 0
     const totalEstimatedCost = discoPrice + previaPrice + restaurantPrice
 
-    if (totalEstimatedCost <= filters.budget) {
+    if (totalEstimatedCost <= filters.budget || fixedDisco) {
       routes.push({ disco, previa, restaurant, totalEstimatedCost })
     }
   }
@@ -136,6 +143,8 @@ export default function NightPlannerPage() {
     customPrevia: '',
     customRestaurant: '',
     fixedDiscoId: null,
+    fixedPreviaId: null,
+    fixedRestaurantId: null,
   })
   const [routes, setRoutes] = useState<NightRoute[] | null>(null)
   const [searched, setSearched] = useState(false)
@@ -165,6 +174,8 @@ export default function NightPlannerPage() {
       customPrevia: '',
       customRestaurant: '',
       fixedDiscoId: null,
+      fixedPreviaId: null,
+      fixedRestaurantId: null,
     })
     setRoutes(null)
     setSearched(false)
@@ -288,38 +299,66 @@ export default function NightPlannerPage() {
 
               {/* Includes */}
               <div className="mb-6 space-y-2">
-                <label className="block text-sm font-semibold text-zinc-300 mb-2">Include in route</label>
+                <label className="block text-sm font-semibold text-zinc-300 mb-3">Choose your venues</label>
                 <div className="space-y-3">
-                  {/* Dinner */}
+                  {/* Club */}
                   <div>
-                    <label className="flex items-center gap-3 cursor-pointer mb-2">
-                      <input type="checkbox" checked={filters.includeRestaurant}
-                        onChange={e => setFilters(f => ({ ...f, includeRestaurant: e.target.checked }))}
-                        className="w-4 h-4 accent-pink-500" />
-                      <span className="text-sm text-zinc-300">🍽️ Dinner</span>
-                    </label>
-                    {filters.includeRestaurant && (
-                      <input type="text" placeholder="Or write your own (e.g. Resi Cases)"
-                        value={filters.customRestaurant}
-                        onChange={e => setFilters(f => ({ ...f, customRestaurant: e.target.value }))}
-                        className="w-full bg-zinc-800 border border-zinc-700 text-white text-xs rounded-lg px-3 py-2 outline-none focus:border-pink-500/50 placeholder:text-zinc-600 ml-7"
-                      />
-                    )}
+                    <p className="text-xs text-zinc-500 mb-1.5 flex items-center gap-1">🪩 Club <span className="text-zinc-700">(or let us pick)</span></p>
+                    <VenuePicker
+                      type="discoteca"
+                      selectedId={filters.fixedDiscoId}
+                      onSelect={v => setFilters(f => ({ ...f, fixedDiscoId: v?.id ?? null }))}
+                      placeholder="Let Priceit choose for me"
+                    />
                   </div>
+
                   {/* Pre-party */}
                   <div>
-                    <label className="flex items-center gap-3 cursor-pointer mb-2">
+                    <label className="flex items-center gap-2 mb-1.5 cursor-pointer">
                       <input type="checkbox" checked={filters.includePrevia}
                         onChange={e => setFilters(f => ({ ...f, includePrevia: e.target.checked }))}
-                        className="w-4 h-4 accent-pink-500" />
-                      <span className="text-sm text-zinc-300">🥂 Pre-party</span>
+                        className="w-3.5 h-3.5 accent-pink-500" />
+                      <p className="text-xs text-zinc-500">🥂 Pre-party <span className="text-zinc-700">(or let us pick)</span></p>
                     </label>
                     {filters.includePrevia && (
-                      <input type="text" placeholder="Or write your own (e.g. Casa Uri)"
-                        value={filters.customPrevia}
-                        onChange={e => setFilters(f => ({ ...f, customPrevia: e.target.value }))}
-                        className="w-full bg-zinc-800 border border-zinc-700 text-white text-xs rounded-lg px-3 py-2 outline-none focus:border-pink-500/50 placeholder:text-zinc-600 ml-7"
-                      />
+                      <div className="space-y-1.5">
+                        <VenuePicker
+                          type={['previa', 'bar']}
+                          selectedId={filters.fixedPreviaId}
+                          onSelect={v => setFilters(f => ({ ...f, fixedPreviaId: v?.id ?? null, customPrevia: '' }))}
+                          placeholder="Let Priceit choose for me"
+                        />
+                        <input type="text" placeholder="Or write a custom place (e.g. Casa Uri)"
+                          value={filters.customPrevia}
+                          onChange={e => setFilters(f => ({ ...f, customPrevia: e.target.value, fixedPreviaId: e.target.value ? null : f.fixedPreviaId }))}
+                          className="w-full bg-zinc-800 border border-zinc-700 text-white text-xs rounded-xl px-3 py-2.5 outline-none focus:border-pink-500/50 placeholder:text-zinc-600"
+                        />
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Dinner */}
+                  <div>
+                    <label className="flex items-center gap-2 mb-1.5 cursor-pointer">
+                      <input type="checkbox" checked={filters.includeRestaurant}
+                        onChange={e => setFilters(f => ({ ...f, includeRestaurant: e.target.checked }))}
+                        className="w-3.5 h-3.5 accent-pink-500" />
+                      <p className="text-xs text-zinc-500">🍽️ Dinner <span className="text-zinc-700">(or let us pick)</span></p>
+                    </label>
+                    {filters.includeRestaurant && (
+                      <div className="space-y-1.5">
+                        <VenuePicker
+                          type="restaurant"
+                          selectedId={filters.fixedRestaurantId}
+                          onSelect={v => setFilters(f => ({ ...f, fixedRestaurantId: v?.id ?? null, customRestaurant: '' }))}
+                          placeholder="Let Priceit choose for me"
+                        />
+                        <input type="text" placeholder="Or write a custom place (e.g. Resi Cases)"
+                          value={filters.customRestaurant}
+                          onChange={e => setFilters(f => ({ ...f, customRestaurant: e.target.value, fixedRestaurantId: e.target.value ? null : f.fixedRestaurantId }))}
+                          className="w-full bg-zinc-800 border border-zinc-700 text-white text-xs rounded-xl px-3 py-2.5 outline-none focus:border-pink-500/50 placeholder:text-zinc-600"
+                        />
+                      </div>
                     )}
                   </div>
                 </div>

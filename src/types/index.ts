@@ -154,6 +154,8 @@ export interface NightPlanFilters {
   customPrevia: string
   customRestaurant: string
   fixedDiscoId: string | null
+  fixedPreviaId: string | null
+  fixedRestaurantId: string | null
 }
 
 export interface DistanceInfo {

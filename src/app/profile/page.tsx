@@ -40,13 +40,32 @@ export default function ProfilePage() {
     if (!user) return
     setUploading(true)
     try {
-      const ext = file.name.split('.').pop()
-      const path = `avatars/${user.id}.${ext}`
       const supabase = getSupabase()
-      await supabase.storage.from('venue-photos').upload(path, file, { upsert: true })
+      // Convert to webp for better compatibility
+      const ext = 'jpg'
+      const path = `avatars/${user.id}/avatar.${ext}`
+
+      // Upload with upsert to replace existing
+      const { error: uploadError } = await supabase.storage
+        .from('venue-photos')
+        .upload(path, file, { upsert: true, contentType: file.type })
+
+      if (uploadError) throw uploadError
+
+      // Get public URL with cache-busting
       const { data: { publicUrl } } = supabase.storage.from('venue-photos').getPublicUrl(path)
-      setAvatarUrl(publicUrl)
-    } catch {}
+      const urlWithCacheBust = `${publicUrl}?t=${Date.now()}`
+      setAvatarUrl(urlWithCacheBust)
+
+      // Save to profile immediately
+      await supabase.from('profiles').upsert({
+        id: user.id,
+        username: username || null,
+        avatar_url: urlWithCacheBust,
+      })
+    } catch (e) {
+      console.error('Avatar upload error:', e)
+    }
     setUploading(false)
   }
 
@@ -94,12 +113,22 @@ export default function ProfilePage() {
           <div className="flex items-start gap-6">
             {/* Avatar */}
             <div className="relative shrink-0">
-              <div className="w-20 h-20 rounded-full overflow-hidden bg-zinc-800 border-2 border-zinc-700">
+              <div className="w-20 h-20 rounded-full overflow-hidden bg-zinc-800 border-2 border-pink-500/30">
                 {avatarUrl ? (
-                  <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+                  <img
+                    src={avatarUrl}
+                    alt="Avatar"
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      // If image fails to load, show initials
+                      (e.target as HTMLImageElement).style.display = 'none'
+                    }}
+                  />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center">
-                    <User className="w-8 h-8 text-zinc-600" />
+                  <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-pink-600 to-purple-700">
+                    <span className="text-white font-black text-2xl">
+                      {user.email?.[0]?.toUpperCase()}
+                    </span>
                   </div>
                 )}
               </div>
