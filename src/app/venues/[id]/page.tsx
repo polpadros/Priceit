@@ -11,6 +11,7 @@ import { PhotoGallery } from '@/components/venue/PhotoGallery'
 import { LiveEvents } from '@/components/venue/LiveEvents'
 import { ShareButton } from '@/components/ui/ShareButton'
 import { FavoriteButton } from '@/components/ui/FavoriteButton'
+import { InviteButton } from '@/components/social/InviteButton'
 import { getSupabase } from '@/lib/supabase'
 import { useAuth } from '@/contexts/AuthContext'
 import type { Ambient } from '@/types'
@@ -330,8 +331,9 @@ export default function VenuePage() {
           <p className="text-sm text-zinc-500 mt-3">{venue.address}, {venue.neighborhood}</p>
         </div>
 
-        {/* Share buttons */}
+        {/* Share + Invite */}
         <div className="flex flex-wrap gap-2">
+          <InviteButton venueId={venue.id} venueName={venue.name} />
           <ShareButton
             title={venue.name}
             text={`Check out ${venue.name} on Priceit Barcelona 🎉`}

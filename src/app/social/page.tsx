@@ -1,52 +1,74 @@
+'use client'
+import { useEffect } from 'react'
 import Link from 'next/link'
-import { Users, MessageCircle, Heart, Camera, ArrowRight } from 'lucide-react'
+import { MessageCircle, Users, Bell } from 'lucide-react'
+import { useSocial } from '@/contexts/SocialContext'
+import { useAuth } from '@/contexts/AuthContext'
+import { FeedPost } from '@/components/social/FeedPost'
+import { FeedUpload } from '@/components/social/FeedUpload'
 
 export default function SocialPage() {
+  const { feedPhotos, loadFeed, unreadCount } = useSocial()
+  const { user } = useAuth()
+
+  useEffect(() => { loadFeed() }, [])
+
   return (
     <main className="min-h-screen bg-zinc-950">
-      <div className="relative overflow-hidden bg-black border-b border-pink-500/20">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-pink-600/20 via-transparent to-transparent pointer-events-none" />
-        <div className="relative max-w-3xl mx-auto px-4 py-14 text-center">
-          <h1 className="text-5xl sm:text-7xl font-black mb-4 leading-none">
-            <span className="text-pink-400 drop-shadow-[0_0_30px_rgba(236,72,153,0.5)]">Social</span>
+      {/* Header */}
+      <div className="sticky top-14 z-40 bg-zinc-950/95 backdrop-blur-md border-b border-zinc-800">
+        <div className="max-w-lg mx-auto px-4 h-12 flex items-center justify-between">
+          <h1 className="font-black text-white text-lg">
+            Social <span className="text-pink-400">feed</span>
           </h1>
-          <p className="text-zinc-400 text-lg">Connect with friends, share your nights</p>
+          <div className="flex items-center gap-2">
+            <FeedUpload onUploaded={loadFeed} />
+            <Link href="/social/dm" className="relative p-2 text-zinc-400 hover:text-pink-400 transition-colors">
+              <MessageCircle className="w-5 h-5" />
+              {unreadCount > 0 && (
+                <span className="absolute top-1 right-1 w-2 h-2 bg-pink-500 rounded-full" />
+              )}
+            </Link>
+            <Link href="/social/people" className="p-2 text-zinc-400 hover:text-pink-400 transition-colors">
+              <Users className="w-5 h-5" />
+            </Link>
+          </div>
         </div>
       </div>
 
-      <div className="max-w-2xl mx-auto px-4 py-12">
-        <div className="text-center mb-10">
-          <div className="inline-flex items-center gap-2 bg-pink-500/10 border border-pink-500/20 rounded-full px-4 py-2 text-pink-400 text-sm font-semibold mb-6">
-            🚀 Coming soon
+      <div className="max-w-lg mx-auto px-4 py-6">
+        {!user && (
+          <div className="text-center py-12 bg-zinc-900 border border-zinc-800 rounded-2xl mb-6">
+            <p className="text-3xl mb-3">👥</p>
+            <p className="font-bold text-white mb-1">Sign in to see the social feed</p>
+            <p className="text-zinc-500 text-sm">Follow friends and share your nights out</p>
           </div>
-          <p className="text-zinc-400 text-lg">The social features are on the way. Here&apos;s what&apos;s coming:</p>
-        </div>
+        )}
 
-        <div className="space-y-4">
-          {[
-            { icon: Users, title: 'Friends & Following', desc: 'Follow friends and see where they go out', color: 'text-pink-400', bg: 'bg-pink-500/10' },
-            { icon: Camera, title: 'Night Photos Feed', desc: 'Browse photos from clubs posted by the community', color: 'text-purple-400', bg: 'bg-purple-500/10' },
-            { icon: Heart, title: 'Shared Favourites', desc: 'See your friends\' favourite venues', color: 'text-red-400', bg: 'bg-red-500/10' },
-            { icon: MessageCircle, title: 'Direct Messages', desc: 'Private DMs — invite friends to your night out', color: 'text-blue-400', bg: 'bg-blue-500/10' },
-          ].map(f => (
-            <div key={f.title} className="flex items-start gap-4 bg-zinc-900 border border-zinc-800 rounded-2xl p-5">
-              <div className={`${f.bg} rounded-xl p-3 shrink-0`}>
-                <f.icon className={`w-6 h-6 ${f.color}`} />
-              </div>
-              <div>
-                <p className="font-bold text-white mb-1">{f.title}</p>
-                <p className="text-zinc-500 text-sm">{f.desc}</p>
-              </div>
-              <span className="ml-auto text-xs text-zinc-600 bg-zinc-800 rounded-full px-2 py-1 shrink-0 self-start">Soon</span>
+        {user && feedPhotos.length === 0 && (
+          <div className="text-center py-16 text-zinc-500">
+            <p className="text-5xl mb-4">📸</p>
+            <p className="font-semibold text-white text-lg mb-2">No photos yet</p>
+            <p className="text-sm mb-6">Follow people or be the first to share your night!</p>
+            <div className="flex gap-3 justify-center">
+              <FeedUpload />
+              <Link href="/social/people"
+                className="flex items-center gap-2 border border-zinc-700 hover:border-pink-500/50 text-zinc-300 font-semibold px-4 py-2.5 rounded-xl text-sm transition-colors">
+                <Users className="w-4 h-4" /> Find people
+              </Link>
             </div>
-          ))}
-        </div>
+          </div>
+        )}
 
-        <div className="mt-10 text-center">
-          <p className="text-zinc-500 text-sm mb-4">Meanwhile, explore venues and plan your night</p>
-          <Link href="/night-planner" className="inline-flex items-center gap-2 bg-pink-500 hover:bg-pink-400 text-white font-bold px-6 py-3 rounded-xl transition-colors">
-            🗺️ Night Planner <ArrowRight className="w-4 h-4" />
-          </Link>
+        {/* Feed */}
+        <div className="space-y-5">
+          {feedPhotos.map(photo => (
+            <FeedPost
+              key={photo.id}
+              photo={photo}
+              onDelete={(id) => loadFeed()}
+            />
+          ))}
         </div>
       </div>
     </main>
