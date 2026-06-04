@@ -1,7 +1,8 @@
 'use client'
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
-import { ArrowLeft, Camera, Save, Loader2, Heart, User } from 'lucide-react'
+import { ArrowLeft, Camera, Save, Loader2, Heart } from 'lucide-react'
+import { Avatar } from '@/components/ui/Avatar'
 import { useAuth } from '@/contexts/AuthContext'
 import { useFavorites } from '@/contexts/FavoritesContext'
 import { getSupabase } from '@/lib/supabase'
@@ -84,10 +85,12 @@ export default function ProfilePage() {
   async function handleSave() {
     if (!user) return
     setSaving(true)
+    // Strip cache-busting before saving
+    const cleanUrl = avatarUrl ? avatarUrl.split('?')[0] : null
     await getSupabase().from('profiles').upsert({
       id: user.id,
       username: username || null,
-      avatar_url: avatarUrl,
+      avatar_url: cleanUrl,
     })
     setSaving(false)
     setSaved(true)
@@ -127,25 +130,12 @@ export default function ProfilePage() {
           <div className="flex items-start gap-6">
             {/* Avatar */}
             <div className="relative shrink-0">
-              <div className="w-20 h-20 rounded-full overflow-hidden bg-zinc-800 border-2 border-pink-500/30">
-                {avatarUrl ? (
-                  <img
-                    src={avatarUrl}
-                    alt="Avatar"
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      // If image fails to load, show initials
-                      (e.target as HTMLImageElement).style.display = 'none'
-                    }}
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-pink-600 to-purple-700">
-                    <span className="text-white font-black text-2xl">
-                      {user.email?.[0]?.toUpperCase()}
-                    </span>
-                  </div>
-                )}
-              </div>
+              <Avatar
+                src={avatarUrl}
+                name={username || user.email}
+                size="xl"
+                className="border-2 border-pink-500/40"
+              />
               <button
                 onClick={() => inputRef.current?.click()}
                 disabled={uploading}

@@ -1,9 +1,9 @@
 'use client'
 import { useState, useEffect } from 'react'
-import { User } from 'lucide-react'
 import Link from 'next/link'
 import { useAuth } from '@/contexts/AuthContext'
 import { getSupabase } from '@/lib/supabase'
+import { Avatar } from '@/components/ui/Avatar'
 import { LoginModal } from './LoginModal'
 
 interface Profile {
@@ -12,7 +12,7 @@ interface Profile {
 }
 
 export function AuthButton() {
-  const { user, signOut } = useAuth()
+  const { user } = useAuth()
   const [showLogin, setShowLogin] = useState(false)
   const [profile, setProfile] = useState<Profile | null>(null)
 
@@ -30,14 +30,16 @@ export function AuthButton() {
 
     loadProfile()
 
-    // Re-load whenever the user saves their profile (listen to storage events)
     const handler = () => loadProfile()
     window.addEventListener('profile-updated', handler)
     return () => window.removeEventListener('profile-updated', handler)
   }, [user])
 
   const displayName = profile?.username ?? user?.email?.split('@')[0] ?? ''
+  // Add cache-busting for display only so fresh photo shows immediately
   const avatarUrl = profile?.avatar_url
+    ? `${profile.avatar_url.split('?')[0]}?v=${profile.avatar_url.length}`
+    : null
 
   if (user) {
     return (
@@ -45,22 +47,7 @@ export function AuthButton() {
         href="/profile"
         className="flex items-center gap-2 px-2 py-1.5 rounded-xl border border-pink-500/30 hover:border-pink-500/60 transition-colors"
       >
-        {/* Avatar */}
-        <div className="w-7 h-7 rounded-full overflow-hidden shrink-0 bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center">
-          {avatarUrl ? (
-            <img
-              src={avatarUrl}
-              alt={displayName}
-              className="w-full h-full object-cover"
-              onError={e => { (e.target as HTMLImageElement).style.display = 'none' }}
-            />
-          ) : (
-            <span className="text-white text-xs font-black">
-              {displayName[0]?.toUpperCase()}
-            </span>
-          )}
-        </div>
-        {/* Name */}
+        <Avatar src={avatarUrl} name={displayName} size="xs" />
         <span className="text-sm text-pink-400 font-semibold max-w-[100px] truncate hidden sm:block">
           {displayName}
         </span>
