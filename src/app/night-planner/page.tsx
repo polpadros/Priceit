@@ -12,7 +12,9 @@ import { StarRating } from '@/components/ui/StarRating'
 import { VenuePicker } from '@/components/venue/VenuePicker'
 import { useSocial } from '@/contexts/SocialContext'
 import { useAuth } from '@/contexts/AuthContext'
+import { useCity } from '@/contexts/CityContext'
 import { getSupabase } from '@/lib/supabase'
+import { CitySelector } from '@/components/ui/CitySelector'
 import type { Ambient, NightPlanFilters, NightRoute, VenueWithDetails } from '@/types'
 
 const VenueMap = dynamic(() => import('@/components/map/VenueMap').then((m) => m.VenueMap), {
@@ -31,8 +33,8 @@ const DAYS = [
 
 const NEIGHBORHOODS = ['All', 'Barceloneta', 'Barri Gòtic', 'El Born', 'Eixample', 'Poblenou', 'Gràcia Alta', 'Sants']
 
-function computeRoutes(filters: NightPlanFilters): NightRoute[] {
-  const venues = mockVenues
+function computeRoutes(filters: NightPlanFilters, city: string): NightRoute[] {
+  const venues = mockVenues.filter(v => (v.city ?? 'barcelona') === city)
 
   const matchesAmbient = (v: VenueWithDetails) =>
     filters.ambients.length === 0 || v.ambients.some((a) => filters.ambients.includes(a as Ambient))
@@ -224,6 +226,7 @@ function InAppShareButton({ route, filters }: { route: NightRoute; filters: Nigh
 }
 
 export default function NightPlannerPage() {
+  const { city } = useCity()
   const [filters, setFilters] = useState<NightPlanFilters>({
     budget: 50,
     ambients: [],
@@ -249,7 +252,7 @@ export default function NightPlannerPage() {
   }
 
   function handleSearch() {
-    const result = computeRoutes(filters)
+    const result = computeRoutes(filters, city)
     setRoutes(result)
     setSearched(true)
   }
@@ -294,9 +297,12 @@ export default function NightPlannerPage() {
               Night Planner
             </span>
           </h1>
-          <p className="text-zinc-400 text-lg max-w-md mx-auto">
+          <p className="text-zinc-400 text-lg max-w-md mx-auto mb-6">
             Tell us your budget and vibe. We&apos;ll design your perfect night out.
           </p>
+          <div className="flex justify-center">
+            <CitySelector />
+          </div>
         </div>
       </div>
 

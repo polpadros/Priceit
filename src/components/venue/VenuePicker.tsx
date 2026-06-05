@@ -2,6 +2,7 @@
 import { useState, useMemo } from 'react'
 import { Search, X, Check, MapPin, Euro } from 'lucide-react'
 import { mockVenues } from '@/lib/mock-data'
+import { useCity } from '@/contexts/CityContext'
 import type { VenueType, VenueWithDetails } from '@/types'
 
 const TYPE_LABELS: Record<string, string> = {
@@ -21,11 +22,15 @@ interface Props {
 export function VenuePicker({ type, selectedId, onSelect, placeholder }: Props) {
   const [open, setOpen] = useState(false)
   const [search, setSearch] = useState('')
+  const { city } = useCity()
 
   const types = Array.isArray(type) ? type : [type]
   const venues = useMemo(() =>
-    mockVenues.filter(v => types.includes(v.type as VenueType)),
-    [types.join(',')]
+    mockVenues.filter(v =>
+      types.includes(v.type as VenueType) &&
+      (v.city ?? 'barcelona') === city
+    ),
+    [types.join(','), city]
   )
 
   const filtered = useMemo(() =>
