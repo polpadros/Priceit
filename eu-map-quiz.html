@@ -392,7 +392,7 @@
         </div>
         <div class="progress-wrap">
           <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-          <div class="progress-label" id="progressLabel">0 de 5 preguntes</div>
+          <div class="progress-label" id="progressLabel">0 de 36 països</div>
         </div>
       </div>
 
@@ -887,12 +887,13 @@ function markOnMap(iso, layer, result) {
 }
 
 // ─── Score ────────────────────────────────────────────────────────────────────
+const TOTAL_COUNTRIES = 36;
 function updateScore() {
-  document.getElementById('scoreDisplay').textContent = `${correct}/${total}`;
-  const pct = total > 0 ? (correct / total) * 100 : 0;
+  document.getElementById('scoreDisplay').textContent = `${correct}/${TOTAL_COUNTRIES}`;
+  const pct = (correct / TOTAL_COUNTRIES) * 100;
   document.getElementById('progressFill').style.width = pct + '%';
   document.getElementById('progressLabel').textContent =
-    `${correct} encertats de ${total} resposts`;
+    `${total} de ${TOTAL_COUNTRIES} països resposts`;
 }
 
 // ─── Next country ─────────────────────────────────────────────────────────────
