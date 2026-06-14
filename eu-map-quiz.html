@@ -328,9 +328,38 @@
   .btn-next:hover { background: #e0e8ff; }
 
   /* Map tooltip override */
-  .leaflet-tooltip {
-    display: none !important;
+  .leaflet-tooltip { display: none !important; }
+
+  /* Permanent map labels */
+  .map-label {
+    background: white;
+    border-radius: 6px;
+    padding: 4px 7px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    line-height: 1.4;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    pointer-events: none;
+    border-left: 3px solid #ccc;
   }
+  .map-label.correct { border-color: #1D9E75; color: #0d7a5a; }
+  .map-label.incorrect { border-color: #FF6B6B; color: #c0392b; }
+
+  /* Attempt counter */
+  .attempt-badge {
+    display: inline-flex;
+    gap: 5px;
+    margin-bottom: 10px;
+  }
+  .attempt-dot {
+    width: 11px; height: 11px;
+    border-radius: 50%;
+    background: #e0e0e0;
+    border: 2px solid #ccc;
+  }
+  .attempt-dot.used  { background: #FF6B6B; border-color: #FF6B6B; }
+  .attempt-dot.current { background: #667eea; border-color: #667eea; }
 
   @media (max-width: 1199px) {
     .layout { grid-template-columns: 1fr; }
@@ -385,6 +414,12 @@
 
       <!-- Quiz form -->
       <div class="quiz-form" id="quizForm">
+        <div class="attempt-badge" id="attemptBadge">
+          <div class="attempt-dot current" id="dot1"></div>
+          <div class="attempt-dot" id="dot2"></div>
+          <div class="attempt-dot" id="dot3"></div>
+          <span style="font-size:0.78rem;color:#888;margin-left:4px;" id="attemptLabel">Intent 1 de 3</span>
+        </div>
         <div class="field">
           <label>1. Nom del país</label>
           <input type="text" id="fName" placeholder="Escriu el nom en català..." autocomplete="off">
@@ -569,9 +604,10 @@ const NUM_TO_ISO = {
 };
 
 // ─── Game state ───────────────────────────────────────────────────────────────
-const MAX_ROUNDS = 5;
-let correct = 0, total = 0, answered = false;
+let correct = 0, total = 0, answered = false, attempts = 0;
 let currentISO = null, selectedLayer = null, geojsonLayer = null;
+let answeredISOs = new Set();
+let mapLabels = [];
 
 // ─── Map setup ────────────────────────────────────────────────────────────────
 const map = L.map('map', {
@@ -587,6 +623,8 @@ map.getContainer().style.background = '#d4e6f1';
 const STYLE_DEFAULT    = { fillColor: '#8b9bb4', weight: 1,   color: '#fff',    fillOpacity: 0.85, interactive: true  };
 const STYLE_HOVER      = { fillColor: '#667eea', weight: 2,   color: '#fff',    fillOpacity: 0.9,  interactive: true  };
 const STYLE_SELECTED   = { fillColor: '#FFD700', weight: 2.5, color: '#b8860b', fillOpacity: 1,    interactive: true  };
+const STYLE_CORRECT    = { fillColor: '#1D9E75', weight: 2,   color: '#0d7a5a', fillOpacity: 0.85, interactive: true  };
+const STYLE_WRONG      = { fillColor: '#FF6B6B', weight: 2,   color: '#c0392b', fillOpacity: 0.85, interactive: true  };
 const STYLE_IRRELEVANT = { fillColor: '#c8d4e0', weight: 0.5, color: '#aaa',    fillOpacity: 0.5,  interactive: false };
 
 // Show loading message
@@ -619,7 +657,7 @@ fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
         });
         layer.on('click', e => {
           L.DomEvent.stopPropagation(e);
-          if (total >= MAX_ROUNDS) return;
+          if (answeredISOs.has(iso)) return;
           if (answered) return;
           selectCountry(iso, layer);
         });
@@ -629,7 +667,7 @@ fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
     // Ready
     document.getElementById('idleMsg').innerHTML =
       '<div class="icon">🗺️</div><strong>Com jugar:</strong><br>' +
-      'Clica qualsevol país al mapa<br>per identificar-lo i respondre<br>les 5 preguntes.';
+      'Clica qualsevol país al mapa<br>per identificar-lo · 3 intents per país<br>🟢 verd = encertat · 🔴 vermell = fallat';
   })
   .catch(err => {
     console.error('Map load error:', err);
@@ -639,67 +677,76 @@ fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
 
 // ─── Select country ───────────────────────────────────────────────────────────
 function selectCountry(iso, layer) {
-  // Restore previous
-  if (selectedLayer && currentISO !== iso) {
-    selectedLayer.setStyle(STYLE_DEFAULT);
-  }
+  // Don't re-select already answered countries
+  if (answeredISOs.has(iso)) return;
+  if (selectedLayer && currentISO !== iso) selectedLayer.setStyle(STYLE_DEFAULT);
 
   currentISO = iso;
   selectedLayer = layer;
-  layer.setStyle(STYLE_SELECTED);
+  attempts = 0;
   answered = false;
+  layer.setStyle(STYLE_SELECTED);
 
-  // Update UI
-  const display = document.getElementById('countryDisplay');
-  display.textContent = '???';
-  display.classList.remove('empty');
-
+  document.getElementById('countryDisplay').textContent = '???';
+  document.getElementById('countryDisplay').classList.remove('empty');
   document.getElementById('idleMsg').style.display = 'none';
-  document.getElementById('gameOver').classList.remove('active');
+  document.getElementById('quizForm').classList.add('active');
 
-  const form = document.getElementById('quizForm');
-  form.classList.add('active');
-
-  // Reset form
-  ['fName','fCapital','fYear'].forEach(id => {
-    const el = document.getElementById(id);
-    el.value = '';
-    el.disabled = false;
-    el.className = '';
-  });
-  ['fStatus','fEuro'].forEach(id => {
-    const el = document.getElementById(id);
-    el.value = '';
-    el.disabled = false;
-    el.className = '';
-  });
-
-  document.getElementById('btnSubmit').style.display = '';
-  document.getElementById('btnSubmit').disabled = true;
-  document.getElementById('btnNext').classList.remove('show');
-
+  resetForm();
+  updateAttemptDots();
   hideFeedback();
   watchFields();
 }
 
+function resetForm(keepCorrect) {
+  keepCorrect = keepCorrect || {};
+  ['fName','fCapital','fYear'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!keepCorrect[id]) { el.value = ''; el.className = ''; }
+    el.disabled = !!keepCorrect[id];
+  });
+  ['fStatus','fEuro'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!keepCorrect[id]) { el.value = ''; el.className = ''; }
+    el.disabled = !!keepCorrect[id];
+  });
+  document.getElementById('btnSubmit').style.display = '';
+  document.getElementById('btnSubmit').disabled = true;
+  document.getElementById('btnNext').classList.remove('show');
+}
+
 // ─── Field watch ─────────────────────────────────────────────────────────────
 function watchFields() {
-  const ids = ['fName','fCapital','fStatus','fYear','fEuro'];
-  ids.forEach(id => {
-    document.getElementById(id).addEventListener('input', checkAllFilled);
-    document.getElementById(id).addEventListener('change', checkAllFilled);
+  ['fName','fCapital','fStatus','fYear','fEuro'].forEach(id => {
+    const el = document.getElementById(id);
+    el.oninput = el.onchange = checkAllFilled;
   });
 }
 
 function checkAllFilled() {
-  const filled = ['fName','fCapital','fStatus','fYear','fEuro'].every(id => {
-    const v = document.getElementById(id).value.trim();
-    return v !== '' && v !== '0' || id === 'fYear'; // year can be 0
-  });
-  const allFilled = ['fName','fCapital','fStatus'].every(id => document.getElementById(id).value.trim() !== '')
-    && document.getElementById('fEuro').value !== ''
-    && document.getElementById('fYear').value.trim() !== '';
+  const allFilled = ['fName','fCapital','fStatus'].every(id => {
+    const el = document.getElementById(id);
+    return el.disabled || el.value.trim() !== '';
+  }) && ['fEuro'].every(id => {
+    const el = document.getElementById(id);
+    return el.disabled || el.value !== '';
+  }) && (() => {
+    const el = document.getElementById('fYear');
+    return el.disabled || el.value.trim() !== '';
+  })();
   document.getElementById('btnSubmit').disabled = !allFilled;
+}
+
+// ─── Attempt dots ─────────────────────────────────────────────────────────────
+function updateAttemptDots() {
+  for (let i = 1; i <= 3; i++) {
+    const dot = document.getElementById('dot' + i);
+    dot.className = 'attempt-dot';
+    if (i <= attempts) dot.classList.add('used');
+    else if (i === attempts + 1) dot.classList.add('current');
+  }
+  document.getElementById('attemptLabel').textContent =
+    attempts >= 3 ? 'Intents esgotats' : `Intent ${attempts + 1} de 3`;
 }
 
 // ─── Submit ───────────────────────────────────────────────────────────────────
@@ -707,140 +754,191 @@ function submitAnswer() {
   if (!currentISO || answered) return;
 
   const db = COUNTRIES[currentISO];
-  answered = true;
-  total++;
+  attempts++;
+  updateAttemptDots();
 
-  const userName    = document.getElementById('fName').value.trim().toLowerCase();
-  const userCap     = document.getElementById('fCapital').value.trim().toLowerCase();
-  const userStatus  = document.getElementById('fStatus').value;
-  const userYear    = parseInt(document.getElementById('fYear').value) || 0;
-  const userEuro    = document.getElementById('fEuro').value;
+  const userName   = document.getElementById('fName').value.trim();
+  const userCap    = document.getElementById('fCapital').value.trim();
+  const userStatus = document.getElementById('fStatus').value;
+  const userYear   = parseInt(document.getElementById('fYear').value) || 0;
+  const userEuro   = document.getElementById('fEuro').value;
 
   const checks = {
-    name:    matchText(userName, db.name, db.aliases || []),
-    capital: matchText(userCap,  db.capital, db.capAliases || []),
+    name:    matchText(userName,   db.name,    db.aliases    || []),
+    capital: matchText(userCap,    db.capital, db.capAliases || []),
     status:  userStatus === db.status,
-    year:    userYear === db.year,
-    euro:    userEuro === db.euro,
+    year:    userYear   === db.year,
+    euro:    userEuro   === db.euro,
   };
 
   const allCorrect = Object.values(checks).every(Boolean);
-  if (allCorrect) correct++;
 
-  updateScore();
+  // Color the fields
+  ['fName','fCapital','fStatus','fYear','fEuro'].forEach(id => {
+    const key = { fName:'name', fCapital:'capital', fStatus:'status', fYear:'year', fEuro:'euro' }[id];
+    document.getElementById(id).classList.add(checks[key] ? 'correct' : 'incorrect');
+  });
 
-  // Reveal country name
-  document.getElementById('countryDisplay').textContent = db.name;
-
-  // Apply field styles
-  applyFieldResult('fName',   checks.name);
-  applyFieldResult('fCapital',checks.capital);
-  applyFieldResult('fStatus', checks.status);
-  applyFieldResult('fYear',   checks.year);
-  applyFieldResult('fEuro',   checks.euro);
-
-  // Disable fields
-  ['fName','fCapital','fStatus','fYear','fEuro'].forEach(id =>
-    document.getElementById(id).disabled = true
-  );
-  document.getElementById('btnSubmit').style.display = 'none';
-
-  // Build feedback
-  const statusLabel = { member: 'Membre UE', candidate: 'Candidat', none: 'Cap dels dos' };
-  const euroLabel   = { yes: 'Sí', no: 'No', na: 'N/A' };
-
-  const lines = [
-    { ok: checks.name,    label: 'Nom',      val: db.name },
-    { ok: checks.capital, label: 'Capital',   val: db.capital },
-    { ok: checks.status,  label: 'Estat',     val: statusLabel[db.status] },
-    { ok: checks.year,    label: 'Any UE',    val: db.year === 0 ? '—' : db.year },
-    { ok: checks.euro,    label: 'Zona Euro', val: euroLabel[db.euro] },
-  ];
-
-  const fb = document.getElementById('feedbackBox');
-  fb.className = 'feedback-box show ' + (allCorrect ? 'correct-fb' : 'incorrect-fb');
-  fb.innerHTML = `<strong>${allCorrect ? '✅ Correcte!' : '❌ Revisa les respostes'}</strong>` +
-    lines.map(l =>
-      `<div class="correction-item ${l.ok ? 'ok' : 'bad'}">
-        ${l.ok ? '✓' : '✗'} <strong>${l.label}:</strong> ${l.val}
-       </div>`
-    ).join('');
-
-  if (total >= MAX_ROUNDS) {
-    document.getElementById('btnNext').classList.remove('show');
-    setTimeout(showGameOver, 1200);
-  } else {
+  if (allCorrect) {
+    // ── SUCCESS ──
+    answered = true;
+    total++; correct++;
+    answeredISOs.add(currentISO);
+    updateScore();
+    document.getElementById('countryDisplay').textContent = db.name;
+    disableAllFields();
+    markOnMap(currentISO, selectedLayer, 'correct');
+    showFeedback(true, checks, db);
     document.getElementById('btnNext').classList.add('show');
+
+  } else if (attempts >= 3) {
+    // ── 3 FAILURES ──
+    answered = true;
+    total++;
+    answeredISOs.add(currentISO);
+    updateScore();
+    document.getElementById('countryDisplay').textContent = db.name;
+    disableAllFields();
+    markOnMap(currentISO, selectedLayer, 'incorrect');
+    showFeedback(false, checks, db, true);
+    document.getElementById('btnNext').classList.add('show');
+
+  } else {
+    // ── RETRY ──
+    const keepCorrect = {};
+    ['fName','fCapital','fStatus','fYear','fEuro'].forEach(id => {
+      const key = { fName:'name', fCapital:'capital', fStatus:'status', fYear:'year', fEuro:'euro' }[id];
+      if (checks[key]) keepCorrect[id] = true;
+    });
+
+    const statusLabel = { member:'Membre UE', candidate:'Candidat', none:'Cap dels dos' };
+    const euroLabel   = { yes:'Sí', no:'No', na:'N/A' };
+    const fb = document.getElementById('feedbackBox');
+    fb.className = 'feedback-box show incorrect-fb';
+    fb.innerHTML = `<strong>❌ Algunes respostes incorrectes — torna-ho a provar (${3 - attempts} intent${3-attempts===1?'':'s'} restant${3-attempts===1?'':'s'})</strong>` +
+      Object.entries(checks).map(([k, ok]) => {
+        const labels = { name:'Nom', capital:'Capital', status:'Estat', year:'Any UE', euro:'Zona Euro' };
+        return ok ? `<div class="correction-item ok">✓ <strong>${labels[k]}</strong> correcte</div>` : '';
+      }).join('');
+
+    // Lock correct fields, clear wrong ones
+    setTimeout(() => {
+      ['fName','fCapital','fStatus','fYear','fEuro'].forEach(id => {
+        const key = { fName:'name', fCapital:'capital', fStatus:'status', fYear:'year', fEuro:'euro' }[id];
+        const el = document.getElementById(id);
+        if (checks[key]) {
+          el.classList.add('correct');
+          el.disabled = true;
+        } else {
+          el.value = '';
+          el.className = '';
+        }
+      });
+      checkAllFilled();
+    }, 300);
   }
 }
 
-function applyFieldResult(id, ok) {
-  document.getElementById(id).classList.add(ok ? 'correct' : 'incorrect');
+function disableAllFields() {
+  ['fName','fCapital','fStatus','fYear','fEuro'].forEach(id =>
+    document.getElementById(id).disabled = true);
+  document.getElementById('btnSubmit').style.display = 'none';
 }
 
-function normalize(str) {
-  return str.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim();
+function showFeedback(allCorrect, checks, db, showSolution) {
+  const statusLabel = { member:'Membre UE', candidate:'Candidat', none:'Cap dels dos' };
+  const euroLabel   = { yes:'Sí', no:'No', na:'N/A' };
+  const lines = [
+    { key:'name',    label:'Nom',       val: db.name },
+    { key:'capital', label:'Capital',   val: db.capital },
+    { key:'status',  label:'Estat',     val: statusLabel[db.status] },
+    { key:'year',    label:'Any UE',    val: db.year === 0 ? '—' : db.year },
+    { key:'euro',    label:'Zona Euro', val: euroLabel[db.euro] },
+  ];
+  const fb = document.getElementById('feedbackBox');
+  fb.className = 'feedback-box show ' + (allCorrect ? 'correct-fb' : 'incorrect-fb');
+  const title = allCorrect ? '✅ Correcte!' : (showSolution ? '❌ Solució:' : '❌ Incorrecte');
+  fb.innerHTML = `<strong>${title}</strong>` +
+    lines.map(l => `<div class="correction-item ${checks[l.key] ? 'ok' : 'bad'}">
+      ${checks[l.key] ? '✓' : '✗'} <strong>${l.label}:</strong> ${l.val}</div>`).join('');
+}
+
+// ─── Mark country on map ──────────────────────────────────────────────────────
+function markOnMap(iso, layer, result) {
+  layer.setStyle(result === 'correct' ? STYLE_CORRECT : STYLE_WRONG);
+  layer.off('mouseover').off('mouseout'); // remove hover on answered countries
+
+  const db = COUNTRIES[iso];
+  const center = layer.getBounds().getCenter();
+  const yearStr = db.year > 0 ? db.year : '—';
+  const marker = L.marker(center, {
+    icon: L.divIcon({
+      className: '',
+      html: `<div class="map-label ${result}">
+               <strong>${db.name}</strong><br>
+               ${db.capital} · ${yearStr}
+             </div>`,
+      iconAnchor: [0, 0],
+    }),
+    interactive: false,
+    zIndexOffset: 1000,
+  }).addTo(map);
+  mapLabels.push(marker);
 }
 
 // ─── Score ────────────────────────────────────────────────────────────────────
 function updateScore() {
   document.getElementById('scoreDisplay').textContent = `${correct}/${total}`;
-  const pct = (correct / MAX_ROUNDS) * 100;
+  const pct = total > 0 ? (correct / total) * 100 : 0;
   document.getElementById('progressFill').style.width = pct + '%';
-  document.getElementById('progressLabel').textContent = `${total} de ${MAX_ROUNDS} preguntes`;
+  document.getElementById('progressLabel').textContent =
+    `${correct} encertats de ${total} resposts`;
 }
 
 // ─── Next country ─────────────────────────────────────────────────────────────
 function nextCountry() {
   document.getElementById('btnNext').classList.remove('show');
   hideFeedback();
-
-  // Reset selected country highlight
-  if (selectedLayer) selectedLayer.setStyle(STYLE_DEFAULT);
   selectedLayer = null;
   currentISO = null;
   answered = false;
+  attempts = 0;
 
-  const display = document.getElementById('countryDisplay');
-  display.textContent = 'Clica un país al mapa...';
-  display.classList.add('empty');
-
+  document.getElementById('countryDisplay').textContent = 'Clica un país al mapa...';
+  document.getElementById('countryDisplay').classList.add('empty');
   document.getElementById('quizForm').classList.remove('active');
   document.getElementById('idleMsg').style.display = '';
 }
 
-// ─── Game over ────────────────────────────────────────────────────────────────
-function showGameOver() {
-  document.getElementById('quizForm').classList.remove('active');
-  document.getElementById('idleMsg').style.display = 'none';
-  hideFeedback();
-
-  const pct = Math.round((correct / MAX_ROUNDS) * 100);
-  let msg;
-  if (pct === 100) msg = '🏆 Excel·lent! Domini perfecte dels països europeus.';
-  else if (pct >= 80) msg = '🌟 Molt bé! Estàs preparat per l\'examen.';
-  else if (pct >= 60) msg = '📚 Bé, però repassa els errors.';
-  else if (pct >= 40) msg = '⚠️ Cal estudiar més. Revisa els membres i candidats.';
-  else msg = '❗ Necessites repassar el temari amb atenció.';
-
-  document.getElementById('finalScore').textContent = `${correct}/${MAX_ROUNDS} (${pct}%)`;
-  document.getElementById('finalMsg').textContent = msg;
-  document.getElementById('gameOver').classList.add('active');
-}
-
 // ─── Restart ──────────────────────────────────────────────────────────────────
 function restartGame() {
-  correct = 0; total = 0; answered = false; currentISO = null;
-  if (selectedLayer) { selectedLayer.setStyle(STYLE_DEFAULT); selectedLayer = null; }
+  correct = 0; total = 0; answered = false; attempts = 0;
+  currentISO = null; selectedLayer = null;
+  answeredISOs.clear();
 
-  document.getElementById('scoreDisplay').textContent = '0/0';
-  document.getElementById('progressFill').style.width = '0%';
-  document.getElementById('progressLabel').textContent = `0 de ${MAX_ROUNDS} preguntes`;
+  // Reset all country styles
+  if (geojsonLayer) geojsonLayer.eachLayer(l => {
+    const iso = NUM_TO_ISO[+l.feature.id];
+    if (iso) {
+      l.setStyle(STYLE_DEFAULT);
+      l.off('mouseover').off('mouseout').off('click');
+      l.on('mouseover', () => { if (iso !== currentISO) l.setStyle(STYLE_HOVER); });
+      l.on('mouseout',  () => { if (iso !== currentISO) l.setStyle(STYLE_DEFAULT); });
+      l.on('click', e => {
+        L.DomEvent.stopPropagation(e);
+        if (answered) return;
+        selectCountry(iso, l);
+      });
+    }
+  });
 
-  const display = document.getElementById('countryDisplay');
-  display.textContent = 'Clica un país al mapa...';
-  display.classList.add('empty');
+  // Remove map labels
+  mapLabels.forEach(m => map.removeLayer(m));
+  mapLabels = [];
 
+  updateScore();
+  document.getElementById('countryDisplay').textContent = 'Clica un país al mapa...';
+  document.getElementById('countryDisplay').classList.add('empty');
   document.getElementById('gameOver').classList.remove('active');
   document.getElementById('quizForm').classList.remove('active');
   document.getElementById('idleMsg').style.display = '';
