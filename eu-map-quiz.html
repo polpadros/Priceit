@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exercici 1 - Mapa UE Interactiu</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 16px;
+  }
+
+  header {
+    text-align: center;
+    color: white;
+    margin-bottom: 16px;
+  }
+
+  header h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+
+  header p {
+    font-size: 0.9rem;
+    opacity: 0.85;
+    margin-top: 4px;
+  }
+
+  .badge {
+    display: inline-block;
+    background: #FF6B6B;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 60% 40%;
+    gap: 16px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+    overflow: hidden;
+  }
+
+  /* Map */
+  #map {
+    height: 600px;
+    width: 100%;
+    background: #d4e6f1;
+  }
+
+  /* Panel */
+  .panel {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .panel-inner {
+    padding: 20px;
+  }
+
+  /* Score */
+  .score-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+  }
+
+  .score-bar h2 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    opacity: 0.9;
+  }
+
+  .score-display {
+    font-size: 1.5rem;
+    font-weight: 800;
+  }
+
+  .progress-wrap {
+    flex: 1;
+    margin: 0 16px;
+  }
+
+  .progress-bar {
+    height: 8px;
+    background: rgba(255,255,255,0.3);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: #1D9E75;
+    border-radius: 4px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  .progress-label {
+    font-size: 0.75rem;
+    opacity: 0.8;
+    margin-top: 3px;
+    text-align: center;
+  }
+
+  /* Country indicator */
+  .country-indicator {
+    padding: 12px 20px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .country-indicator label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #999;
+    font-weight: 600;
+  }
+
+  .country-name-display {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #333;
+    margin-top: 2px;
+  }
+
+  .country-name-display.empty {
+    color: #bbb;
+    font-size: 1rem;
+    font-weight: 400;
+    font-style: italic;
+  }
+
+  /* Form */
+  .quiz-form {
+    padding: 16px 20px;
+    display: none;
+  }
+
+  .quiz-form.active {
+    display: block;
+  }
+
+  .field {
+    margin-bottom: 14px;
+  }
+
+  .field label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  .field input,
+  .field select {
+    width: 100%;
+    padding: 9px 12px;
+    border: 2px solid #e8e8e8;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s;
+    color: #333;
+    background: white;
+  }
+
+  .field input:focus,
+  .field select:focus {
+    border-color: #667eea;
+  }
+
+  .field input.correct { border-color: #1D9E75; background: #f0faf6; }
+  .field input.incorrect { border-color: #FF6B6B; background: #fff5f5; }
+  .field select.correct { border-color: #1D9E75; background: #f0faf6; }
+  .field select.incorrect { border-color: #FF6B6B; background: #fff5f5; }
+
+  .btn-submit {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.1s;
+    margin-top: 4px;
+  }
+
+  .btn-submit:hover:not(:disabled) { opacity: 0.9; transform: translateY(-1px); }
+  .btn-submit:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* Feedback */
+  .feedback-box {
+    margin: 0 20px 12px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    display: none;
+    line-height: 1.5;
+  }
+
+  .feedback-box.show { display: block; }
+  .feedback-box.correct-fb { background: #f0faf6; border: 1px solid #1D9E75; color: #0d7a5a; }
+  .feedback-box.incorrect-fb { background: #fff5f5; border: 1px solid #FF6B6B; color: #c0392b; }
+
+  .feedback-box strong { display: block; margin-bottom: 4px; }
+
+  .correction-item {
+    margin: 3px 0;
+    padding: 2px 0;
+  }
+
+  .correction-item.ok { color: #1D9E75; }
+  .correction-item.bad { color: #FF6B6B; }
+
+  /* Instructions */
+  .instructions {
+    padding: 14px 20px;
+    border-top: 1px solid #f0f0f0;
+    font-size: 0.82rem;
+    color: #888;
+    line-height: 1.6;
+  }
+
+  .instructions h3 {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #bbb;
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+
+  /* Idle state */
+  .idle-msg {
+    padding: 40px 20px;
+    text-align: center;
+    color: #bbb;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .idle-msg .icon { font-size: 2.5rem; margin-bottom: 10px; }
+
+  /* Game over */
+  .game-over {
+    padding: 30px 20px;
+    text-align: center;
+    display: none;
+  }
+
+  .game-over.active { display: block; }
+
+  .game-over .big-score {
+    font-size: 3rem;
+    font-weight: 800;
+    color: #667eea;
+    margin: 10px 0;
+  }
+
+  .game-over h2 { color: #333; font-size: 1.3rem; }
+  .game-over p { color: #777; font-size: 0.95rem; margin: 8px 0 20px; }
+
+  .btn-restart {
+    padding: 12px 28px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+
+  .btn-restart:hover { opacity: 0.9; }
+
+  /* Next button */
+  .btn-next {
+    width: 100%;
+    padding: 10px;
+    background: #f0f4ff;
+    color: #667eea;
+    border: 2px solid #667eea;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.2s;
+    display: none;
+  }
+
+  .btn-next.show { display: block; }
+  .btn-next:hover { background: #e0e8ff; }
+
+  /* Map tooltip override */
+  .leaflet-tooltip {
+    display: none !important;
+  }
+
+  @media (max-width: 1199px) {
+    .layout { grid-template-columns: 1fr; }
+    #map { height: 420px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Exercici 1 · Mapa de la Unió Europea <span class="badge">⚠️ DIFÍCIL</span></h1>
+  <p>Clica un país al mapa per identificar-lo · Preparació per l'examen d'Integració Europea</p>
+</header>
+
+<div class="layout">
+
+  <!-- Map -->
+  <div class="card">
+    <div id="map"></div>
+  </div>
+
+  <!-- Panel -->
+  <div class="panel">
+    <div class="card">
+      <!-- Score bar -->
+      <div class="score-bar">
+        <div>
+          <h2>Puntuació</h2>
+          <div class="score-display" id="scoreDisplay">0/0</div>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+          <div class="progress-label" id="progressLabel">0 de 5 preguntes</div>
+        </div>
+      </div>
+
+      <!-- Country indicator -->
+      <div class="country-indicator">
+        <label>País seleccionat</label>
+        <div class="country-name-display empty" id="countryDisplay">Clica un país al mapa...</div>
+      </div>
+
+      <!-- Feedback -->
+      <div class="feedback-box" id="feedbackBox"></div>
+
+      <!-- Idle -->
+      <div class="idle-msg" id="idleMsg">
+        <div class="icon">🗺️</div>
+        <strong>Com jugar:</strong><br>
+        Clica qualsevol país al mapa<br>per identificar-lo i respondre<br>les 5 preguntes.
+      </div>
+
+      <!-- Quiz form -->
+      <div class="quiz-form" id="quizForm">
+        <div class="field">
+          <label>1. Nom del país</label>
+          <input type="text" id="fName" placeholder="Escriu el nom en català..." autocomplete="off">
+        </div>
+        <div class="field">
+          <label>2. Capital</label>
+          <input type="text" id="fCapital" placeholder="Escriu la capital..." autocomplete="off">
+        </div>
+        <div class="field">
+          <label>3. Estat respecte a la UE</label>
+          <select id="fStatus">
+            <option value="">— Selecciona —</option>
+            <option value="member">Membre UE</option>
+            <option value="candidate">Candidat</option>
+            <option value="none">Cap dels dos</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>4. Any d'entrada a la UE</label>
+          <input type="number" id="fYear" placeholder="Ex: 1986" min="1950" max="2030">
+        </div>
+        <div class="field">
+          <label>5. Zona Euro</label>
+          <select id="fEuro">
+            <option value="">— Selecciona —</option>
+            <option value="yes">Sí</option>
+            <option value="no">No</option>
+            <option value="na">N/A (no membre UE)</option>
+          </select>
+        </div>
+        <button class="btn-submit" id="btnSubmit" disabled onclick="submitAnswer()">Comprovar resposta</button>
+        <button class="btn-next" id="btnNext" onclick="nextCountry()">Següent país →</button>
+      </div>
+
+      <!-- Game over -->
+      <div class="game-over" id="gameOver">
+        <div style="font-size:2.5rem">🎓</div>
+        <h2>Exercici completat!</h2>
+        <div class="big-score" id="finalScore"></div>
+        <p id="finalMsg"></p>
+        <button class="btn-restart" onclick="restartGame()">Tornar a jugar</button>
+      </div>
+
+      <!-- Instructions -->
+      <div class="instructions" id="instructionsPanel">
+        <h3>Instruccions</h3>
+        · Clica un país al mapa per seleccionar-lo<br>
+        · Respon les 5 preguntes sobre el país<br>
+        · Es compten <strong>5 rodes</strong> per partida<br>
+        · Any d'entrada: escriu 0 si és candidat o no membre<br>
+        · Pots fer zoom i moure el mapa lliurement
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ─── Country database ──────────────────────────────────────────────────────────
+// aliases: accepted names in CA/EN/ES  |  capAliases: accepted capital names
+const COUNTRIES = {
+  "BEL": { name:"Bèlgica",           aliases:["belgium","belgica","belgique"],
+            capital:"Brussel·les",   capAliases:["brussels","bruselas","bruxelles","brusseles"],
+            status:"member",  year:1958, euro:"yes" },
+  "FRA": { name:"França",            aliases:["france","francia"],
+            capital:"París",         capAliases:["paris"],
+            status:"member",  year:1958, euro:"yes" },
+  "DEU": { name:"Alemanya",          aliases:["germany","alemania","deutschland"],
+            capital:"Berlín",        capAliases:["berlin"],
+            status:"member",  year:1958, euro:"yes" },
+  "ITA": { name:"Itàlia",            aliases:["italy","italia"],
+            capital:"Roma",          capAliases:["rome"],
+            status:"member",  year:1958, euro:"yes" },
+  "LUX": { name:"Luxemburg",         aliases:["luxembourg","luxemburgo"],
+            capital:"Luxemburg",     capAliases:["luxembourg","luxemburgo"],
+            status:"member",  year:1958, euro:"yes" },
+  "NLD": { name:"Països Baixos",     aliases:["netherlands","paises bajos","holanda","holland","pays bas"],
+            capital:"Amsterdam",     capAliases:[],
+            status:"member",  year:1958, euro:"yes" },
+  "DNK": { name:"Dinamarca",         aliases:["denmark","danemark"],
+            capital:"Copenhaguen",   capAliases:["copenhagen","copenhague","kobenhavn"],
+            status:"member",  year:1973, euro:"no"  },
+  "IRL": { name:"Irlanda",           aliases:["ireland"],
+            capital:"Dublín",        capAliases:["dublin"],
+            status:"member",  year:1973, euro:"yes" },
+  "GRC": { name:"Grècia",            aliases:["greece","grecia","grece"],
+            capital:"Atenes",        capAliases:["athens","atenas","athenes","athen"],
+            status:"member",  year:1981, euro:"yes" },
+  "ESP": { name:"Espanya",           aliases:["spain","españa","espana"],
+            capital:"Madrid",        capAliases:[],
+            status:"member",  year:1986, euro:"yes" },
+  "PRT": { name:"Portugal",          aliases:["portugal"],
+            capital:"Lisboa",        capAliases:["lisbon","lisbonne"],
+            status:"member",  year:1986, euro:"yes" },
+  "AUT": { name:"Àustria",           aliases:["austria","autriche"],
+            capital:"Viena",         capAliases:["vienna","wien","vienne"],
+            status:"member",  year:1995, euro:"yes" },
+  "FIN": { name:"Finlàndia",         aliases:["finland","finlandia","finlande"],
+            capital:"Hèlsinki",      capAliases:["helsinki","helsingfors"],
+            status:"member",  year:1995, euro:"yes" },
+  "SWE": { name:"Suècia",            aliases:["sweden","suecia","sverige"],
+            capital:"Estocolm",      capAliases:["stockholm"],
+            status:"member",  year:1995, euro:"no"  },
+  "CYP": { name:"Xipre",             aliases:["cyprus","chipre","chypre"],
+            capital:"Nicòsia",       capAliases:["nicosia","lefkosia"],
+            status:"member",  year:2004, euro:"yes" },
+  "CZE": { name:"República Txeca",   aliases:["czech republic","republica checa","czechia","chequia","rep txeca","rep. txeca","republica txeca"],
+            capital:"Praga",         capAliases:["prague","praga","prag"],
+            status:"member",  year:2004, euro:"no"  },
+  "EST": { name:"Estònia",           aliases:["estonia"],
+            capital:"Tal·linn",      capAliases:["tallinn","tallin","tallín"],
+            status:"member",  year:2004, euro:"yes" },
+  "HUN": { name:"Hongria",           aliases:["hungary","hungria","hongrie"],
+            capital:"Budapest",      capAliases:[],
+            status:"member",  year:2004, euro:"no"  },
+  "LVA": { name:"Letònia",           aliases:["latvia","letonia","lettonie"],
+            capital:"Riga",          capAliases:[],
+            status:"member",  year:2004, euro:"yes" },
+  "LTU": { name:"Lituània",          aliases:["lithuania","lituania","lituanie"],
+            capital:"Vílnius",       capAliases:["vilnius","vilna"],
+            status:"member",  year:2004, euro:"yes" },
+  "MLT": { name:"Malta",             aliases:["malta"],
+            capital:"La Valleta",    capAliases:["valletta","la valeta","valleta"],
+            status:"member",  year:2004, euro:"yes" },
+  "POL": { name:"Polònia",           aliases:["poland","polonia","pologne"],
+            capital:"Varsòvia",      capAliases:["warsaw","varsovia","varsovie","warszawa"],
+            status:"member",  year:2004, euro:"no"  },
+  "SVK": { name:"Eslovàquia",        aliases:["slovakia","eslovaquia","slovaquie"],
+            capital:"Bratislava",    capAliases:[],
+            status:"member",  year:2004, euro:"yes" },
+  "SVN": { name:"Eslovènia",         aliases:["slovenia","eslovenia","slovenie"],
+            capital:"Ljubljana",     capAliases:[],
+            status:"member",  year:2004, euro:"yes" },
+  "BGR": { name:"Bulgària",          aliases:["bulgaria","bulgarie"],
+            capital:"Sofia",         capAliases:[],
+            status:"member",  year:2007, euro:"no"  },
+  "ROU": { name:"Romania",           aliases:["romania","rumania","roumanie","rumanía"],
+            capital:"Bucarest",      capAliases:["bucharest","bucareste"],
+            status:"member",  year:2007, euro:"no"  },
+  "HRV": { name:"Croàcia",           aliases:["croatia","croacia","croatie","hrvatska"],
+            capital:"Zagreb",        capAliases:[],
+            status:"member",  year:2013, euro:"yes" },
+  "SRB": { name:"Sèrbia",            aliases:["serbia","serbie"],
+            capital:"Belgrad",       capAliases:["belgrade","belgrado","beograd"],
+            status:"candidate", year:0, euro:"na" },
+  "MKD": { name:"Macedònia del Nord",aliases:["north macedonia","macedonia del norte","macedoine du nord","macedonia","makedonia","macedonie"],
+            capital:"Skopje",        capAliases:["skopje","skoplje"],
+            status:"candidate", year:0, euro:"na" },
+  "TUR": { name:"Turquia",           aliases:["turkey","turquia","turquie","turkiye"],
+            capital:"Ankara",        capAliases:[],
+            status:"candidate", year:0, euro:"na" },
+  "ALB": { name:"Albània",           aliases:["albania","albanie"],
+            capital:"Tirana",        capAliases:["tirane"],
+            status:"candidate", year:0, euro:"na" },
+  "BIH": { name:"Bòsnia i Hercegovina", aliases:["bosnia and herzegovina","bosnia herzegovina","bosnia y herzegovina","bosnia i hercegovina","bosnia","bosnia herzegobina"],
+            capital:"Sarajevo",      capAliases:[],
+            status:"candidate", year:0, euro:"na" },
+  "MDA": { name:"Moldàvia",          aliases:["moldova","moldavia","moldavie"],
+            capital:"Chișinău",      capAliases:["chisinau","kishinev","chisinàu","chisinau"],
+            status:"candidate", year:0, euro:"na" },
+  "UKR": { name:"Ucraïna",           aliases:["ukraine","ucrania","ukraine"],
+            capital:"Kíev",          capAliases:["kyiv","kiev","kiyev"],
+            status:"candidate", year:0, euro:"na" },
+  "XKX": { name:"Kosovo",            aliases:["kosovo","kosove"],
+            capital:"Pristina",      capAliases:["prishtina","priština"],
+            status:"candidate", year:0, euro:"na" },
+  "MNE": { name:"Montenegro",        aliases:["montenegro","monténégro"],
+            capital:"Podgorica",     capAliases:[],
+            status:"candidate", year:0, euro:"na" },
+};
+
+// Map numeric ISO-3166 → our alpha-3 keys
+// Source: world-atlas uses numeric IDs matching ISO 3166-1 numeric
+const NUM_TO_ISO = {
+  56:"BEL", 250:"FRA", 276:"DEU", 380:"ITA", 442:"LUX", 528:"NLD",
+  208:"DNK", 372:"IRL", 300:"GRC", 724:"ESP", 620:"PRT",
+  40:"AUT",  246:"FIN", 752:"SWE",
+  196:"CYP", 203:"CZE", 233:"EST", 348:"HUN", 428:"LVA", 440:"LTU",
+  470:"MLT", 616:"POL", 703:"SVK", 705:"SVN", 100:"BGR", 642:"ROU", 191:"HRV",
+  688:"SRB", 807:"MKD", 792:"TUR",   8:"ALB",  70:"BIH", 498:"MDA",
+  804:"UKR", 499:"MNE", 383:"XKX",
+};
+
+// ─── Game state ───────────────────────────────────────────────────────────────
+const MAX_ROUNDS = 5;
+let correct = 0, total = 0, answered = false;
+let currentISO = null, selectedLayer = null, geojsonLayer = null;
+
+// ─── Map setup ────────────────────────────────────────────────────────────────
+const map = L.map('map', {
+  center: [54, 20],
+  zoom: 3.5,
+  zoomControl: true,
+  minZoom: 2,
+  maxZoom: 8,
+});
+
+map.getContainer().style.background = '#d4e6f1';
+
+const STYLE_DEFAULT    = { fillColor: '#8b9bb4', weight: 1,   color: '#fff',    fillOpacity: 0.85, interactive: true  };
+const STYLE_HOVER      = { fillColor: '#667eea', weight: 2,   color: '#fff',    fillOpacity: 0.9,  interactive: true  };
+const STYLE_SELECTED   = { fillColor: '#FFD700', weight: 2.5, color: '#b8860b', fillOpacity: 1,    interactive: true  };
+const STYLE_IRRELEVANT = { fillColor: '#c8d4e0', weight: 0.5, color: '#aaa',    fillOpacity: 0.5,  interactive: false };
+
+// Show loading message
+document.getElementById('idleMsg').innerHTML =
+  '<div class="icon">⏳</div>Carregant el mapa...<br><small>Espera un moment</small>';
+
+// world-atlas 110m topojson (~120KB, loads fast)
+fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
+  .then(r => r.json())
+  .then(world => {
+    // Convert topojson → GeoJSON features
+    const features = topojson.feature(world, world.objects.countries).features;
+
+    geojsonLayer = L.geoJSON(features, {
+      style: feature => {
+        const iso = NUM_TO_ISO[+feature.id];
+        return iso ? { ...STYLE_DEFAULT } : { ...STYLE_IRRELEVANT };
+      },
+      onEachFeature: (feature, layer) => {
+        const iso = NUM_TO_ISO[+feature.id];
+        if (!iso) return;
+
+        layer.iso = iso; // store for later
+
+        layer.on('mouseover', () => {
+          if (iso !== currentISO) layer.setStyle(STYLE_HOVER);
+        });
+        layer.on('mouseout', () => {
+          if (iso !== currentISO) layer.setStyle(STYLE_DEFAULT);
+        });
+        layer.on('click', e => {
+          L.DomEvent.stopPropagation(e);
+          if (total >= MAX_ROUNDS) return;
+          if (answered) return;
+          selectCountry(iso, layer);
+        });
+      }
+    }).addTo(map);
+
+    // Ready
+    document.getElementById('idleMsg').innerHTML =
+      '<div class="icon">🗺️</div><strong>Com jugar:</strong><br>' +
+      'Clica qualsevol país al mapa<br>per identificar-lo i respondre<br>les 5 preguntes.';
+  })
+  .catch(err => {
+    console.error('Map load error:', err);
+    document.getElementById('idleMsg').innerHTML =
+      '<div class="icon">⚠️</div>Error carregant el mapa.<br>Comprova la connexió a internet.';
+  });
+
+// ─── Select country ───────────────────────────────────────────────────────────
+function selectCountry(iso, layer) {
+  // Restore previous
+  if (selectedLayer && currentISO !== iso) {
+    selectedLayer.setStyle(STYLE_DEFAULT);
+  }
+
+  currentISO = iso;
+  selectedLayer = layer;
+  layer.setStyle(STYLE_SELECTED);
+  answered = false;
+
+  // Update UI
+  const display = document.getElementById('countryDisplay');
+  display.textContent = '???';
+  display.classList.remove('empty');
+
+  document.getElementById('idleMsg').style.display = 'none';
+  document.getElementById('gameOver').classList.remove('active');
+
+  const form = document.getElementById('quizForm');
+  form.classList.add('active');
+
+  // Reset form
+  ['fName','fCapital','fYear'].forEach(id => {
+    const el = document.getElementById(id);
+    el.value = '';
+    el.disabled = false;
+    el.className = '';
+  });
+  ['fStatus','fEuro'].forEach(id => {
+    const el = document.getElementById(id);
+    el.value = '';
+    el.disabled = false;
+    el.className = '';
+  });
+
+  document.getElementById('btnSubmit').style.display = '';
+  document.getElementById('btnSubmit').disabled = true;
+  document.getElementById('btnNext').classList.remove('show');
+
+  hideFeedback();
+  watchFields();
+}
+
+// ─── Field watch ─────────────────────────────────────────────────────────────
+function watchFields() {
+  const ids = ['fName','fCapital','fStatus','fYear','fEuro'];
+  ids.forEach(id => {
+    document.getElementById(id).addEventListener('input', checkAllFilled);
+    document.getElementById(id).addEventListener('change', checkAllFilled);
+  });
+}
+
+function checkAllFilled() {
+  const filled = ['fName','fCapital','fStatus','fYear','fEuro'].every(id => {
+    const v = document.getElementById(id).value.trim();
+    return v !== '' && v !== '0' || id === 'fYear'; // year can be 0
+  });
+  const allFilled = ['fName','fCapital','fStatus'].every(id => document.getElementById(id).value.trim() !== '')
+    && document.getElementById('fEuro').value !== ''
+    && document.getElementById('fYear').value.trim() !== '';
+  document.getElementById('btnSubmit').disabled = !allFilled;
+}
+
+// ─── Submit ───────────────────────────────────────────────────────────────────
+function submitAnswer() {
+  if (!currentISO || answered) return;
+
+  const db = COUNTRIES[currentISO];
+  answered = true;
+  total++;
+
+  const userName    = document.getElementById('fName').value.trim().toLowerCase();
+  const userCap     = document.getElementById('fCapital').value.trim().toLowerCase();
+  const userStatus  = document.getElementById('fStatus').value;
+  const userYear    = parseInt(document.getElementById('fYear').value) || 0;
+  const userEuro    = document.getElementById('fEuro').value;
+
+  const checks = {
+    name:    matchText(userName, db.name, db.aliases || []),
+    capital: matchText(userCap,  db.capital, db.capAliases || []),
+    status:  userStatus === db.status,
+    year:    userYear === db.year,
+    euro:    userEuro === db.euro,
+  };
+
+  const allCorrect = Object.values(checks).every(Boolean);
+  if (allCorrect) correct++;
+
+  updateScore();
+
+  // Reveal country name
+  document.getElementById('countryDisplay').textContent = db.name;
+
+  // Apply field styles
+  applyFieldResult('fName',   checks.name);
+  applyFieldResult('fCapital',checks.capital);
+  applyFieldResult('fStatus', checks.status);
+  applyFieldResult('fYear',   checks.year);
+  applyFieldResult('fEuro',   checks.euro);
+
+  // Disable fields
+  ['fName','fCapital','fStatus','fYear','fEuro'].forEach(id =>
+    document.getElementById(id).disabled = true
+  );
+  document.getElementById('btnSubmit').style.display = 'none';
+
+  // Build feedback
+  const statusLabel = { member: 'Membre UE', candidate: 'Candidat', none: 'Cap dels dos' };
+  const euroLabel   = { yes: 'Sí', no: 'No', na: 'N/A' };
+
+  const lines = [
+    { ok: checks.name,    label: 'Nom',      val: db.name },
+    { ok: checks.capital, label: 'Capital',   val: db.capital },
+    { ok: checks.status,  label: 'Estat',     val: statusLabel[db.status] },
+    { ok: checks.year,    label: 'Any UE',    val: db.year === 0 ? '—' : db.year },
+    { ok: checks.euro,    label: 'Zona Euro', val: euroLabel[db.euro] },
+  ];
+
+  const fb = document.getElementById('feedbackBox');
+  fb.className = 'feedback-box show ' + (allCorrect ? 'correct-fb' : 'incorrect-fb');
+  fb.innerHTML = `<strong>${allCorrect ? '✅ Correcte!' : '❌ Revisa les respostes'}</strong>` +
+    lines.map(l =>
+      `<div class="correction-item ${l.ok ? 'ok' : 'bad'}">
+        ${l.ok ? '✓' : '✗'} <strong>${l.label}:</strong> ${l.val}
+       </div>`
+    ).join('');
+
+  if (total >= MAX_ROUNDS) {
+    document.getElementById('btnNext').classList.remove('show');
+    setTimeout(showGameOver, 1200);
+  } else {
+    document.getElementById('btnNext').classList.add('show');
+  }
+}
+
+function applyFieldResult(id, ok) {
+  document.getElementById(id).classList.add(ok ? 'correct' : 'incorrect');
+}
+
+function normalize(str) {
+  return str.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim();
+}
+
+// ─── Score ────────────────────────────────────────────────────────────────────
+function updateScore() {
+  document.getElementById('scoreDisplay').textContent = `${correct}/${total}`;
+  const pct = (correct / MAX_ROUNDS) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = `${total} de ${MAX_ROUNDS} preguntes`;
+}
+
+// ─── Next country ─────────────────────────────────────────────────────────────
+function nextCountry() {
+  document.getElementById('btnNext').classList.remove('show');
+  hideFeedback();
+
+  // Reset selected country highlight
+  if (selectedLayer) selectedLayer.setStyle(STYLE_DEFAULT);
+  selectedLayer = null;
+  currentISO = null;
+  answered = false;
+
+  const display = document.getElementById('countryDisplay');
+  display.textContent = 'Clica un país al mapa...';
+  display.classList.add('empty');
+
+  document.getElementById('quizForm').classList.remove('active');
+  document.getElementById('idleMsg').style.display = '';
+}
+
+// ─── Game over ────────────────────────────────────────────────────────────────
+function showGameOver() {
+  document.getElementById('quizForm').classList.remove('active');
+  document.getElementById('idleMsg').style.display = 'none';
+  hideFeedback();
+
+  const pct = Math.round((correct / MAX_ROUNDS) * 100);
+  let msg;
+  if (pct === 100) msg = '🏆 Excel·lent! Domini perfecte dels països europeus.';
+  else if (pct >= 80) msg = '🌟 Molt bé! Estàs preparat per l\'examen.';
+  else if (pct >= 60) msg = '📚 Bé, però repassa els errors.';
+  else if (pct >= 40) msg = '⚠️ Cal estudiar més. Revisa els membres i candidats.';
+  else msg = '❗ Necessites repassar el temari amb atenció.';
+
+  document.getElementById('finalScore').textContent = `${correct}/${MAX_ROUNDS} (${pct}%)`;
+  document.getElementById('finalMsg').textContent = msg;
+  document.getElementById('gameOver').classList.add('active');
+}
+
+// ─── Restart ──────────────────────────────────────────────────────────────────
+function restartGame() {
+  correct = 0; total = 0; answered = false; currentISO = null;
+  if (selectedLayer) { selectedLayer.setStyle(STYLE_DEFAULT); selectedLayer = null; }
+
+  document.getElementById('scoreDisplay').textContent = '0/0';
+  document.getElementById('progressFill').style.width = '0%';
+  document.getElementById('progressLabel').textContent = `0 de ${MAX_ROUNDS} preguntes`;
+
+  const display = document.getElementById('countryDisplay');
+  display.textContent = 'Clica un país al mapa...';
+  display.classList.add('empty');
+
+  document.getElementById('gameOver').classList.remove('active');
+  document.getElementById('quizForm').classList.remove('active');
+  document.getElementById('idleMsg').style.display = '';
+  hideFeedback();
+}
+
+// ─── Text matching ────────────────────────────────────────────────────────────
+function normalize(s) {
+  return s.normalize('NFD').replace(/[̀-ͯ·]/g, '').toLowerCase().trim()
+           .replace(/\s+/g, ' ');
+}
+
+// Levenshtein distance
+function levenshtein(a, b) {
+  const m = a.length, n = b.length;
+  const dp = Array.from({length: m+1}, (_, i) => Array.from({length: n+1}, (_, j) => i === 0 ? j : j === 0 ? i : 0));
+  for (let i = 1; i <= m; i++)
+    for (let j = 1; j <= n; j++)
+      dp[i][j] = a[i-1] === b[j-1] ? dp[i-1][j-1]
+        : 1 + Math.min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]);
+  return dp[m][n];
+}
+
+// Accept if exact match (after normalize) OR fuzzy within threshold
+function matchText(input, canonical, aliases) {
+  const inp = normalize(input);
+  if (!inp) return false;
+  const targets = [canonical, ...aliases].map(normalize);
+  for (const t of targets) {
+    if (inp === t) return true;
+    // Allow 1 typo per 5 chars, max 2
+    const maxDist = Math.min(2, Math.floor(Math.max(inp.length, t.length) / 5));
+    if (maxDist > 0 && levenshtein(inp, t) <= maxDist) return true;
+  }
+  return false;
+}
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+function hideFeedback() {
+  const fb = document.getElementById('feedbackBox');
+  fb.className = 'feedback-box';
+  fb.innerHTML = '';
+}
+</script>
+</body>
+</html>
